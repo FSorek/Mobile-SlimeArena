@@ -7,8 +7,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float registerMoveDistance = 100f;
     private readonly PlayerInput playerInput = new PlayerInput();
+    private bool isMoving;
 
     public PlayerInput PlayerInput => playerInput;
+    public bool IsMoving => isMoving;
     
     private void Update()
     {
@@ -16,6 +18,12 @@ public class Player : MonoBehaviour
         if (playerInput.MoveVector.magnitude > registerMoveDistance)
         {
             transform.Translate(Time.deltaTime * moveSpeed * playerInput.MoveVector.normalized);
+            if(!isMoving) 
+                isMoving = true;
+        }
+        else if (isMoving)
+        {
+            isMoving = false;
         }
     }
 }

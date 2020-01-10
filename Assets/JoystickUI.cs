@@ -41,7 +41,6 @@ public class JoystickUI : MonoBehaviour
         var knobPosition = new Vector2(
             inRectanglePosition.x * (sizeDelta.x/3), 
             inRectanglePosition.y * (sizeDelta.y/3));
-        Debug.Log(knobPosition.magnitude);
         knob.rectTransform.anchoredPosition = knobPosition;
     }
     
