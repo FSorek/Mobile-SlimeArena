@@ -1,8 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour, ITakeDamage
 {
-    [SerializeField]private int currentHealth = 1;
+    [SerializeField] private int maxHealth = 1;
+    private int currentHealth;
+
+    private void Awake()
+    {
+        currentHealth = maxHealth;
+    }
+
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;

@@ -7,21 +7,25 @@ public class NPCAttackState : IState
     private readonly NPCStateData stateData;
 
     private float lastAttackTime;
-
+    
     public NPCAttackState(NPCAttackData attackData, EnemyNPC owner, NPCStateData stateData)
     {
         this.owner = owner;
         this.stateData = stateData;
         this.attackData = attackData;
         lastAttackTime = 0f;
+        
+        
     }
     public void StateEnter()
     {
-        if (!CanAttack()) return;
+        if(!CanAttack()) 
+            return;
         
-        var projectile = GameObject.Instantiate(attackData.ProjectileModel, owner.transform.position, Quaternion.identity)
-            .AddComponent<Projectile>();
-        projectile.SetTarget(owner.Target);
+        var projectile = ProjectilePool.Instance.Get();
+        projectile.transform.position = owner.transform.position;
+        projectile.Shoot(owner.Target, attackData);
+        projectile.gameObject.SetActive(true);
         lastAttackTime = Time.time;
     }
 

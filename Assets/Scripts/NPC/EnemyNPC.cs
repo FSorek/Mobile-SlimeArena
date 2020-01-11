@@ -36,7 +36,6 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage
     private void Update()
     {
         stateMachine.Tick();
-        Debug.Log(npcStateData.CurrentState);
     }
 
     public void TakeDamage(int damage)

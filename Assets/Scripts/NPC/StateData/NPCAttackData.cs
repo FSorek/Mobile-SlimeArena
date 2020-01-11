@@ -7,5 +7,5 @@ public class NPCAttackData : ScriptableObject
     public float ShootingRate;
     public float MinAttackRange = 5f;
     public float MaxAttackRange = 8f;
-    public GameObject ProjectileModel;
+    public float AccuracyOffset;
 }
