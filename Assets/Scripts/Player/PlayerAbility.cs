@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonAbility : MonoBehaviour
+public class PlayerAbility : MonoBehaviour
 {
     public void UseAbility()
     {

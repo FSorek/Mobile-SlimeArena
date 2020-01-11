@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NPC Move Data")]
+[CreateAssetMenu(fileName = "NPC Attack Data")]
 public class NPCAttackData : ScriptableObject
 {
     public int Damage;
