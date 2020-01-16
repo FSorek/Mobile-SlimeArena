@@ -6,16 +6,18 @@ public class PlayerAnimation : EntityAnimator<Player>
     [SerializeField] private Transform hands;
     [SerializeField] private Vector2 handsAttackDirectionOffset;
     private Vector2 initialPosition;
+    private PlayerAbility playerAbility;
 
     protected override void Awake()
     {
         base.Awake();
         var playerAttack = GetComponent<PlayerAttack>();
-        playerAttack.OnAttack += PlayerAttackOnAttack;
+        playerAttack.OnAttack += PlayerOnAttack;
         initialPosition = hands.transform.localPosition;
+        playerAbility = owner.GetComponent<PlayerAbility>();
     }
 
-    private void PlayerAttackOnAttack(Vector2 direction)
+    private void PlayerOnAttack(Vector2 direction)
     {
         //var rotationPosition = (Vector2)rightHand.position + direction;
         hands.rotation = Quaternion.FromToRotation(Vector2.up, direction);
@@ -25,6 +27,10 @@ public class PlayerAnimation : EntityAnimator<Player>
 
     protected override void Tick()
     {
+        animator.SetBool("IsAbilityActive", playerAbility.IsUsingAbility);
+        if(playerAbility.IsUsingAbility)
+            return;
+        
         animator.SetBool("IsMoving", owner.IsMoving);
         spriteRenderer.flipX = owner.PlayerInput.MoveVector.x < 0;
     }

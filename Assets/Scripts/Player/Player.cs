@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
 
 //turn the sword into a dagger so that stabbing makes more sense :)
 
-//ability is a dagger storm
+//make ability have animation :)
 //make the ability have a time pool
 //refill time pool with kills outside of ability
 

@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public event Action<ITakeDamage> OnTargetHit = delegate { };
     public event Action<Vector2> OnAttack = delegate { };
-    
+
     [SerializeField] private int damage;
     [SerializeField] private Vector2 attackSize;
     [SerializeField] private float attackDelay = .5f;
@@ -24,9 +25,15 @@ public class PlayerAttack : MonoBehaviour
                 continue;
             
             var target = targetsHit[i].transform.GetComponent<ITakeDamage>();
-            target?.TakeDamage(damage);
+            if (target != null)
+            {
+                target.TakeDamage(damage);
+                OnTargetHit(target);
+            }
         }
+
         OnAttack(direction);
+        
         lastAttackTime = Time.time;
     }
 }
