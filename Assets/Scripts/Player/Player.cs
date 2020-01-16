@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
 //abstract some of this logic and create a static attack joystick :)
 //keep attack logic the same, allow all directions of attack :)
 
-//turn the sword into a dagger so that stabbing makes more sense
+//turn the sword into a dagger so that stabbing makes more sense :)
 
 //ability is a dagger storm
 //make the ability have a time pool

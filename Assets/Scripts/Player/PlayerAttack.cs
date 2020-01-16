@@ -8,6 +8,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private Vector2 attackSize;
     [SerializeField] private float attackDelay = .5f;
+    [SerializeField] private Transform weapon;
     private RaycastHit2D[] targetsHit = new RaycastHit2D[20];
     private float lastAttackTime;
 
@@ -15,14 +16,13 @@ public class PlayerAttack : MonoBehaviour
     {
         if(Time.time - lastAttackTime < attackDelay)
             return;
-        var boxAngle = Vector2.Angle(Vector2.up, direction);
-        var resultAmount = Physics2D.BoxCastNonAlloc(transform.position, attackSize, boxAngle, direction, targetsHit);
+        var boxCastAngle = Vector2.Angle(Vector2.up, direction);
+        var resultAmount = Physics2D.BoxCastNonAlloc(weapon.position, attackSize, boxCastAngle, direction, targetsHit);
         for (int i = 0; i < resultAmount; i++)
         {
             if(targetsHit[i].transform == transform)
                 continue;
             
-            Debug.Log(targetsHit[i].transform.name);
             var target = targetsHit[i].transform.GetComponent<ITakeDamage>();
             target?.TakeDamage(damage);
         }
