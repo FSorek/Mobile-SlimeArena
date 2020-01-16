@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemyNPC : MonoBehaviour, ITakeDamage
+public class EnemyNPC : MonoBehaviour
 {
     [SerializeField] private NPCAttackData attackData;
     [SerializeField] private NPCMoveData moveData;
-    [SerializeField] private int maxHealth = 1;
-    private int currentHealth;
+
     private StateMachine<NPCStates> stateMachine;
     private NPCStateData npcStateData = new NPCStateData();
     private Player player;
@@ -19,7 +19,6 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage
 
     private void Awake()
     {
-        currentHealth = maxHealth;
         stateMachine = new StateMachine<NPCStates>(npcStateData);
         player = FindObjectOfType<Player>();
         attackRange = Random.Range(attackData.MinAttackRange, attackData.MaxAttackRange);
@@ -36,19 +35,5 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage
     private void Update()
     {
         stateMachine.Tick();
-    }
-
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-    
-    private void Die()
-    {
-        Debug.Log($"{gameObject.name} has died.");
     }
 }

@@ -5,7 +5,7 @@ public abstract class EntityAnimator<T> : MonoBehaviour where T : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     protected T owner;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         spriteRenderer = animator.GetComponent<SpriteRenderer>();
         owner = GetComponent<T>();
