@@ -8,6 +8,11 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Transform target;
     private bool canFollow;
 
+    private void Awake()
+    {
+        canFollow = true;
+    }
+
     private void Update()
     {
         if(!canFollow)

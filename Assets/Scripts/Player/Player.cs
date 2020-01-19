@@ -25,8 +25,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(Input.GetAxis("Horizontal"));
         playerInput.Tick();
+    }
+
+    private void FixedUpdate()
+    {
         isMoving = currentMovement.Tick(moveSpeed);
     }
 
@@ -51,13 +54,16 @@ public class Player : MonoBehaviour
 //turn the sword into a dagger so that stabbing makes more sense :)
 
 //make ability have animation :)
-//make the ability have a time pool
-//refill time pool with kills outside of ability
+//make the ability have a time pool :)
+//refill time pool with kills outside of ability :)
 
-//create the arena
-//adjust npc logic for collisions
+//create the arena :)
+//adjust npc logic for collisions :)
 
-//create enemy spawners
+//stop velocity after using ability
+
+//enemy keeps moving if direct raycast hits a wall
+//create enemy spawners 
 //add enemy deaths and pooling
 
 //adjust layers and collisions

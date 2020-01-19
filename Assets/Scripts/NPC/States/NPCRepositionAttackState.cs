@@ -5,6 +5,7 @@ public class NPCRepositionAttackState : IState
     private readonly EnemyNPC owner;
     private readonly NPCMoveData moveData;
     private readonly NPCStateData stateData;
+    private readonly Rigidbody2D ownerRb;
 
     private Vector3 repositionDirection;
     private float totalDistance;
@@ -14,6 +15,7 @@ public class NPCRepositionAttackState : IState
         this.owner = owner;
         this.moveData = moveData;
         this.stateData = stateData;
+        ownerRb = owner.GetComponent<Rigidbody2D>();
     }
     public void StateEnter()
     {
@@ -26,9 +28,9 @@ public class NPCRepositionAttackState : IState
 
     public void ListenToState()
     {
-        var distanceThisFrame = moveData.MoveSpeed * Time.deltaTime * repositionDirection;
-        owner.transform.Translate(distanceThisFrame);
-        totalDistance += distanceThisFrame.magnitude;
+        var positionThisFrame = moveData.MoveSpeed * Time.fixedDeltaTime * (Vector2)repositionDirection;
+        ownerRb.MovePosition(ownerRb.position + positionThisFrame);
+        totalDistance += positionThisFrame.magnitude;
         if (totalDistance >= moveData.RepositionDistance)
             stateData.ChangeState(NPCStates.Attack);
     }

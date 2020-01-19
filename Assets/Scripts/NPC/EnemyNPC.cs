@@ -32,7 +32,7 @@ public class EnemyNPC : MonoBehaviour
         stateMachine.RegisterState(NPCStates.RepositionAttack, npcRepositionAttackState);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         stateMachine.Tick();
     }

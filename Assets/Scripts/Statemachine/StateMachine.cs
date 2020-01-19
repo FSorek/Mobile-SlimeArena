@@ -15,7 +15,10 @@ public class StateMachine<T>
     public void Tick()
     {
         if(currentState == null)
+        {
             currentState = availablePlayerStates[data.CurrentState];
+            currentState.StateEnter();
+        }
         currentState.ListenToState();
     }
 

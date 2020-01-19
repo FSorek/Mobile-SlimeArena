@@ -35,7 +35,7 @@ public class PlayerAbility : MonoBehaviour
 
     private void PlayerOnTargetHit(ITakeDamage target)
     {
-        if(target.IsDead)
+        if(target.IsDead && !isUsingAbility)
             RefillPool();
     }
 
@@ -84,8 +84,8 @@ public class PlayerAbility : MonoBehaviour
 
     private void InitializeAbilityWalls()
     {
-        var verticalOffset = transform.position.y + playerCamera.GetComponent<Camera>().orthographicSize;
-        var horizontalOffset = transform.position.x + playerCamera.GetComponent<Camera>().orthographicSize * Screen.width / Screen.height;
+        var verticalOffset = transform.position.x + playerCamera.GetComponent<Camera>().orthographicSize;
+        var horizontalOffset = transform.position.x + playerCamera.GetComponent<Camera>().orthographicSize * playerCamera.GetComponent<Camera>().aspect;
         for (int i = 0; i < 4; i++)
         {
             abilityWalls[i] = (Instantiate(wallPrefab, playerCamera.transform)).GetComponent<BoxCollider2D>();

@@ -37,7 +37,7 @@ public class NPCAttackState : IState
             stateData.ChangeState(NPCStates.RepositionAttack);
     }
 
-    private bool CanAttack() => Time.time - lastAttackTime >= attackData.ShootingRate;
+    private bool CanAttack() => Time.fixedTime - lastAttackTime >= attackData.ShootingRate;
 
     public void StateExit()
     {

@@ -23,7 +23,6 @@ public class PlayerAttack : MonoBehaviour
         {
             if(targetsHit[i].transform == transform)
                 continue;
-            
             var target = targetsHit[i].transform.GetComponent<ITakeDamage>();
             if (target != null)
             {
