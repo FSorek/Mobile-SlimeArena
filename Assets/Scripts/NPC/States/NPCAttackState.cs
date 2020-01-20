@@ -45,7 +45,7 @@ public class NPCAttackState : IState
 
     private bool CanAttack()
     {
-        var distance = Vector2.Distance(owner.Target.position, owner.transform.position);
+        var distance = Vector2.Distance(owner.Target.position + Vector3.up, owner.transform.position);
         if (distance > owner.AttackRange)
             return false;
         
