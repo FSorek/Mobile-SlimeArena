@@ -33,11 +33,11 @@ public class NPCAttackState : IState
     public void ListenToState()
     {
         
-        if (CanAttack())
+        if (CanAttack() && Time.fixedTime - lastAttackTime >= attackData.ShootingRate)
         {
             stateData.ChangeState(NPCStates.RepositionAttack);
         }
-        else
+        else if(!CanAttack())
         {
             stateData.ChangeState(NPCStates.GoWithinRange);
         }
@@ -45,16 +45,16 @@ public class NPCAttackState : IState
 
     private bool CanAttack()
     {
-        if (Vector2.Distance(owner.transform.position, owner.Target.position) > owner.AttackRange)
+        var distance = Vector2.Distance(owner.Target.position, owner.transform.position);
+        if (distance > owner.AttackRange)
             return false;
         
-        var directionToPlayer = (owner.Target.position - owner.transform.position).normalized;
-        var distance = Vector2.Distance(owner.Target.position, owner.transform.position);
+        var directionToPlayer = (owner.Target.position + Vector3.up - owner.transform.position).normalized;
         if (Physics2D.RaycastNonAlloc(owner.transform.position, directionToPlayer, lineOfSightItems, distance,
                 wallLayer) != 0)
             return false;
         
-        return Time.fixedTime - lastAttackTime >= attackData.ShootingRate;
+        return true;
     } 
 
     public void StateExit()

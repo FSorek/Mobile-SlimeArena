@@ -84,8 +84,8 @@ public class PlayerAbility : MonoBehaviour
 
     private void InitializeAbilityWalls()
     {
-        var verticalOffset = transform.position.x + playerCamera.GetComponent<Camera>().orthographicSize;
-        var horizontalOffset = transform.position.x + playerCamera.GetComponent<Camera>().orthographicSize * playerCamera.GetComponent<Camera>().aspect;
+        var verticalOffset = playerCamera.GetComponent<Camera>().orthographicSize;
+        var horizontalOffset = playerCamera.GetComponent<Camera>().orthographicSize * playerCamera.GetComponent<Camera>().aspect;
         for (int i = 0; i < 4; i++)
         {
             abilityWalls[i] = (Instantiate(wallPrefab, playerCamera.transform)).GetComponent<BoxCollider2D>();

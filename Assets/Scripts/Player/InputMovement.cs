@@ -13,7 +13,7 @@ internal class InputMovement : IMovement
     
     public void Initialize()
     {
-        owner.constraints = RigidbodyConstraints2D.FreezeRotation;
+        owner.velocity = Vector2.zero;
     }
     public bool Tick(float moveSpeed)
     {

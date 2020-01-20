@@ -61,12 +61,12 @@ public class Player : MonoBehaviour
 //adjust npc logic for collisions :)
 //adjust layers and collisions :)
 
-//enemy keeps moving if direct raycast hits a wall
-//stop velocity after using ability
+//enemy keeps moving if direct raycast hits a wall :)
+//stop velocity after using ability :)
 
 //create enemy spawners 
 //add enemy deaths and pooling
+//add player deaths
 
 //add kill count
 //add a simple menu
-//add player deaths

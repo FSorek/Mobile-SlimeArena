@@ -14,7 +14,7 @@ public class AccelerometerMovement : IMovement
 
     public void Initialize()
     {
-        owner.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        
     }
 
     public bool Tick(float moveSpeed)
