@@ -6,10 +6,12 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject spawnedPrefab;
     private Camera playerCamera;
     private float lastSpawnTime;
+    private LayerMask unstuckMask;
 
     private void Awake()
     {
         playerCamera = Camera.main;
+        unstuckMask = LayerMask.GetMask("World");
     }
 
     private void Update()
@@ -20,15 +22,39 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
-        Instantiate(spawnedPrefab, GetSpawnpoint(), Quaternion.identity);
+        Instantiate(spawnedPrefab, RandomPointOutsideCamera(), Quaternion.identity);
         lastSpawnTime = Time.time;
     }
 
-    private Vector2 GetSpawnpoint()
+    private Vector2 RandomPointOutsideCamera()
     {
-        
-        var point = playerCamera.ViewportToWorldPoint(new Vector2(1.1f, 1.1f));
-        
+        float x = 0, y = 0;
+        float sideChance = Random.value;
+        if (sideChance <= .25f)
+        {
+            x = 1.1f;
+            y = Random.Range(0f, 1f);
+        }
+        else if (sideChance > .25f && sideChance <= .5f)
+        {
+            x = -0.1f;
+            y = Random.Range(0f, 1f);
+        }
+        else if (sideChance > .5f && sideChance <= .75f)
+        {
+            x = Random.Range(0f, 1f);
+            y = 1.1f;
+        }
+        else if (sideChance > .75f && sideChance <= 1)
+        {
+            x = Random.Range(0f, 1f);
+            y = -0.1f;
+        }
+
+        var point = playerCamera.ViewportToWorldPoint(new Vector2(x, y));
+        if (Physics2D.OverlapCircle(point, 1f, unstuckMask))
+            return RandomPointOutsideCamera();
+
         return point;
     }
 }
