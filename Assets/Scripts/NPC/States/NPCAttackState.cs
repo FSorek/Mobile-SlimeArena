@@ -7,6 +7,8 @@ public class NPCAttackState : IState
     private readonly NPCStateData stateData;
 
     private float lastAttackTime;
+    private RaycastHit2D[] lineOfSightItems = new RaycastHit2D[1];
+    private LayerMask wallLayer;
     
     public NPCAttackState(NPCAttackData attackData, EnemyNPC owner, NPCStateData stateData)
     {
@@ -14,8 +16,7 @@ public class NPCAttackState : IState
         this.stateData = stateData;
         this.attackData = attackData;
         lastAttackTime = 0f;
-        
-        
+        wallLayer = LayerMask.GetMask("World");
     }
     public void StateEnter()
     {
@@ -31,13 +32,30 @@ public class NPCAttackState : IState
 
     public void ListenToState()
     {
-        if(Vector2.Distance(owner.transform.position, owner.Target.position) > owner.AttackRange)
-            stateData.ChangeState(NPCStates.GoWithinRange);
-        else if(CanAttack())
+        
+        if (CanAttack())
+        {
             stateData.ChangeState(NPCStates.RepositionAttack);
+        }
+        else
+        {
+            stateData.ChangeState(NPCStates.GoWithinRange);
+        }
     }
 
-    private bool CanAttack() => Time.fixedTime - lastAttackTime >= attackData.ShootingRate;
+    private bool CanAttack()
+    {
+        if (Vector2.Distance(owner.transform.position, owner.Target.position) > owner.AttackRange)
+            return false;
+        
+        var directionToPlayer = (owner.Target.position - owner.transform.position).normalized;
+        var distance = Vector2.Distance(owner.Target.position, owner.transform.position);
+        if (Physics2D.RaycastNonAlloc(owner.transform.position, directionToPlayer, lineOfSightItems, distance,
+                wallLayer) != 0)
+            return false;
+        
+        return Time.fixedTime - lastAttackTime >= attackData.ShootingRate;
+    } 
 
     public void StateExit()
     {

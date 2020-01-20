@@ -15,6 +15,8 @@ public class NPCGoWithinAttackRange : IState
     private Vector3 lastPlayerPosition;
     private Path path;
     private int currentWaypoint;
+    private RaycastHit2D[] lineOfSightItems = new RaycastHit2D[1];
+    private LayerMask wallLayer;
     
     public NPCGoWithinAttackRange(NPCStateData npcStateData, EnemyNPC owner, NPCMoveData moveData)
     {
@@ -25,6 +27,7 @@ public class NPCGoWithinAttackRange : IState
         ownerSeeker = owner.GetComponent<Seeker>();
         lastPlayerPosition = owner.Target.position;
         ownerRBody = owner.GetComponent<Rigidbody2D>();
+        wallLayer = LayerMask.GetMask("World");
     }
 
     public void StateEnter()
@@ -43,17 +46,18 @@ public class NPCGoWithinAttackRange : IState
         if(path == null)
             return;
 
+        var directionToPlayer = (owner.Target.position - owner.transform.position).normalized;
         var distance = Vector2.Distance(owner.Target.position, owner.transform.position);
-        if (distance < owner.AttackRange * .85f)
+        if (distance < owner.AttackRange * .85f
+            && Physics2D.RaycastNonAlloc(owner.transform.position, directionToPlayer, lineOfSightItems, distance, wallLayer) == 0)
         {
             npcStateData.ChangeState(NPCStates.Attack);
         }
-        
+
         if (Vector2.Distance(owner.transform.position, path.vectorPath[currentWaypoint]) < WaypointStoppingDistance)
             currentWaypoint++;
         
         var moveDirection = ((Vector2)path.vectorPath[currentWaypoint] - ownerRBody.position).normalized;
-        Debug.Log(moveDirection);
         ownerRBody.MovePosition(ownerRBody.position + Time.fixedDeltaTime * moveData.MoveSpeed * moveDirection);
     }
 

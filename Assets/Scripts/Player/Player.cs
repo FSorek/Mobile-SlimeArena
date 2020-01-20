@@ -59,14 +59,13 @@ public class Player : MonoBehaviour
 
 //create the arena :)
 //adjust npc logic for collisions :)
-
-//stop velocity after using ability
+//adjust layers and collisions :)
 
 //enemy keeps moving if direct raycast hits a wall
+//stop velocity after using ability
+
 //create enemy spawners 
 //add enemy deaths and pooling
-
-//adjust layers and collisions
 
 //add kill count
 //add a simple menu
