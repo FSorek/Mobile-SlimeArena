@@ -4,6 +4,8 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private float spawnRate = 2f;
     [SerializeField] private GameObject spawnedPrefab;
+    [SerializeField] private EnemyPool enemyPool;
+
     private Camera playerCamera;
     private float lastSpawnTime;
     private LayerMask unstuckMask;
@@ -22,7 +24,9 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
-        Instantiate(spawnedPrefab, RandomPointOutsideCamera(), Quaternion.identity);
+        var enemy = enemyPool.Get();
+        enemy.transform.position = RandomPointOutsideCamera();
+        enemy.gameObject.SetActive(true);
         lastSpawnTime = Time.time;
     }
 

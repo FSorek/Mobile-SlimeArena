@@ -4,11 +4,17 @@ using UnityEngine;
 public class NPCHealth : MonoBehaviour, ITakeDamage
 {
     public event Action<NPCHealth> OnDeath = delegate { };
-    
+
     [SerializeField] private int maxHealth = 1;
     private int currentHealth;
     private bool isDead;
     public bool IsDead => isDead;
+    private EnemyNPC owner;
+
+    private void Awake()
+    {
+        owner = GetComponent<EnemyNPC>();
+    }
 
     private void OnEnable()
     {
@@ -30,6 +36,8 @@ public class NPCHealth : MonoBehaviour, ITakeDamage
     private void Die()
     {
         isDead = true;
-        Debug.Log($"{gameObject.name} has died.");
+        EnemyPool.Instance.ReturnToPool(owner);
     }
+
+    
 }

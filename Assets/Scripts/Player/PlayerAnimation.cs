@@ -7,11 +7,12 @@ public class PlayerAnimation : EntityAnimator<Player>
     [SerializeField] private Vector2 handsAttackDirectionOffset;
     private Vector2 initialPosition;
     private PlayerAbility playerAbility;
+    private PlayerAttack playerAttack;
 
     protected override void Awake()
     {
         base.Awake();
-        var playerAttack = GetComponent<PlayerAttack>();
+        playerAttack = GetComponent<PlayerAttack>();
         playerAttack.OnAttack += PlayerOnAttack;
         initialPosition = hands.transform.localPosition;
         playerAbility = owner.GetComponent<PlayerAbility>();
@@ -19,14 +20,14 @@ public class PlayerAnimation : EntityAnimator<Player>
 
     private void PlayerOnAttack(Vector2 direction)
     {
-        //var rotationPosition = (Vector2)rightHand.position + direction;
-        hands.rotation = Quaternion.FromToRotation(Vector2.up, direction);
-        hands.localPosition = initialPosition + direction * handsAttackDirectionOffset;
         animator.SetTrigger("Attack");
     }
 
     protected override void Tick()
     {
+        hands.rotation = Quaternion.FromToRotation(Vector2.up, playerAttack.LastDirection);
+        hands.localPosition = initialPosition + playerAttack.LastDirection * handsAttackDirectionOffset;
+        
         animator.SetBool("IsAbilityActive", playerAbility.IsUsingAbility);
         if(playerAbility.IsUsingAbility)
             return;

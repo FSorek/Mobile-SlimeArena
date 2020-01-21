@@ -65,8 +65,10 @@ public class Player : MonoBehaviour
 //stop velocity after using ability :)
 
 //create enemy spawners :)
-//add enemy deaths and pooling
+//add enemy deaths and pooling 
 //add player deaths
+
+//consider destroying projectiles
 
 //add kill count
 //add a simple menu
