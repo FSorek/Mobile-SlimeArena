@@ -22,10 +22,10 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var playerHP = other.GetComponent<PlayerHealth>();
-        if (playerHP != null)
+        var player = other.GetComponent<Player>();
+        if (player != null)
         {
-            playerHP.TakeDamage(attackData.Damage);
+            player.TakeDamage(attackData.Damage);
         }
         ProjectilePool.Instance.ReturnToPool(this);
     }

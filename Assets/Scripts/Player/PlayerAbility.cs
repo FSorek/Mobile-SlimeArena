@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-public class PlayerAbility : MonoBehaviour
+public class PlayerAbility
 {
-    [SerializeField] private GameObject wallPrefab;
-    [SerializeField] private float damageRadius;
-    [SerializeField] private int damagePerTick;
-    [SerializeField] private float tickRate = .5f;
-    [SerializeField] private int maxPoolAmount = 3;
-    private CameraFollow playerCamera;
-    private Player player;
-    private IMovement accelerometerMovement;
-    private BoxCollider2D[] abilityWalls = new BoxCollider2D[4];
-    private Collider2D[] targetColliders = new Collider2D[20];
+    private readonly Player owner;
+    private readonly PlayerAbilityData abilityData;
+    private readonly CameraFollow playerCamera;
+    private readonly IMovement accelerometerMovement;
+    private readonly BoxCollider2D[] abilityWalls = new BoxCollider2D[4];
+    private readonly Collider2D[] targetColliders = new Collider2D[20];
     private bool isUsingAbility;
     private float currentPool;
+    private float lastDamageTime;
 
     public bool IsUsingAbility => isUsingAbility;
-    public double CurrentPoolPercentage => currentPool / maxPoolAmount;
+    public double CurrentPoolPercentage => currentPool / abilityData.MaxPoolAmount;
 
-    private void Awake()
+    public PlayerAbility(Player owner, PlayerAbilityData abilityData)
     {
+        this.owner = owner;
+        this.abilityData = abilityData;
+        
         playerCamera = Camera.main.GetComponent<CameraFollow>();
-        accelerometerMovement = new AccelerometerMovement(transform);
-        player = GetComponent<Player>();
-        currentPool = maxPoolAmount;
-        var playerAttack = GetComponent<PlayerAttack>();
-        playerAttack.OnTargetHit += PlayerOnTargetHit;
+        accelerometerMovement = new AccelerometerMovement(owner.GetComponent<Rigidbody2D>(), abilityData.TornadoMovespeed);
+        currentPool = abilityData.MaxPoolAmount;
+        owner.PlayerAttack.OnTargetHit += PlayerOnTargetHit;
         
         InitializeAbilityWalls();
     }
@@ -41,45 +38,52 @@ public class PlayerAbility : MonoBehaviour
 
     public void UseAbility()
     {
-        if(currentPool < tickRate)
+        if(currentPool < abilityData.TickRate)
             return;
         playerCamera.AllowFollow(false);
-        player.ChangeMovementStyle(accelerometerMovement);
-        InvokeRepeating(nameof(DealAreaDamage), tickRate, tickRate);
+        owner.ChangeMovementStyle(accelerometerMovement);
         isUsingAbility = true;
+    }
+
+    public void Tick()
+    {
+        if (isUsingAbility && Time.time - lastDamageTime >= abilityData.TickRate)
+        {
+            DealAreaDamage();
+        }
     }
 
     public void StopAbility()
     {
-        CancelInvoke(nameof(DealAreaDamage));
         playerCamera.AllowFollow(true);
-        player.ResetMovementStyle();
+        owner.ResetMovementStyle();
         isUsingAbility = false;
     }
 
     public void RefillPool()
     {
-        if(currentPool < maxPoolAmount)
-            currentPool += tickRate;
-        if (currentPool > maxPoolAmount)
-            currentPool = maxPoolAmount;
+        if(currentPool < abilityData.MaxPoolAmount)
+            currentPool += abilityData.TickRate;
+        if (currentPool > abilityData.MaxPoolAmount)
+            currentPool = abilityData.MaxPoolAmount;
     }
 
     private void DealAreaDamage()
     {
-        int targets = Physics2D.OverlapCircleNonAlloc(transform.position, damageRadius, targetColliders);
+        int targets = Physics2D.OverlapCircleNonAlloc(owner.transform.position, abilityData.DamageRadius, targetColliders);
         for (int i = 0; i < targets; i++)
         {
             var availableTarget = targetColliders[i].GetComponent<ITakeDamage>();
-            availableTarget?.TakeDamage(damagePerTick);
+            availableTarget?.TakeDamage(abilityData.DamagePerTick);
         }
 
-        currentPool -= tickRate;
+        currentPool -= abilityData.TickRate;
         if (currentPool <= 0)
         {
             StopAbility();
             currentPool = 0;
         }
+        lastDamageTime = Time.time;
     }
 
     private void InitializeAbilityWalls()
@@ -88,7 +92,7 @@ public class PlayerAbility : MonoBehaviour
         var horizontalOffset = playerCamera.GetComponent<Camera>().orthographicSize * playerCamera.GetComponent<Camera>().aspect;
         for (int i = 0; i < 4; i++)
         {
-            abilityWalls[i] = (Instantiate(wallPrefab, playerCamera.transform)).GetComponent<BoxCollider2D>();
+            abilityWalls[i] = (Object.Instantiate(abilityData.WallPrefab, playerCamera.transform)).GetComponent<BoxCollider2D>();
             if(i % 2 == 0)
                 abilityWalls[i].size = new Vector2(1, 2 * verticalOffset);
             else

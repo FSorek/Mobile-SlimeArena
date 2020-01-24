@@ -2,35 +2,48 @@
 using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ITakeDamage
 {
+    public event Action OnDeath = delegate { };
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private int maxHealth = 1;
+    [SerializeField] private PlayerAttackData attackData;
+    [SerializeField] private PlayerAbilityData abilityData;
+    [SerializeField] private Transform weaponSlot;
+    
     private PlayerInput playerInput;
+    private Health health;
+    private PlayerAbility playerAbility;
+    private PlayerAttack playerAttack;
+    
     private IMovement initialMovement;
     private IMovement currentMovement;
-    private bool isMoving;
 
     public PlayerInput PlayerInput => playerInput;
-    public bool IsMoving => isMoving;
+    public PlayerAbility PlayerAbility => playerAbility;
+    public Health Health => health;
+    public PlayerAttack PlayerAttack => playerAttack;
+    public IMovement CurrentMovement => currentMovement;
+    public Vector2 WeaponPosition => weaponSlot.position;
 
     private void Awake()
     {
         playerInput = new PlayerInput();
-    }
-
-    private void Start()
-    {
-        currentMovement = initialMovement = new InputMovement(playerInput, transform);
+        playerAttack = new PlayerAttack(this, attackData);
+        health = new Health(maxHealth);
+        playerAbility = new PlayerAbility(this, abilityData);
+        currentMovement = initialMovement = new InputMovement(this, moveSpeed);
     }
 
     private void Update()
     {
         playerInput.Tick();
+        playerAbility.Tick();
     }
 
     private void FixedUpdate()
     {
-        isMoving = currentMovement.Tick(moveSpeed);
+        currentMovement.Move();
     }
 
     public void ChangeMovementStyle(IMovement movement)
@@ -43,6 +56,20 @@ public class Player : MonoBehaviour
     {
         ChangeMovementStyle(initialMovement);
     }
+
+
+
+    public void TakeDamage(int damage)
+    {
+        if(playerAbility.IsUsingAbility)
+            return;
+        
+        health.TakeDamage(damage);
+        if (IsDead && health.CurrentHealth + damage > 0)
+            OnDeath();
+    }
+
+    public bool IsDead => health.CurrentHealth <= 0;
 }
 
 //to-do:
@@ -65,7 +92,7 @@ public class Player : MonoBehaviour
 //stop velocity after using ability :)
 
 //create enemy spawners :)
-//add enemy deaths and pooling 
+//add enemy deaths and pooling :)
 //add player deaths
 
 //consider destroying projectiles

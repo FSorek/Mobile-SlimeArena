@@ -3,17 +3,20 @@
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private float spawnRate = 2f;
+    [SerializeField] private Vector2 spawnRateRandomOffset;
     [SerializeField] private GameObject spawnedPrefab;
     [SerializeField] private EnemyPool enemyPool;
 
     private Camera playerCamera;
     private float lastSpawnTime;
     private LayerMask unstuckMask;
+    private float randomizedSpawnRate;
 
     private void Awake()
     {
         playerCamera = Camera.main;
         unstuckMask = LayerMask.GetMask("World");
+        randomizedSpawnRate = spawnRate + Random.Range(spawnRateRandomOffset.x, spawnRateRandomOffset.y);
     }
 
     private void Update()
@@ -28,6 +31,7 @@ public class Spawner : MonoBehaviour
         enemy.transform.position = RandomPointOutsideCamera();
         enemy.gameObject.SetActive(true);
         lastSpawnTime = Time.time;
+        randomizedSpawnRate = spawnRate + Random.Range(spawnRateRandomOffset.x, spawnRateRandomOffset.y);
     }
 
     private Vector2 RandomPointOutsideCamera()

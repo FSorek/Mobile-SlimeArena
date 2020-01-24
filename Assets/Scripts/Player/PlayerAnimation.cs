@@ -4,18 +4,13 @@
 public class PlayerAnimation : EntityAnimator<Player>
 {
     [SerializeField] private Transform hands;
-    [SerializeField] private Vector2 handsAttackDirectionOffset;
     private Vector2 initialPosition;
-    private PlayerAbility playerAbility;
-    private PlayerAttack playerAttack;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
-        playerAttack = GetComponent<PlayerAttack>();
-        playerAttack.OnAttack += PlayerOnAttack;
+        base.Start();
+        owner.PlayerAttack.OnAttack += PlayerOnAttack;
         initialPosition = hands.transform.localPosition;
-        playerAbility = owner.GetComponent<PlayerAbility>();
     }
 
     private void PlayerOnAttack(Vector2 direction)
@@ -25,14 +20,14 @@ public class PlayerAnimation : EntityAnimator<Player>
 
     protected override void Tick()
     {
-        hands.rotation = Quaternion.FromToRotation(Vector2.up, playerAttack.LastDirection);
-        hands.localPosition = initialPosition + playerAttack.LastDirection * handsAttackDirectionOffset;
+        hands.rotation = Quaternion.FromToRotation(Vector2.up, owner.PlayerAttack.LastDirection);
+        hands.localPosition = initialPosition + owner.PlayerAttack.LastDirection;
         
-        animator.SetBool("IsAbilityActive", playerAbility.IsUsingAbility);
-        if(playerAbility.IsUsingAbility)
+        animator.SetBool("IsAbilityActive", owner.PlayerAbility.IsUsingAbility);
+        if(owner.PlayerAbility.IsUsingAbility)
             return;
         
-        animator.SetBool("IsMoving", owner.IsMoving);
-        spriteRenderer.flipX = owner.PlayerInput.MoveVector.x < 0;
+        animator.SetBool("IsMoving", owner.CurrentMovement.IsMoving);
+        renderer.flipX = owner.PlayerInput.MoveVector.x < 0;
     }
 }

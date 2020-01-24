@@ -3,21 +3,25 @@
 public class AccelerometerMovement : IMovement
 
 {
-    private readonly Transform owner;
+    private readonly Player player;
+    private readonly float moveSpeed;
     private readonly Rigidbody2D ownerRbody;
     private Vector2 direction;
-    public AccelerometerMovement(Transform owner)
+    private bool isMoving;
+    public bool IsMoving => isMoving;
+    public AccelerometerMovement(Rigidbody2D rigidBody, float moveSpeed)
     {
-        this.owner = owner;
-        ownerRbody = owner.GetComponent<Rigidbody2D>();
+        this.moveSpeed = moveSpeed;
+        ownerRbody = rigidBody;
     }
+
 
     public void Initialize()
     {
-        
+        isMoving = true;
     }
 
-    public bool Tick(float moveSpeed)
+    public void Move()
     {
         var acceleration = Input.acceleration;
         direction += new Vector2(acceleration.x, acceleration.y);
@@ -28,7 +32,5 @@ public class AccelerometerMovement : IMovement
         if(ownerRbody.velocity.magnitude >= 10f){
             ownerRbody.velocity = Vector3.ClampMagnitude(ownerRbody.velocity, 10f);
         }
-        
-        return true;
     }
 }

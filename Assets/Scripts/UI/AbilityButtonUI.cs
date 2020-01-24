@@ -8,20 +8,20 @@ using UnityEngine.UI;
 public class AbilityButtonUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     private Button button;
-    private PlayerAbility playerAbility;
+    private Player player;
 
     private void Awake()
     {
-        playerAbility = FindObjectOfType<PlayerAbility>();
+        player = FindObjectOfType<Player>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        playerAbility.UseAbility();
+        player.PlayerAbility.UseAbility();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        playerAbility.StopAbility();
+        player.PlayerAbility.StopAbility();
     }
 }

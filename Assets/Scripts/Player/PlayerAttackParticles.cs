@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
 
-public class PlayerAttackParticles : EventParticlePlayer<PlayerAttack>
+public class PlayerAttackParticles : EventParticlePlayer<Player>
 {
     protected override void Subscribe()
     {
-        listenedComponent.OnAttack += (direction) =>
-        {
-            Debug.Log("FIRE");
-            ListenedComponentEventFired();
-        };
+        listenedComponent.PlayerAttack.OnAttack += 
+            (direction) => ListenedComponentEventFired();
     }
 }

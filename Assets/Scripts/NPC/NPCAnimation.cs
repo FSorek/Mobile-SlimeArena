@@ -7,6 +7,6 @@ public class NPCAnimation : EntityAnimator<EnemyNPC>
     {
         animator.SetBool("IsMoving", owner.IsMoving);
         animator.SetBool("IsRepositioning", owner.IsRepositioning);
-        spriteRenderer.flipX = (owner.transform.position.x - owner.Target.position.x) < 0;
+        renderer.flipX = (owner.transform.position.x - owner.Target.position.x) < 0;
     }
 }

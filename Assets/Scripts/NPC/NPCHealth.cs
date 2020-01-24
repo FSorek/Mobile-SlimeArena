@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class NPCHealth : MonoBehaviour, ITakeDamage
+public class NPCHealth
 {
     public event Action<NPCHealth> OnDeath = delegate { };
 
@@ -11,11 +11,10 @@ public class NPCHealth : MonoBehaviour, ITakeDamage
     public bool IsDead => isDead;
     private EnemyNPC owner;
 
-    private void Awake()
+    public NPCHealth(EnemyNPC owner)
     {
-        owner = GetComponent<EnemyNPC>();
+        this.owner = owner;
     }
-
     private void OnEnable()
     {
         currentHealth = maxHealth;
@@ -31,13 +30,15 @@ public class NPCHealth : MonoBehaviour, ITakeDamage
             Die();
         }
     }
-
-
+    
     private void Die()
     {
         isDead = true;
         EnemyPool.Instance.ReturnToPool(owner);
     }
 
-    
+    public void Tick()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,5 +1,6 @@
 ﻿public interface IMovement
 {
+    bool IsMoving { get; }
     void Initialize();
-    bool Tick(float moveSpeed);
+    void Move();
 }

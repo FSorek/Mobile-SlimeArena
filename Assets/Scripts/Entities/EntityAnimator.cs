@@ -2,12 +2,11 @@
 public abstract class EntityAnimator<T> : MonoBehaviour where T : MonoBehaviour
 {
     [SerializeField] protected Animator animator;
-    protected SpriteRenderer spriteRenderer;
+    [SerializeField] protected SpriteRenderer renderer;
     protected T owner;
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
-        spriteRenderer = animator.GetComponent<SpriteRenderer>();
         owner = GetComponent<T>();
     }
 

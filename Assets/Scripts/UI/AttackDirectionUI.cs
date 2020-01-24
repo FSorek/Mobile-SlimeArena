@@ -7,20 +7,18 @@ using UnityEngine.UI;
 public class AttackDirectionUI : MonoBehaviour
 {
     [SerializeField]private Joystick attackJoystick;
-    private PlayerAttack player;
-    private PlayerAbility playerAbility;
+    private Player player;
     private void Awake()
     {
-        player = FindObjectOfType<PlayerAttack>();
-        playerAbility = player.GetComponent<PlayerAbility>();
+        player = FindObjectOfType<Player>();
     }
 
     private void Update()
     {
-        if(playerAbility.IsUsingAbility)
+        if(player.PlayerAbility.IsUsingAbility)
             return;
         
         if(attackJoystick.Direction.magnitude > 0)
-            player.Attack(attackJoystick.Direction);
+            player.PlayerAttack.Attack(attackJoystick.Direction);
     }
 }

@@ -2,27 +2,33 @@
 
 internal class InputMovement : IMovement
 {
-    private readonly PlayerInput input;
-    private readonly Rigidbody2D owner;
+    private readonly Player player;
+    private readonly float moveSpeed;
+    private readonly Rigidbody2D playerRbody;
+    private bool isMoving;
 
-    public InputMovement(PlayerInput input, Transform owner)
+    public bool IsMoving => isMoving;
+    public InputMovement(Player player, float moveSpeed)
     {
-        this.input = input;
-        this.owner = owner.GetComponent<Rigidbody2D>();
+        this.player = player;
+        this.moveSpeed = moveSpeed;
+        playerRbody = player.GetComponent<Rigidbody2D>();
     }
-    
+
+
     public void Initialize()
     {
-        owner.velocity = Vector2.zero;
+        playerRbody.velocity = Vector2.zero;
     }
-    public bool Tick(float moveSpeed)
+    public void Move()
     {
-        if (input.MoveVector.magnitude > 0)
+        if (player.PlayerInput.MoveVector.magnitude > 0)
         {
-            owner.MovePosition(owner.position + Time.fixedDeltaTime * moveSpeed * input.MoveVector.normalized);
-            return true;
+            playerRbody.MovePosition(playerRbody.position + Time.fixedDeltaTime * moveSpeed * player.PlayerInput.MoveVector.normalized);
+            if (!isMoving) 
+                isMoving = true;
         }
-
-        return false;
+        else if(isMoving)
+            isMoving = false;
     }
 }

@@ -5,7 +5,7 @@ public abstract class EventParticlePlayer<T> : MonoBehaviour where T : Component
     [SerializeField] protected ParticleSystem particle;
     [SerializeField] protected T listenedComponent;
     
-    private void Awake()
+    private void Start()
     {
         Subscribe();
     }

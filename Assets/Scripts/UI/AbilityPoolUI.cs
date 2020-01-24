@@ -8,19 +8,19 @@ public class AbilityPoolUI : MonoBehaviour
 {
     private Image poolImage;
     private double lastPoolPercentage;
-    private PlayerAbility playerAbility;
+    private Player player;
 
     private void Awake()
     {
         poolImage = GetComponent<Image>();
-        playerAbility = FindObjectOfType<PlayerAbility>();
+        player = FindObjectOfType<Player>();
     }
 
     private void Update()
     {
-        if (lastPoolPercentage != playerAbility.CurrentPoolPercentage)
+        if (lastPoolPercentage != player.PlayerAbility.CurrentPoolPercentage)
         {
-            lastPoolPercentage = playerAbility.CurrentPoolPercentage;
+            lastPoolPercentage = player.PlayerAbility.CurrentPoolPercentage;
             poolImage.fillAmount = (float)lastPoolPercentage;
         }
     }
