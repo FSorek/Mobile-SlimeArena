@@ -10,8 +10,7 @@ public class Health
 
     public Health(int maxHealth)
     {
-        this.maxHealth = maxHealth;        
-        Reset();
+        this.maxHealth = maxHealth;
     }
     public void Reset()
     {

@@ -24,10 +24,14 @@ public class PlayerAbility
         
         playerCamera = Camera.main.GetComponent<CameraFollow>();
         accelerometerMovement = new AccelerometerMovement(owner.GetComponent<Rigidbody2D>(), abilityData.TornadoMovespeed);
-        currentPool = abilityData.MaxPoolAmount;
         owner.PlayerAttack.OnTargetHit += PlayerOnTargetHit;
         
         InitializeAbilityWalls();
+    }
+
+    public void Reset()
+    {
+        currentPool = abilityData.MaxPoolAmount;
     }
 
     private void PlayerOnTargetHit(ITakeDamage target)
@@ -99,9 +103,9 @@ public class PlayerAbility
                 abilityWalls[i].size = new Vector2(2 * horizontalOffset, 1);
         }
 
-        abilityWalls[0].transform.position = new Vector3(horizontalOffset,0,0);
-        abilityWalls[1].transform.position = new Vector3(0,verticalOffset,0);
-        abilityWalls[2].transform.position = new Vector3(-horizontalOffset,0,0);
-        abilityWalls[3].transform.position = new Vector3(0,-verticalOffset,0);
+        abilityWalls[0].transform.localPosition = new Vector3(horizontalOffset,0,0);
+        abilityWalls[1].transform.localPosition = new Vector3(0,verticalOffset,0);
+        abilityWalls[2].transform.localPosition = new Vector3(-horizontalOffset,0,0);
+        abilityWalls[3].transform.localPosition = new Vector3(0,-verticalOffset,0);
     }
 }

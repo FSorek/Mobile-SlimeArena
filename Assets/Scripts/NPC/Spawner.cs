@@ -17,6 +17,7 @@ public class Spawner : MonoBehaviour
         playerCamera = Camera.main;
         unstuckMask = LayerMask.GetMask("World");
         randomizedSpawnRate = spawnRate + Random.Range(spawnRateRandomOffset.x, spawnRateRandomOffset.y);
+        lastSpawnTime = Time.time;
     }
 
     private void Update()

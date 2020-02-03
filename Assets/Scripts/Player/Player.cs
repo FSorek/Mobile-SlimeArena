@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour, ITakeDamage
 {
+    public event Action OnSpawn = delegate { };
     public event Action OnDeath = delegate { };
-    [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private int maxHealth = 1;
+    [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private PlayerAttackData attackData;
     [SerializeField] private PlayerAbilityData abilityData;
     [SerializeField] private Transform weaponSlot;
     
-    private PlayerInput playerInput;
     private Health health;
+    private PlayerInput playerInput;
     private PlayerAbility playerAbility;
     private PlayerAttack playerAttack;
     
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour, ITakeDamage
     public PlayerAttack PlayerAttack => playerAttack;
     public IMovement CurrentMovement => currentMovement;
     public Vector2 WeaponPosition => weaponSlot.position;
-
+    public bool IsDead => health.CurrentHealth <= 0;
     private void Awake()
     {
         playerInput = new PlayerInput();
@@ -34,31 +34,30 @@ public class Player : MonoBehaviour, ITakeDamage
         playerAbility = new PlayerAbility(this, abilityData);
         currentMovement = initialMovement = new InputMovement(this, moveSpeed);
     }
-
+    private void OnEnable()
+    {
+        health.Reset();
+        playerAbility.Reset();
+        OnSpawn();
+    }
     private void Update()
     {
         playerInput.Tick();
         playerAbility.Tick();
     }
-
     private void FixedUpdate()
     {
         currentMovement.Move();
     }
-
     public void ChangeMovementStyle(IMovement movement)
     {
         currentMovement = movement;
         currentMovement.Initialize();
     }
-
     public void ResetMovementStyle()
     {
         ChangeMovementStyle(initialMovement);
     }
-
-
-
     public void TakeDamage(int damage)
     {
         if(playerAbility.IsUsingAbility)
@@ -66,10 +65,11 @@ public class Player : MonoBehaviour, ITakeDamage
         
         health.TakeDamage(damage);
         if (IsDead && health.CurrentHealth + damage > 0)
+        {
             OnDeath();
+            gameObject.SetActive(false);
+        }
     }
-
-    public bool IsDead => health.CurrentHealth <= 0;
 }
 
 //to-do:
@@ -93,9 +93,9 @@ public class Player : MonoBehaviour, ITakeDamage
 
 //create enemy spawners :)
 //add enemy deaths and pooling :)
-//add player deaths
+//add player deaths :)
 
 //consider destroying projectiles
 
 //add kill count
-//add a simple menu
+//add a simple menu :|
