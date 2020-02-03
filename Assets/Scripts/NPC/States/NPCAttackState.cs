@@ -20,14 +20,13 @@ public class NPCAttackState : IState
     }
     public void StateEnter()
     {
-        if(!CanAttack()) 
+        if(Time.fixedTime - lastAttackTime < attackData.ShootingRate) 
             return;
-        
         var projectile = ProjectilePool.Instance.Get();
         projectile.transform.position = owner.transform.position;
         projectile.Shoot(owner.Target, attackData);
         projectile.gameObject.SetActive(true);
-        lastAttackTime = Time.time;
+        lastAttackTime = Time.fixedTime;
     }
 
     public void ListenToState()
@@ -42,7 +41,7 @@ public class NPCAttackState : IState
             stateData.ChangeState(NPCStates.GoWithinRange);
         }
     }
-
+    
     private bool CanAttack()
     {
         var distance = Vector2.Distance(owner.Target.position + Vector3.up, owner.transform.position);
