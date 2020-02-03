@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DeathscreenUI : MonoBehaviour
 {
-    [SerializeField] private GameObject Deathscreen;
+    [SerializeField] private GameObject deathscreen;
     private Player player;
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class DeathscreenUI : MonoBehaviour
 
     private void DeathscreenSetActive(bool active)
     {
-        if(Deathscreen.activeSelf != active)
-            Deathscreen.SetActive(active);
+        if(deathscreen.activeSelf != active)
+            deathscreen.SetActive(active);
     }
 }

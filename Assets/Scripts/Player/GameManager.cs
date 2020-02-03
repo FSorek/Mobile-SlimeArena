@@ -4,33 +4,44 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Transform playerSpawnPoint; 
+    public event Action<bool> OnPauseStateChanged = delegate {  };
+
+    private static GameManager instance;
+    private bool gamePaused;
     private Player player;
+    private AsyncOperation operation;
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
         player.OnDeath += () => SetGamePaused(true);
+        SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
+    }
+
+    private void SceneManagerOnSceneLoaded(Scene scene, LoadSceneMode loadMode)
+    {
+        SetGamePaused(true);
     }
 
     private void Update()
     {
-        if(!player.IsDead)
+        if ((!gamePaused || Input.touchCount <= 0)
+            && (operation == null || !operation.isDone)) 
             return;
         
-        if (Input.touchCount > 0)
+        var touch = Input.GetTouch(0);
+        if(!player.IsDead && touch.tapCount > 0)
+            SetGamePaused(false);
+        if(player.IsDead && touch.tapCount > 1)
         {
-            var touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Ended && touch.tapCount > 1)
-            {
-                var loadingOperation = SceneManager.LoadSceneAsync(0);
-                loadingOperation.completed += (obj) => SetGamePaused(false);
-            }
+            operation = SceneManager.LoadSceneAsync(0);
         }
-    }
 
+    }
     private void SetGamePaused(bool paused)
     {
         Time.timeScale = paused ? 0f : 1f;
+        gamePaused = paused;
+        OnPauseStateChanged(paused);
     }
 }
