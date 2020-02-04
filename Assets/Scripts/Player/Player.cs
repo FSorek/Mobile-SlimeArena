@@ -15,10 +15,12 @@ public class Player : MonoBehaviour, ITakeDamage
     private PlayerInput playerInput;
     private PlayerAbility playerAbility;
     private PlayerAttack playerAttack;
+    private ScoreTracker scoreTracker;
     
     private IMovement initialMovement;
     private IMovement currentMovement;
 
+    public ScoreTracker ScoreTracker => scoreTracker;
     public PlayerInput PlayerInput => playerInput;
     public PlayerAbility PlayerAbility => playerAbility;
     public Health Health => health;
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour, ITakeDamage
     public bool IsDead => health.CurrentHealth <= 0;
     private void Awake()
     {
+        scoreTracker = new ScoreTracker();
         playerInput = new PlayerInput();
         playerAttack = new PlayerAttack(this, attackData);
         health = new Health(maxHealth);
@@ -97,5 +100,5 @@ public class Player : MonoBehaviour, ITakeDamage
 
 //consider destroying projectiles
 
-//add kill count
-//add a simple menu :|
+//add kill count :)
+//add a simple menu :)

@@ -20,7 +20,6 @@ public class PlayerAttack
         this.attackData = attackData;
         enemyLayer = LayerMask.GetMask("NPC");
     }
-
     public void Attack(Vector2 direction)
     {
         lastDirection = direction;
@@ -34,15 +33,21 @@ public class PlayerAttack
             if(targetsHit[i].transform == owner.transform)
                 continue;
             var target = targetsHit[i].transform.GetComponent<ITakeDamage>();
-            if (target != null)
-            {
-                target.TakeDamage(attackData.Damage);
-                OnTargetHit(target);
-            }
+            HitTarget(target, attackData.Damage);
         }
-
         OnAttack(direction);
-        
         lastAttackTime = Time.time;
+    }
+
+    public void HitTarget(ITakeDamage target, int damage)
+    {
+        if(target == null) 
+            return;
+        target.TakeDamage(damage);
+        OnTargetHit(target);
+        if (target.IsDead)
+        {
+            owner.ScoreTracker.AddScore();
+        }
     }
 }

@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 
 public class EnemyNPC : MonoBehaviour, ITakeDamage
 {
+
     public event Action OnDeath = delegate { }; 
     [SerializeField] private NPCAttackData attackData;
     [SerializeField] private NPCMoveData moveData;
@@ -52,8 +53,11 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage
     public void TakeDamage(int damage)
     {
         health.TakeDamage(damage);
-        if (IsDead && health.CurrentHealth + damage > 0)
+        if (IsDead)
+        {
             OnDeath();
+            EnemyPool.Instance.ReturnToPool(this);
+        }
     }
 
     public bool IsDead => health.CurrentHealth <= 0;

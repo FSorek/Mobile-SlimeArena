@@ -52,7 +52,7 @@ public class NPCGoWithinAttackRange : IState
         if (distance < owner.AttackRange * .85f
             && Physics2D.RaycastNonAlloc(owner.transform.position, directionToPlayer, lineOfSightItems, distance, wallLayer) == 0)
         {
-            npcStateData.ChangeState(NPCStates.Attack);
+            npcStateData.ChangeState(NPCStates.RepositionAttack);
         }
         var moveDirection = ((Vector2)path.vectorPath[currentWaypoint] - ownerRBody.position).normalized;
         ownerRBody.MovePosition(ownerRBody.position + Time.fixedDeltaTime * moveData.MoveSpeed * moveDirection);

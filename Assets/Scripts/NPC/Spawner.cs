@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
+    
     [SerializeField] private float spawnRate = 2f;
     [SerializeField] private Vector2 spawnRateRandomOffset;
     [SerializeField] private GameObject spawnedPrefab;

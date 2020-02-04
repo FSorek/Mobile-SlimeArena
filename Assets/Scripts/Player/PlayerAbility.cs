@@ -78,7 +78,7 @@ public class PlayerAbility
         for (int i = 0; i < targets; i++)
         {
             var availableTarget = targetColliders[i].GetComponent<ITakeDamage>();
-            availableTarget?.TakeDamage(abilityData.DamagePerTick);
+            owner.PlayerAttack.HitTarget(availableTarget, abilityData.DamagePerTick);
         }
 
         currentPool -= abilityData.TickRate;

@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 {
+    public event Action<T> OnObjectCreated = delegate {  };
+    [SerializeField] private T prefab;
+    [SerializeField] private int prespawnAmount;
     private readonly Queue<T> objects = new Queue<T>();
     private Transform poolRoot;
-    public T prefab;
-    public int prespawnAmount;
     
     public static ObjectPool<T> Instance { get; private set; }
 
@@ -21,11 +23,11 @@ public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
             Instance.poolRoot = transform;
     }
 
-    private void OnEnable()
+    private void Start()
     {
         AddObjects(prespawnAmount);
     }
-        
+
     public T Get()
     {
         if (objects.Count == 0) AddObjects(1);
@@ -38,6 +40,7 @@ public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         for (int i = 0; i < v; i++)
         {
             var obj = Instantiate(prefab, transform, true);
+            OnObjectCreated(obj);
             obj.gameObject.SetActive(false);
             objects.Enqueue(obj);
         }

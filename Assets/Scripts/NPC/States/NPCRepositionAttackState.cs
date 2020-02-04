@@ -28,7 +28,7 @@ public class NPCRepositionAttackState : IState
 
     public void ListenToState()
     {
-        var positionThisFrame = moveData.MoveSpeed * Time.fixedDeltaTime * (Vector2)repositionDirection;
+        var positionThisFrame = moveData.RepositionSpeed * Time.fixedDeltaTime * (Vector2)repositionDirection;
         ownerRb.MovePosition(ownerRb.position + positionThisFrame);
         totalDistance += positionThisFrame.magnitude;
         if (totalDistance >= moveData.RepositionDistance)

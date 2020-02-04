@@ -1,4 +1,4 @@
-﻿public class NPCTookDamageParticles : EventParticlePlayer<EnemyNPC>
+﻿public class NPCOnDeathParticles : EventParticlePlayer<EnemyNPC>
 {
     protected override void Subscribe()
     {
