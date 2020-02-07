@@ -1,4 +1,4 @@
-﻿public class ScoreTracker
+﻿public class PlayerScoreTracker
 {
     private int score;
     public void AddScore() => score++;

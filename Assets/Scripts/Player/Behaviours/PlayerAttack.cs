@@ -47,7 +47,7 @@ public class PlayerAttack
         OnTargetHit(target);
         if (target.IsDead)
         {
-            owner.ScoreTracker.AddScore();
+            owner.PlayerScoreTracker.AddScore();
         }
     }
 }

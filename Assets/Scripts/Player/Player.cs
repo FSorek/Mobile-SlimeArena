@@ -15,12 +15,12 @@ public class Player : MonoBehaviour, ITakeDamage
     private PlayerInput playerInput;
     private PlayerAbility playerAbility;
     private PlayerAttack playerAttack;
-    private ScoreTracker scoreTracker;
+    private PlayerScoreTracker playerScoreTracker;
     
     private IMovement initialMovement;
     private IMovement currentMovement;
 
-    public ScoreTracker ScoreTracker => scoreTracker;
+    public PlayerScoreTracker PlayerScoreTracker => playerScoreTracker;
     public PlayerInput PlayerInput => playerInput;
     public PlayerAbility PlayerAbility => playerAbility;
     public PlayerAttack PlayerAttack => playerAttack;
@@ -29,7 +29,7 @@ public class Player : MonoBehaviour, ITakeDamage
     public bool IsDead => health.CurrentHealth <= 0;
     private void Awake()
     {
-        scoreTracker = new ScoreTracker();
+        playerScoreTracker = new PlayerScoreTracker();
         playerInput = new PlayerInput();
         playerAttack = new PlayerAttack(this, attackData);
         health = new Health(maxHealth);

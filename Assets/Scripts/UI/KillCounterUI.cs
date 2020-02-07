@@ -7,19 +7,19 @@ using UnityEngine;
 public class KillCounterUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI killNumberText;
-    private ScoreTracker playerScoreTracker;
+    private PlayerScoreTracker playerPlayerScoreTracker;
     private int lastScore;
 
     private void Start()
     {
-        playerScoreTracker = FindObjectOfType<Player>().ScoreTracker;
+        playerPlayerScoreTracker = FindObjectOfType<Player>().PlayerScoreTracker;
     }
 
     private void Update()
     {
-        if (lastScore != playerScoreTracker.Score)
+        if (lastScore != playerPlayerScoreTracker.Score)
         {
-            lastScore = playerScoreTracker.Score;
+            lastScore = playerPlayerScoreTracker.Score;
             killNumberText.text = $"{lastScore}";
         }
     }
