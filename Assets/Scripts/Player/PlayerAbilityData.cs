@@ -8,7 +8,8 @@ public class PlayerAbilityData : ScriptableObject
     [SerializeField] private int damagePerTick;
     [SerializeField] private float tickRate = .5f;
     [SerializeField] private int maxPoolAmount = 3;
-    [SerializeField] private float tornadoMovespeed = 2f;
+    [SerializeField] private float tornadoAcceleration = 2f;
+    [SerializeField] private float tornadoMaxSpeed = 10f;
 
     public GameObject WallPrefab => wallPrefab;
     public float DamageRadius => damageRadius;
@@ -16,5 +17,7 @@ public class PlayerAbilityData : ScriptableObject
     public float TickRate => tickRate;
     public int MaxPoolAmount => maxPoolAmount;
 
-    public float TornadoMovespeed => tornadoMovespeed;
+    public float TornadoAcceleration => tornadoAcceleration;
+
+    public float TornadoMaxSpeed => tornadoMaxSpeed;
 }

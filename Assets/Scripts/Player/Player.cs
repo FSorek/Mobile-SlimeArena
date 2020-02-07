@@ -23,7 +23,6 @@ public class Player : MonoBehaviour, ITakeDamage
     public ScoreTracker ScoreTracker => scoreTracker;
     public PlayerInput PlayerInput => playerInput;
     public PlayerAbility PlayerAbility => playerAbility;
-    public Health Health => health;
     public PlayerAttack PlayerAttack => playerAttack;
     public IMovement CurrentMovement => currentMovement;
     public Vector2 WeaponPosition => weaponSlot.position;
@@ -74,31 +73,3 @@ public class Player : MonoBehaviour, ITakeDamage
         }
     }
 }
-
-//to-do:
-        
-//make touch events fire for 2+ touches :)
-//abstract some of this logic and create a static attack joystick :)
-//keep attack logic the same, allow all directions of attack :)
-
-//turn the sword into a dagger so that stabbing makes more sense :)
-
-//make ability have animation :)
-//make the ability have a time pool :)
-//refill time pool with kills outside of ability :)
-
-//create the arena :)
-//adjust npc logic for collisions :)
-//adjust layers and collisions :)
-
-//enemy keeps moving if direct raycast hits a wall :)
-//stop velocity after using ability :)
-
-//create enemy spawners :)
-//add enemy deaths and pooling :)
-//add player deaths :)
-
-//consider destroying projectiles
-
-//add kill count :)
-//add a simple menu :)

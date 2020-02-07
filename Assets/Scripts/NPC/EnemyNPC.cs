@@ -9,23 +9,26 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage
     [SerializeField] private NPCAttackData attackData;
     [SerializeField] private NPCMoveData moveData;
     [SerializeField] private int maxHealth;
+    [SerializeField] private float timeUntilBodyIsGone = 2f;
 
-    private Health health;
-    private StateMachine<NPCStates> stateMachine;
     private readonly NPCStateData npcStateData = new NPCStateData();
-    private Transform target;
+    private StateMachine<NPCStates> stateMachine;
+    private Collider2D activeCollider;
     private float attackRange;
+    private Transform target;
+    private Health health;
 
     public Transform Target => target;
     public float AttackRange => attackRange;
+    //public bool IsMoving => !IsDead && npcStateData.CurrentState == NPCStates.GoWithinRange;
+    public NPCStates CurrentState => npcStateData.CurrentState;
+    public bool IsDead => health.CurrentHealth <= 0;
 
-    public Health Health => health;
-
-    public bool IsMoving => npcStateData.CurrentState == NPCStates.GoWithinRange;
-    public bool IsRepositioning => npcStateData.CurrentState == NPCStates.RepositionAttack;
 
     private void Awake()
     {
+        health = new Health(maxHealth);
+        activeCollider = GetComponent<Collider2D>();
         target = FindObjectOfType<Player>().transform;
         stateMachine = new StateMachine<NPCStates>(npcStateData);
         attackRange = Random.Range(attackData.MinAttackRange, attackData.MaxAttackRange);
@@ -41,12 +44,16 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage
 
     private void OnEnable()
     {
-        health = new Health(maxHealth);
+        health.Reset();
         npcStateData.ChangeState(NPCStates.GoWithinRange);
+        activeCollider.enabled = true;
     }
 
     private void FixedUpdate()
     {
+        if(IsDead)
+            return;
+        
         stateMachine.Tick();
     }
 
@@ -55,10 +62,14 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage
         health.TakeDamage(damage);
         if (IsDead)
         {
+            activeCollider.enabled = false;
+            Invoke(nameof(ReturnToPool), timeUntilBodyIsGone);
             OnDeath();
-            EnemyPool.Instance.ReturnToPool(this);
         }
     }
 
-    public bool IsDead => health.CurrentHealth <= 0;
+    private void ReturnToPool()
+    {
+        EnemyPool.Instance.ReturnToPool(this);
+    }
 }

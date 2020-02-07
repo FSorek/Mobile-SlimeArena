@@ -23,7 +23,7 @@ public class PlayerAbility
         this.abilityData = abilityData;
         
         playerCamera = Camera.main.GetComponent<CameraFollow>();
-        accelerometerMovement = new AccelerometerMovement(owner.GetComponent<Rigidbody2D>(), abilityData.TornadoMovespeed);
+        accelerometerMovement = new AccelerometerMovement(owner.GetComponent<Rigidbody2D>(), abilityData.TornadoAcceleration, abilityData.TornadoMaxSpeed);
         owner.PlayerAttack.OnTargetHit += PlayerOnTargetHit;
         
         InitializeAbilityWalls();

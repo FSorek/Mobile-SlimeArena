@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 [RequireComponent(typeof(Player))]
 
 public class PlayerAnimation : EntityAnimator<Player>
@@ -6,9 +7,8 @@ public class PlayerAnimation : EntityAnimator<Player>
     [SerializeField] private Transform hands;
     private Vector2 initialPosition;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         owner.PlayerAttack.OnAttack += PlayerOnAttack;
         initialPosition = hands.transform.localPosition;
     }

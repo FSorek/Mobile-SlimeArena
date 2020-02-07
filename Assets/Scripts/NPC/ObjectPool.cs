@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public event Action<T> OnObjectCreated = delegate {  };
     [SerializeField] private T prefab;
     [SerializeField] private int prespawnAmount;
     private readonly Queue<T> objects = new Queue<T>();
@@ -40,7 +39,6 @@ public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         for (int i = 0; i < v; i++)
         {
             var obj = Instantiate(prefab, transform, true);
-            OnObjectCreated(obj);
             obj.gameObject.SetActive(false);
             objects.Enqueue(obj);
         }
