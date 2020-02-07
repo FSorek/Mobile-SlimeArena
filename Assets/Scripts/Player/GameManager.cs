@@ -25,18 +25,18 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if ((!gamePaused || Input.touchCount <= 0)
-            && (operation == null || !operation.isDone)) 
+        if(!gamePaused || 
+           Input.touchCount <= 0 ||
+           (operation != null && !operation.isDone))
             return;
         
         var touch = Input.GetTouch(0);
-        if(!player.IsDead && touch.tapCount > 0)
+        if(!player.IsDead && touch.tapCount == 1)
             SetGamePaused(false);
-        if(player.IsDead && touch.tapCount > 1)
+        else if(player.IsDead && touch.tapCount >= 2)
         {
             operation = SceneManager.LoadSceneAsync(0);
-        }
-
+        } 
     }
     private void SetGamePaused(bool paused)
     {
