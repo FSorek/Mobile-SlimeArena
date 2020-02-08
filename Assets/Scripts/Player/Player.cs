@@ -49,7 +49,8 @@ public class Player : MonoBehaviour, ITakeDamage
     }
     private void FixedUpdate()
     {
-        currentMovement.Move();
+        if(!playerAttack.IsAttacking)
+            currentMovement.Move();
     }
     public void ChangeMovementStyle(IMovement movement)
     {

@@ -12,7 +12,9 @@ public class PlayerAttack
     private float lastAttackTime;
     private LayerMask enemyLayer;
     private Vector2 lastDirection;
-    public Vector2 LastDirection => lastDirection;
+    public Vector2 LastDirection => lastDirection; 
+    public bool IsAttacking => Time.time - lastAttackTime < attackData.AttackRootDuration;
+
 
     public PlayerAttack(Player owner, PlayerAttackData attackData)
     {
