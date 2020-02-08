@@ -8,6 +8,7 @@ public class AttackButtonUI : MonoBehaviour
 {
     [SerializeField]private Button attackButton;
     private Player player;
+    private Vector2 lastMoveVector;
     private void Awake()
     {
         player = FindObjectOfType<Player>();
@@ -18,6 +19,7 @@ public class AttackButtonUI : MonoBehaviour
         if(player.PlayerAbility.IsUsingAbility)
             return;
 
-        player.PlayerAttack.Attack(player.PlayerInput.MoveVector);
+        var attackDirection = player.PlayerInput.LastDirection;
+        player.PlayerAttack.Attack(attackDirection);
     }
 }

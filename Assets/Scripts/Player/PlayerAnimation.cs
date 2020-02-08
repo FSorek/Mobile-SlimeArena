@@ -17,7 +17,6 @@ public class PlayerAnimation : EntityAnimator<Player>
     {
         var angle = Vector2.Angle(minVector, maxVector);
         var sumAngle = Vector2.Angle(minVector, direction) + Vector2.Angle(direction, maxVector);
-        Debug.Log($"{sumAngle - angle > 1f} || {sumAngle} > {angle} || {(int)(sumAngle - angle)}");
         animator.SetTrigger(sumAngle - angle > 1f ?  "Attack" : "UpperAttack");
     }
 
@@ -28,6 +27,7 @@ public class PlayerAnimation : EntityAnimator<Player>
             return;
         
         animator.SetBool("IsMoving", owner.CurrentMovement.IsMoving);
-        renderer.flipX = owner.PlayerInput.MoveVector.x < 0;
+        if(owner.CurrentMovement.IsMoving)
+            renderer.flipX = owner.PlayerInput.MoveVector.x < 0;
     }
 }
