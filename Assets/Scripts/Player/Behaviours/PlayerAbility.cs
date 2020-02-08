@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Cinemachine;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -6,7 +7,8 @@ public class PlayerAbility
 {
     private readonly Player owner;
     private readonly PlayerAbilityData abilityData;
-    private readonly CameraFollow playerCamera;
+    private readonly CinemachineVirtualCamera playerCamera;
+    private readonly Camera mainCamera;
     private readonly IMovement accelerometerMovement;
     private readonly BoxCollider2D[] abilityWalls = new BoxCollider2D[4];
     private readonly Collider2D[] targetColliders = new Collider2D[20];
@@ -21,8 +23,9 @@ public class PlayerAbility
     {
         this.owner = owner;
         this.abilityData = abilityData;
-        
-        playerCamera = Camera.main.GetComponent<CameraFollow>();
+
+        playerCamera = Object.FindObjectOfType<CinemachineVirtualCamera>();
+        mainCamera = Camera.main;
         accelerometerMovement = new AccelerometerMovement(owner.GetComponent<Rigidbody2D>(), abilityData.TornadoAcceleration, abilityData.TornadoMaxSpeed);
         owner.PlayerAttack.OnTargetHit += PlayerOnTargetHit;
         
@@ -44,7 +47,7 @@ public class PlayerAbility
     {
         if(currentPool < abilityData.TickRate)
             return;
-        playerCamera.AllowFollow(false);
+        playerCamera.Follow = null;
         owner.ChangeMovementStyle(accelerometerMovement);
         isUsingAbility = true;
     }
@@ -59,7 +62,7 @@ public class PlayerAbility
 
     public void StopAbility()
     {
-        playerCamera.AllowFollow(true);
+        playerCamera.Follow = owner.transform;
         owner.ResetMovementStyle();
         isUsingAbility = false;
     }
@@ -92,11 +95,11 @@ public class PlayerAbility
 
     private void InitializeAbilityWalls()
     {
-        var verticalOffset = playerCamera.GetComponent<Camera>().orthographicSize;
-        var horizontalOffset = playerCamera.GetComponent<Camera>().orthographicSize * playerCamera.GetComponent<Camera>().aspect;
+        var verticalOffset = mainCamera.orthographicSize;
+        var horizontalOffset = mainCamera.orthographicSize * mainCamera.aspect;
         for (int i = 0; i < 4; i++)
         {
-            abilityWalls[i] = (Object.Instantiate(abilityData.WallPrefab, playerCamera.transform)).GetComponent<BoxCollider2D>();
+            abilityWalls[i] = (Object.Instantiate(abilityData.WallPrefab, mainCamera.transform)).GetComponent<BoxCollider2D>();
             if(i % 2 == 0)
                 abilityWalls[i].size = new Vector2(1, 2 * verticalOffset);
             else

@@ -46,7 +46,7 @@ public class NPCGoWithinAttackRange : IState
         if(path == null)
             return;
 
-        var directionToPlayer = (owner.Target.position + Vector3.up - owner.transform.position).normalized;
+        var directionToPlayer = (owner.Target.position - owner.transform.position).normalized;
         var distance = Vector2.Distance(owner.Target.position + Vector3.up, owner.transform.position);
         Debug.DrawRay(owner.transform.position, directionToPlayer * distance, Color.magenta);
         if (distance < owner.AttackRange * .85f
@@ -54,6 +54,8 @@ public class NPCGoWithinAttackRange : IState
         {
             npcStateData.ChangeState(NPCStates.RepositionAttack);
         }
+        if(path.vectorPath.Count <= currentWaypoint)
+            return;
         var moveDirection = ((Vector2)path.vectorPath[currentWaypoint] - ownerRBody.position).normalized;
         ownerRBody.MovePosition(ownerRBody.position + Time.fixedDeltaTime * moveData.MoveSpeed * moveDirection);
         if (Vector2.Distance(owner.transform.position, path.vectorPath[currentWaypoint]) < WaypointStoppingDistance)

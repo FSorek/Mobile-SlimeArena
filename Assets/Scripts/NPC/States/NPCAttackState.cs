@@ -20,7 +20,7 @@ public class NPCAttackState : IState
     }
     public void StateEnter()
     {
-        if(Time.fixedTime - lastAttackTime < attackData.ShootingRate) 
+        if(Time.time - lastAttackTime < attackData.ShootingRate) 
             return;
         var projectile = ProjectilePool.Instance.Get();
         projectile.transform.position = owner.transform.position;
@@ -44,11 +44,11 @@ public class NPCAttackState : IState
     
     private bool CanAttack()
     {
-        var distance = Vector2.Distance(owner.Target.position + Vector3.up, owner.transform.position);
+        var distance = Vector2.Distance(owner.Target.position, owner.transform.position);
         if (distance > owner.AttackRange)
             return false;
         
-        var directionToPlayer = (owner.Target.position + Vector3.up - owner.transform.position).normalized;
+        var directionToPlayer = (owner.Target.position - owner.transform.position).normalized;
         if (Physics2D.RaycastNonAlloc(owner.transform.position, directionToPlayer, lineOfSightItems, distance,
                 wallLayer) != 0)
             return false;

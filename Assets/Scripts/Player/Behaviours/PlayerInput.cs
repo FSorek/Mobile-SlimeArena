@@ -7,8 +7,6 @@ public class PlayerInput
     private Joystick movementJoystick;
     private Vector2 moveVector;
     public Vector2 MoveVector => moveVector;
-
-    private int lastTapCount;
     public void RegisterJoystick(Joystick joy)
     {
         movementJoystick = joy;
