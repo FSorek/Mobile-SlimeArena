@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class PlayerAnimation : EntityAnimator<Player>
 {
-    [SerializeField] private Transform hands;
     private Vector2 initialPosition;
-
+    private Vector2 minVector = new Vector2(1,.25f).normalized;
+    private Vector2 maxVector = new Vector2(-1,.25f).normalized;
+    
     private void Start()
     {
         owner.PlayerAttack.OnAttack += PlayerOnAttack;
-        initialPosition = hands.transform.localPosition;
     }
 
     private void PlayerOnAttack(Vector2 direction)
     {
-        animator.SetTrigger("Attack");
+        var angle = Vector2.Angle(minVector, maxVector);
+        var sumAngle = Vector2.Angle(minVector, direction) + Vector2.Angle(direction, maxVector);
+        Debug.Log($"{sumAngle - angle > 1f} || {sumAngle} > {angle} || {(int)(sumAngle - angle)}");
+        animator.SetTrigger(sumAngle - angle > 1f ?  "Attack" : "UpperAttack");
     }
 
     protected override void Tick()
     {
-        hands.rotation = Quaternion.FromToRotation(Vector2.up, owner.PlayerAttack.LastDirection);
-        hands.localPosition = initialPosition + owner.PlayerAttack.LastDirection;
-        
         animator.SetBool("IsAbilityActive", owner.PlayerAbility.IsUsingAbility);
         if(owner.PlayerAbility.IsUsingAbility)
             return;

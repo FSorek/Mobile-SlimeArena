@@ -28,7 +28,7 @@ public class PlayerAttack
         if(Time.time - lastAttackTime < attackData.AttackDelay)
             return;
         var boxCastAngle = Vector2.SignedAngle(Vector2.up, direction);
-        var resultAmount = Physics2D.BoxCastNonAlloc(owner.WeaponPosition, attackData.AttackSize, boxCastAngle, direction, targetsHit, 2f, enemyLayer);
+        var resultAmount = Physics2D.BoxCastNonAlloc(owner.transform.position, attackData.AttackSize, boxCastAngle, direction, targetsHit, 2f, enemyLayer);
 
         for (int i = 0; i < resultAmount; i++)
         {

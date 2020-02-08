@@ -9,12 +9,11 @@ public class Player : MonoBehaviour, ITakeDamage
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private PlayerAttackData attackData;
     [SerializeField] private PlayerAbilityData abilityData;
-    [SerializeField] private Transform weaponSlot;
     
     private Health health;
     private PlayerInput playerInput;
-    private PlayerAbility playerAbility;
     private PlayerAttack playerAttack;
+    private PlayerAbility playerAbility;
     private PlayerScoreTracker playerScoreTracker;
     
     private IMovement initialMovement;
@@ -22,18 +21,17 @@ public class Player : MonoBehaviour, ITakeDamage
 
     public PlayerScoreTracker PlayerScoreTracker => playerScoreTracker;
     public PlayerInput PlayerInput => playerInput;
-    public PlayerAbility PlayerAbility => playerAbility;
     public PlayerAttack PlayerAttack => playerAttack;
+    public PlayerAbility PlayerAbility => playerAbility;
     public IMovement CurrentMovement => currentMovement;
-    public Vector2 WeaponPosition => weaponSlot.position;
     public bool IsDead => health.CurrentHealth <= 0;
     private void Awake()
     {
-        playerScoreTracker = new PlayerScoreTracker();
+        health = new Health(maxHealth);
         playerInput = new PlayerInput();
         playerAttack = new PlayerAttack(this, attackData);
-        health = new Health(maxHealth);
         playerAbility = new PlayerAbility(this, abilityData);
+        playerScoreTracker = new PlayerScoreTracker();
         currentMovement = initialMovement = new InputMovement(this, moveSpeed);
     }
     private void OnEnable()
