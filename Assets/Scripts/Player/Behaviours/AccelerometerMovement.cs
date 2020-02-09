@@ -30,7 +30,7 @@ public class AccelerometerMovement : IMovement
         calibrationMatrix = Matrix4x4.TRS(Vector3.zero, rotation, new Vector3(1, 1, 1)).inverse;
     }
 
-    public void Move()
+    public void Move(float speedPercentage = 1f)
     {
         var acceleration = calibrationMatrix.MultiplyVector(Input.acceleration);
         direction = new Vector2(acceleration.x, acceleration.y).normalized;

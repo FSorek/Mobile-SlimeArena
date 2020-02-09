@@ -7,10 +7,12 @@ public class PlayerAttackData : ScriptableObject
     [SerializeField] private Vector2 attackSize = new Vector2(1, .5f);
     [SerializeField] private float attackDelay = .5f;
     [SerializeField] private float attackRootDuration;
+    [SerializeField] private float speedPercentageOnAttack = 1f;
 
     public int Damage => damage;
     public Vector2 AttackSize => attackSize;
     public float AttackDelay => attackDelay;
 
     public float AttackRootDuration => attackRootDuration;
+    public float SpeedPercentageOnAttack => speedPercentageOnAttack;
 }

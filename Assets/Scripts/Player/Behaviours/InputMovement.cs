@@ -20,11 +20,11 @@ internal class InputMovement : IMovement
     {
         playerRbody.velocity = Vector2.zero;
     }
-    public void Move()
+    public void Move(float speedPercentage = 1f)
     {
         if (player.PlayerInput.MoveVector.magnitude > 0)
         {
-            playerRbody.MovePosition(playerRbody.position + Time.fixedDeltaTime * moveSpeed * player.PlayerInput.MoveVector.normalized);
+            playerRbody.MovePosition(playerRbody.position + Time.fixedDeltaTime * moveSpeed * speedPercentage * player.PlayerInput.MoveVector.normalized);
             if (!isMoving) 
                 isMoving = true;
         }

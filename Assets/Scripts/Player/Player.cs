@@ -44,11 +44,14 @@ public class Player : MonoBehaviour, ITakeDamage
     {
         playerInput.Tick();
         playerAbility.Tick();
+        
     }
     private void FixedUpdate()
     {
         if(!playerAttack.IsAttacking)
             currentMovement.Move();
+        else
+            currentMovement.Move(attackData.SpeedPercentageOnAttack);
     }
     public void ChangeMovementStyle(IMovement movement)
     {

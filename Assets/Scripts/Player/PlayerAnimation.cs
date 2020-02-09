@@ -18,6 +18,7 @@ public class PlayerAnimation : EntityAnimator<Player>
         var angle = Vector2.Angle(minVector, maxVector);
         var sumAngle = Vector2.Angle(minVector, direction) + Vector2.Angle(direction, maxVector);
         animator.SetTrigger(sumAngle - angle > 1f ?  "Attack" : "UpperAttack");
+        
     }
 
     protected override void Tick()

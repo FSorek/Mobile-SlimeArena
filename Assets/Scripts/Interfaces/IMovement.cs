@@ -2,5 +2,5 @@
 {
     bool IsMoving { get; }
     void Initialize();
-    void Move();
+    void Move(float speedPercentage = 1f);
 }
