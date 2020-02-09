@@ -11,8 +11,7 @@ public class PlayerAttack
     private RaycastHit2D[] targetsHit = new RaycastHit2D[20];
     private float lastAttackTime;
     private LayerMask enemyLayer;
-    private Vector2 lastDirection;
-    public Vector2 LastDirection => lastDirection; 
+    private Collider2D col;
     public bool IsAttacking => Time.time - lastAttackTime < attackData.AttackRootDuration;
 
 
@@ -24,12 +23,11 @@ public class PlayerAttack
     }
     public void Attack(Vector2 direction)
     {
-        lastDirection = direction;
         if(Time.time - lastAttackTime < attackData.AttackDelay)
             return;
-        var boxCastAngle = Vector2.SignedAngle(Vector2.up, direction);
-        var resultAmount = Physics2D.BoxCastNonAlloc(owner.transform.position, attackData.AttackSize, boxCastAngle, direction, targetsHit, 2f, enemyLayer);
-
+        var resultAmount = Physics2D.CapsuleCastNonAlloc(owner.transform.position, attackData.AttackSize, CapsuleDirection2D.Vertical, Vector2.Angle(Vector2.up, direction), direction, targetsHit, 1, enemyLayer);
+        
+        OnAttack(direction);
         for (int i = 0; i < resultAmount; i++)
         {
             if(targetsHit[i].transform == owner.transform)
@@ -37,7 +35,6 @@ public class PlayerAttack
             var target = targetsHit[i].transform.GetComponent<ITakeDamage>();
             HitTarget(target, attackData.Damage);
         }
-        OnAttack(direction);
         lastAttackTime = Time.time;
     }
 

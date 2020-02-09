@@ -7,8 +7,6 @@ public class Spawner : MonoBehaviour
     
     [SerializeField] private float spawnRate = 2f;
     [SerializeField] private Vector2 spawnRateRandomOffset;
-    [SerializeField] private GameObject spawnedPrefab;
-    [SerializeField] private EnemyPool enemyPool;
 
     private Camera playerCamera;
     private float lastSpawnTime;
@@ -25,13 +23,13 @@ public class Spawner : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time - lastSpawnTime > spawnRate)
+        if (Time.time - lastSpawnTime > randomizedSpawnRate)
             Spawn();
     }
 
     private void Spawn()
     {
-        var enemy = enemyPool.Get();
+        var enemy = EnemyPool.Instance.Get();
         enemy.transform.position = RandomPointOutsideCamera();
         enemy.gameObject.SetActive(true);
         lastSpawnTime = Time.time;

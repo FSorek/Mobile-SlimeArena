@@ -70,7 +70,7 @@ public class PlayerAbility
     public void RefillPool()
     {
         if(currentPool < abilityData.MaxPoolAmount)
-            currentPool += abilityData.TickRate;
+            currentPool += abilityData.RefillAmount;
         if (currentPool > abilityData.MaxPoolAmount)
             currentPool = abilityData.MaxPoolAmount;
     }

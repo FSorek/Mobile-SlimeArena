@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class AttackButtonUI : MonoBehaviour
 {
-    [SerializeField]private Button attackButton;
     private Player player;
     private Vector2 lastMoveVector;
     private void Awake()
