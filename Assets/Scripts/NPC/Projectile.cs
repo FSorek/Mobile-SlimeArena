@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, ITakeDamage
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float lifetime = 2f;
@@ -12,7 +12,13 @@ public class Projectile : MonoBehaviour
     private NPCAttackData attackData;
     private RaycastHit2D[] wallCheck = new RaycastHit2D[1];
     private float shotTime;
+    private bool bouncedBack;
+    private int playerLayer;
 
+    private void Awake()
+    {
+        playerLayer = LayerMask.NameToLayer("Player");
+    }
 
     public void Shoot(Transform target, NPCAttackData attackData)
     {
@@ -31,11 +37,23 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var player = other.GetComponent<Player>();
-        if (player != null)
+        var damagable = other.GetComponent<ITakeDamage>();
+        if (damagable != null)
         {
-            player.TakeDamage(attackData.Damage);
+            damagable.TakeDamage(attackData.Damage);
         }
         ProjectilePool.Instance.ReturnToPool(this);
     }
+
+    public event Action OnDeath;
+    public void TakeDamage(int damage)
+    {
+        if(bouncedBack)
+            return;
+        gameObject.layer = playerLayer;
+        shootDirection = -shootDirection;
+        bouncedBack = true;
+    }
+
+    public bool IsDead => false;
 }
