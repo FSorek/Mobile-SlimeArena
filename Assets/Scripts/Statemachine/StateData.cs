@@ -1,6 +1,6 @@
 ﻿using System;
 
-public abstract class StateData<T>
+public abstract class StateData<T> where T : Enum
 {
     private T currentState;
     public event Action<T> OnStateEntered = delegate {  };

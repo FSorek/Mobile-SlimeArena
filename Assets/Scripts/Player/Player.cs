@@ -5,6 +5,7 @@ public class Player : MonoBehaviour, ITakeDamage
 {
     public event Action OnSpawn = delegate { };
     public event Action OnDeath = delegate { };
+    public event Action OnTakeDamage = delegate {  };
     [SerializeField] private int maxHealth = 1;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private PlayerAttackData attackData;
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour, ITakeDamage
     public PlayerAbility PlayerAbility => playerAbility;
     public IMovement CurrentMovement => currentMovement;
     public bool IsDead => health.CurrentHealth <= 0;
+    public int CurrentHealth => health.CurrentHealth;
     private void Awake()
     {
         health = new Health(maxHealth);
@@ -68,6 +70,7 @@ public class Player : MonoBehaviour, ITakeDamage
             return;
         
         health.TakeDamage(damage);
+        OnTakeDamage();
         if (IsDead && health.CurrentHealth + damage > 0)
         {
             OnDeath();

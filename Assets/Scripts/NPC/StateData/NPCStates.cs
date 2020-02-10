@@ -1,6 +1,7 @@
 ﻿public enum NPCStates
 {
-    GoWithinRange,
+    GoToCurrentTarget,
     Attack,
-    RepositionAttack,
+    Reposition,
+    Idle
 }

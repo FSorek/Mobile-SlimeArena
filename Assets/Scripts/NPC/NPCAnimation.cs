@@ -7,8 +7,8 @@ public class NPCAnimation : EntityAnimator<EnemyNPC>
     {
         animator.SetBool("IsDead", owner.IsDead);
         
-        animator.SetBool("IsMoving", owner.CurrentState == NPCStates.GoWithinRange && !owner.IsDead);
-        animator.SetBool("IsRepositioning", owner.CurrentState == NPCStates.RepositionAttack && !owner.IsDead);
+        animator.SetBool("IsMoving", owner.CurrentState == NPCStates.GoToCurrentTarget && !owner.IsDead);
+        animator.SetBool("IsRepositioning", owner.CurrentState == NPCStates.Reposition && !owner.IsDead);
         renderer.flipX = (owner.transform.position.x - owner.Target.position.x) < 0;
     }
 }

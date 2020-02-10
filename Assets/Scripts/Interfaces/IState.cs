@@ -3,4 +3,5 @@
     void StateEnter();
     void ListenToState();
     void StateExit();
+    bool CanExit { get; }
 }

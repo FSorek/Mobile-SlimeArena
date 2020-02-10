@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NPC Move Data")]
-public class NPCMoveData : ScriptableObject
+[CreateAssetMenu(fileName = "NPC Reposition Attack Data")]
+public class NPCRepositionAttackData : ScriptableObject
 {
     public float MoveSpeed = 5f;
     public float RepositionSpeed = 2f;

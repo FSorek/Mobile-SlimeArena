@@ -14,10 +14,18 @@ public class Projectile : MonoBehaviour, ITakeDamage
     private float shotTime;
     private bool bouncedBack;
     private int playerLayer;
+    private int enemyLayer;
 
     private void Awake()
     {
         playerLayer = LayerMask.NameToLayer("Player");
+        enemyLayer = LayerMask.NameToLayer("NPC");
+    }
+
+    private void OnEnable()
+    {
+        bouncedBack = false;
+        gameObject.layer = enemyLayer;
     }
 
     public void Shoot(Transform target, NPCAttackData attackData)

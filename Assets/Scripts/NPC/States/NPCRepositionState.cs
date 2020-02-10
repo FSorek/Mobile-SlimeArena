@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 
-public class NPCRepositionAttackState : IState
+public class NPCRepositionState : IState
 {
     private readonly EnemyNPC owner;
-    private readonly NPCMoveData moveData;
-    private readonly NPCStateData stateData;
+    private readonly NPCRepositionAttackData repositionAttackData;
     private readonly Rigidbody2D ownerRb;
 
     private Vector3 repositionDirection;
     private float totalDistance;
+    private bool canExit;
 
-    public NPCRepositionAttackState(EnemyNPC owner, NPCMoveData moveData, NPCStateData stateData)
+    public NPCRepositionState(EnemyNPC owner, NPCRepositionAttackData repositionAttackData)
     {
         this.owner = owner;
-        this.moveData = moveData;
-        this.stateData = stateData;
+        this.repositionAttackData = repositionAttackData;
         ownerRb = owner.GetComponent<Rigidbody2D>();
     }
     public void StateEnter()
@@ -24,21 +23,23 @@ public class NPCRepositionAttackState : IState
         if (Random.value > 0.5f)
             repositionDirection *= -1;
         totalDistance = 0f;
+        canExit = false;
     }
 
     public void ListenToState()
     {
-        var positionThisFrame = moveData.RepositionSpeed * Time.fixedDeltaTime * (Vector2)repositionDirection;
+        var positionThisFrame = repositionAttackData.RepositionSpeed * Time.fixedDeltaTime * (Vector2)repositionDirection;
         ownerRb.MovePosition(ownerRb.position + positionThisFrame);
         totalDistance += positionThisFrame.magnitude;
-        if (totalDistance >= moveData.RepositionDistance)
-            stateData.ChangeState(NPCStates.Attack);
+        if (totalDistance >= repositionAttackData.RepositionDistance && !canExit)
+            canExit = true;
     }
 
     public void StateExit()
     {
         
     }
-    
-    
+
+    public bool CanExit => canExit;
 }
+
