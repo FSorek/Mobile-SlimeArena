@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Projectile : MonoBehaviour, ITakeDamage
+public class Projectile : MonoBehaviour, ITakeDamage, IGameObjectPooled
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float lifetime = 2f;
@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour, ITakeDamage
     {
         var hits = Physics2D.RaycastNonAlloc(transform.position, shootDirection, wallCheck, wallCheckDistance, wallLayer);
         if(hits > 0 || Time.time - shotTime >= lifetime)
-            ProjectilePool.Instance.ReturnToPool(this);
+            gameObject.ReturnToPool();
         transform.Translate(Time.deltaTime * moveSpeed * shootDirection);
     }
 
@@ -50,10 +50,12 @@ public class Projectile : MonoBehaviour, ITakeDamage
         {
             damagable.TakeDamage(attackData.Damage);
         }
-        ProjectilePool.Instance.ReturnToPool(this);
+        gameObject.ReturnToPool();
     }
 
     public event Action OnDeath;
+    public event Action OnTakeDamage;
+
     public void TakeDamage(int damage)
     {
         if(bouncedBack)
@@ -64,4 +66,5 @@ public class Projectile : MonoBehaviour, ITakeDamage
     }
 
     public bool IsDead => false;
+    public ObjectPool Pool { get; set; }
 }

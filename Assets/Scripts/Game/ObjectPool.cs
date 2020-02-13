@@ -3,48 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
+public class ObjectPool : MonoBehaviour
 {
-    [SerializeField] private T prefab;
-    [SerializeField] private int prespawnAmount;
-    private readonly Queue<T> objects = new Queue<T>();
-    private Transform poolRoot;
-    
-    public static ObjectPool<T> Instance { get; private set; }
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private int prespawnAmount = 0;
+    private Queue<GameObject> objects = new Queue<GameObject>();
 
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(this);
-        if (Instance.poolRoot == null)
-            Instance.poolRoot = transform;
-    }
 
     private void Start()
     {
         AddObjects(prespawnAmount);
     }
 
-    public T Get()
+    public GameObject Get()
     {
-        if (objects.Count == 0) AddObjects(1);
-        var obj = objects.Dequeue();
-        return obj;
+        if (objects.Count == 0)
+        {
+            AddObjects(1);
+        }
+
+        return objects.Dequeue();
     }
 
     private void AddObjects(int v)
     {
         for (int i = 0; i < v; i++)
         {
-            var obj = Instantiate(prefab, transform, true);
+            GameObject obj = Instantiate(prefab);
             obj.gameObject.SetActive(false);
             objects.Enqueue(obj);
+            obj.GetComponent<IGameObjectPooled>().Pool = this;
+            obj.transform.SetParent(this.transform);
         }
     }
 
-    public void ReturnToPool(T obj)
+    public void ReturnToPool(GameObject obj)
     {
         obj.gameObject.SetActive(false);
         objects.Enqueue(obj);

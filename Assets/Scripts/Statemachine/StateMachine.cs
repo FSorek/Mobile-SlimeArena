@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class StateMachine<T> where T : System.Enum
 {
     private Dictionary<T, IState> availablePlayerStates = new Dictionary<T, IState>();
+    private Dictionary<T, float> lastExitTimes = new Dictionary<T, float>();
+    
     private StateData<T> data;
     private IState currentState;
     private Dictionary<T, List<StateTransition<T>>> transitions = new Dictionary<T, List<StateTransition<T>>>();
@@ -29,6 +32,7 @@ public class StateMachine<T> where T : System.Enum
         {
             if (transition.CanTransition)
             {
+                transition.TransitionCallback?.Invoke();
                 data.ChangeState(transition.ToState);
             }
         }
@@ -38,13 +42,14 @@ public class StateMachine<T> where T : System.Enum
     public void RegisterState(T key, IState state)
     {
         availablePlayerStates.Add(key, state);
+        lastExitTimes.Add(key, -Mathf.Infinity);
     }
 
-    public void CreateTransition(T fromState, T toState, Func<bool> condition)
+    public void CreateTransition(T fromState, T toState, Func<bool> condition, Action onTransitionCallback = null)
     {
         if(!transitions.ContainsKey(fromState))
                 transitions[fromState] = new List<StateTransition<T>>();
-        var transition = new StateTransition<T>(toState, condition);
+        var transition = new StateTransition<T>(toState, condition, onTransitionCallback);
         transitions[fromState].Add(transition);
     }
 
@@ -53,24 +58,29 @@ public class StateMachine<T> where T : System.Enum
         return availablePlayerStates.ContainsKey(key) ? currentState : null;
     }
 
+    public float TimeSinceStateExit(T state)
+    {
+        if (lastExitTimes.ContainsKey(state))
+            return Time.fixedTime - lastExitTimes[state];
+        return Mathf.Infinity;
+    }
+
     private void DataOnStateEntered(T key)
     {
-        if (!ValidateState(key)) return;
-        currentState = availablePlayerStates[key];
-        currentState.StateEnter();
+        if (availablePlayerStates.ContainsKey(key))
+        {
+            currentState = availablePlayerStates[key];
+            currentState.StateEnter();
+        }
     }
 
     private void DataOnStateExit(T key)
     {
-        if (currentState != null && ValidateState(key))
+        if (currentState != null && availablePlayerStates.ContainsKey(key))
+        {
             currentState.StateExit();
-    }
-        
-    private bool ValidateState(T key)
-    {
-        if (availablePlayerStates.ContainsKey(key))
-            return currentState != availablePlayerStates[key];
-        return false;
+            lastExitTimes[key] = Time.fixedTime;
+        }
     }
 }
 
@@ -78,13 +88,17 @@ public class StateTransition<T> where T : System.Enum
 {
     private readonly T toState;
     private readonly Func<bool> condition;
+    private readonly Action callback;
 
     public bool CanTransition => condition.Invoke();
     public T ToState => toState;
 
-    public StateTransition(T toState, Func<bool> condition)
+    public Action TransitionCallback => callback;
+
+    public StateTransition(T toState, Func<bool> condition, Action callback)
     {
         this.toState = toState;
         this.condition = condition;
+        this.callback = callback;
     }
 }

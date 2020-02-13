@@ -2,32 +2,33 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public abstract class EnemyNPC : MonoBehaviour, ITakeDamage
+public abstract class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
 {
-    public event Action OnDeath = delegate { }; 
-    [SerializeField] private NPCAttackData attackData;
-    [SerializeField] private NPCRepositionAttackData repositionAttackData;
+    public event Action OnDeath = delegate { };
+    public event Action OnTakeDamage = delegate {  };
     [SerializeField] private int maxHealth;
+    [SerializeField] private float moveSpeed;
     [SerializeField] private float timeUntilBodyIsGone = 2f;
+    [SerializeField] private NPCAttackData attackData;
+    [SerializeField] private NPCRepositionAttackData repositionData;
 
+    private RaycastHit2D[] lineOfSightItems = new RaycastHit2D[1];
     private readonly NPCStateData npcStateData = new NPCStateData();
     private StateMachine<NPCStates> stateMachine;
     private Collider2D activeCollider;
     private float attackRange;
     private Transform target;
     private Health health;
+    private int wallLayer;
 
     public Transform Target => target;
-    public float AttackRange => attackRange;
-    //public bool IsMoving => !IsDead && npcStateData.CurrentState == NPCStates.GoWithinRange;
     public NPCStates CurrentState => npcStateData.CurrentState;
     public bool IsDead => health.CurrentHealth <= 0;
 
-    protected NPCRepositionAttackData RepositionAttackData => repositionAttackData;
-    protected NPCStateData NpcStateData => npcStateData;
-    protected NPCAttackData AttackData => attackData;
     protected StateMachine<NPCStates> StateMachine => stateMachine;
 
+    protected float MoveSpeed => moveSpeed;
+    protected NPCAttackData AttackData => attackData;
 
     private void Awake()
     {
@@ -36,18 +37,18 @@ public abstract class EnemyNPC : MonoBehaviour, ITakeDamage
         target = FindObjectOfType<Player>().transform;
         stateMachine = new StateMachine<NPCStates>(npcStateData);
         attackRange = Random.Range(attackData.MinAttackRange, attackData.MaxAttackRange);
-
+        wallLayer = LayerMask.GetMask("World");
+        
         var npcIdleState = new NPCIdleState();
-        var goToCurrentTargetState = new NPCGoToCurrentTargetState(this, RepositionAttackData);
-        var npcAttackState = new NPCAttackState(AttackData, this);
-        var npcRepositionState = new NPCRepositionState(this, RepositionAttackData);
+        var goToCurrentTargetState = new NPCGoToCurrentTargetState(this, MoveSpeed);
+        var npcAttackState = new NPCAttackState(this, AttackData);
+        var npcRepositionState = new NPCRepositionState(this, repositionData);
         
         StateMachine.RegisterState(NPCStates.Idle, npcIdleState);
         StateMachine.RegisterState(NPCStates.GoToCurrentTarget, goToCurrentTargetState);
         StateMachine.RegisterState(NPCStates.Attack, npcAttackState);
         StateMachine.RegisterState(NPCStates.Reposition, npcRepositionState);
-
-        RegisterAllStates();
+        CreateTransitions();
     }
 
     private void Start()
@@ -55,9 +56,9 @@ public abstract class EnemyNPC : MonoBehaviour, ITakeDamage
         npcStateData.ChangeState(NPCStates.Idle);
     }
 
-    protected abstract void RegisterAllStates();
+    protected abstract void CreateTransitions();
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         health.Reset();
         activeCollider.enabled = true;
@@ -74,6 +75,7 @@ public abstract class EnemyNPC : MonoBehaviour, ITakeDamage
     public void TakeDamage(int damage)
     {
         health.TakeDamage(damage);
+        OnTakeDamage();
         if (IsDead)
         {
             activeCollider.enabled = false;
@@ -84,6 +86,17 @@ public abstract class EnemyNPC : MonoBehaviour, ITakeDamage
 
     private void ReturnToPool()
     {
-        EnemyPool.Instance.ReturnToPool(this);
+        gameObject.ReturnToPool();
     }
+
+    protected bool HasCleanAttackPath()
+    {
+        var position = transform.position;
+        var distance = Vector2.Distance(position, Target.position);
+        var directionToPlayer = (Target.position - position).normalized;
+        return distance < attackRange && Physics2D.RaycastNonAlloc(position, directionToPlayer, lineOfSightItems, distance,
+                   wallLayer) == 0;
+    }
+
+    public ObjectPool Pool { get; set; }
 }

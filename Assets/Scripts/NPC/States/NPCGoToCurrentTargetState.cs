@@ -7,7 +7,7 @@ public class NPCGoToCurrentTargetState : IState
     private const float WaypointStoppingDistance = 1f;
     
     private readonly EnemyNPC owner;
-    private readonly NPCRepositionAttackData repositionAttackData;
+    private readonly float moveSpeed;
     private readonly Seeker ownerSeeker;
     private readonly Rigidbody2D ownerRBody;
 
@@ -15,10 +15,10 @@ public class NPCGoToCurrentTargetState : IState
     private Path path;
     private int currentWaypoint;
 
-    public NPCGoToCurrentTargetState(EnemyNPC owner, NPCRepositionAttackData repositionAttackData)
+    public NPCGoToCurrentTargetState(EnemyNPC owner, float moveSpeed)
     {
         this.owner = owner;
-        this.repositionAttackData = repositionAttackData;
+        this.moveSpeed = moveSpeed;
         
         ownerSeeker = owner.GetComponent<Seeker>();
         lastPlayerPosition = owner.Target.position;
@@ -44,7 +44,7 @@ public class NPCGoToCurrentTargetState : IState
         if(path.vectorPath.Count <= currentWaypoint)
             return;
         var moveDirection = ((Vector2)path.vectorPath[currentWaypoint] - ownerRBody.position).normalized;
-        ownerRBody.MovePosition(ownerRBody.position + Time.fixedDeltaTime * repositionAttackData.MoveSpeed * moveDirection);
+        ownerRBody.MovePosition(ownerRBody.position + Time.fixedDeltaTime * moveSpeed * moveDirection);
         if (Vector2.Distance(owner.transform.position, path.vectorPath[currentWaypoint]) < WaypointStoppingDistance)
             currentWaypoint++;
         

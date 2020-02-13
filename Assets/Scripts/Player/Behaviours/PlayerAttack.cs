@@ -8,7 +8,7 @@ public class PlayerAttack
     public event Action<ITakeDamage> OnTargetHit = delegate { };
     public event Action<Vector2> OnAttack = delegate { };
     
-    private RaycastHit2D[] targetsHit = new RaycastHit2D[20];
+    private Collider2D[] targetsHit = new Collider2D[10];
     private float lastAttackTime;
     private LayerMask enemyLayer;
     private Collider2D col;
@@ -25,14 +25,13 @@ public class PlayerAttack
     {
         if(Time.time - lastAttackTime < attackData.AttackDelay)
             return;
-        var resultAmount = Physics2D.CapsuleCastNonAlloc(owner.transform.position, attackData.AttackSize, CapsuleDirection2D.Vertical, Vector2.Angle(Vector2.up, direction), direction, targetsHit, 1, enemyLayer);
-        
+        //var resultAmount = Physics2D.CapsuleCastNonAlloc(owner.transform.position, attackData.AttackSize, CapsuleDirection2D.Vertical, Vector2.Angle(Vector2.up, direction), direction, targetsHit, 1, enemyLayer);
+        var resultAmount = Physics2D.OverlapBoxNonAlloc((Vector2) owner.transform.position + direction,
+            attackData.AttackSize, 0, targetsHit, enemyLayer);
         OnAttack(direction);
         for (int i = 0; i < resultAmount; i++)
         {
-            if(targetsHit[i].transform == owner.transform)
-                continue;
-            var target = targetsHit[i].transform.GetComponent<ITakeDamage>();
+            var target = targetsHit[i].GetComponent<ITakeDamage>();
             HitTarget(target, attackData.Damage);
         }
         lastAttackTime = Time.time;

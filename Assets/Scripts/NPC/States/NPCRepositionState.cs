@@ -28,6 +28,8 @@ public class NPCRepositionState : IState
 
     public void ListenToState()
     {
+        if(canExit) return;
+        
         var positionThisFrame = repositionAttackData.RepositionSpeed * Time.fixedDeltaTime * (Vector2)repositionDirection;
         ownerRb.MovePosition(ownerRb.position + positionThisFrame);
         totalDistance += positionThisFrame.magnitude;

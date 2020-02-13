@@ -1,4 +1,6 @@
-﻿public class NPCIdleState : IState
+﻿using UnityEngine;
+
+public class NPCIdleState : IState
 {
     public void StateEnter()
     {

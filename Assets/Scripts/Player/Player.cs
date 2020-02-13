@@ -77,4 +77,11 @@ public class Player : MonoBehaviour, ITakeDamage
             gameObject.SetActive(false);
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        var attackDirection = PlayerInput == null ? new Vector2(0, 0) : PlayerInput.MoveVector; 
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube((Vector2)transform.position + attackDirection, attackData.AttackSize);
+    }
 }
