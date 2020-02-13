@@ -2,60 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine<T> where T : System.Enum
+public class StateMachine<T> where T : Enum
 {
-    private Dictionary<T, IState> availablePlayerStates = new Dictionary<T, IState>();
-    private Dictionary<T, float> lastExitTimes = new Dictionary<T, float>();
+    private readonly Dictionary<T, IState> availableStates = new Dictionary<T, IState>();
+    private readonly List<StateTransition<T>> transitions = new List<StateTransition<T>>();
+    private readonly Dictionary<T, float> lastExitTimes = new Dictionary<T, float>();
+    private readonly StateData<T> data;
     
-    private StateData<T> data;
     private IState currentState;
-    private Dictionary<T, List<StateTransition<T>>> transitions = new Dictionary<T, List<StateTransition<T>>>();
     
     public StateMachine(StateData<T> stateData)
     {
         data = stateData;
-        data.OnStateEntered += DataOnStateEntered;
-        data.OnStateExit += DataOnStateExit;
+        data.OnStateChanged += DataOnStateChanged;
     }
     public void Tick()
     {
         if(currentState == null)
         {
-            currentState = availablePlayerStates[data.CurrentState];
-            currentState.StateEnter();
+            data.ChangeState(data.CurrentState);
         }
         currentState.ListenToState();
-        if(!transitions.ContainsKey(data.CurrentState) || !currentState.CanExit)
+        if(!currentState.CanExit)
             return;
 
-        foreach (StateTransition<T> transition in transitions[data.CurrentState])
+        StateTransition<T> transition = CheckTransition();
+        if (transition != null && transition.CanTransition)
         {
-            if (transition.CanTransition)
-            {
-                transition.TransitionCallback?.Invoke();
-                data.ChangeState(transition.ToState);
-            }
+            data.ChangeState(transition.ToState);
+            transition.TransitionCallback?.Invoke();
         }
     }
 
+    private StateTransition<T> CheckTransition()
+    {
+        foreach (StateTransition<T> transition in transitions)
+        {
+            if (Equals(transition.FromState, data.CurrentState))
+            {
+                return transition;
+            }
+        }
+        return null;
+    }
 
     public void RegisterState(T key, IState state)
     {
-        availablePlayerStates.Add(key, state);
+        availableStates.Add(key, state);
         lastExitTimes.Add(key, -Mathf.Infinity);
     }
 
     public void CreateTransition(T fromState, T toState, Func<bool> condition, Action onTransitionCallback = null)
     {
-        if(!transitions.ContainsKey(fromState))
-                transitions[fromState] = new List<StateTransition<T>>();
-        var transition = new StateTransition<T>(toState, condition, onTransitionCallback);
-        transitions[fromState].Add(transition);
-    }
-
-    public IState GetState(T key)
-    {
-        return availablePlayerStates.ContainsKey(key) ? currentState : null;
+        var transition = new StateTransition<T>(fromState, toState, condition, onTransitionCallback);
+        transitions.Add(transition);
     }
 
     public float TimeSinceStateExit(T state)
@@ -65,40 +65,14 @@ public class StateMachine<T> where T : System.Enum
         return Mathf.Infinity;
     }
 
-    private void DataOnStateEntered(T key)
+    private void DataOnStateChanged(T key)
     {
-        if (availablePlayerStates.ContainsKey(key))
+        if (availableStates.ContainsKey(key))
         {
-            currentState = availablePlayerStates[key];
+            currentState?.StateExit();
+            lastExitTimes[key] = Time.fixedTime;
+            currentState = availableStates[key];
             currentState.StateEnter();
         }
-    }
-
-    private void DataOnStateExit(T key)
-    {
-        if (currentState != null && availablePlayerStates.ContainsKey(key))
-        {
-            currentState.StateExit();
-            lastExitTimes[key] = Time.fixedTime;
-        }
-    }
-}
-
-public class StateTransition<T> where T : System.Enum
-{
-    private readonly T toState;
-    private readonly Func<bool> condition;
-    private readonly Action callback;
-
-    public bool CanTransition => condition.Invoke();
-    public T ToState => toState;
-
-    public Action TransitionCallback => callback;
-
-    public StateTransition(T toState, Func<bool> condition, Action callback)
-    {
-        this.toState = toState;
-        this.condition = condition;
-        this.callback = callback;
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyNPC))]
 public class NPCAnimation : EntityAnimator<EnemyNPC>
 {
+    [SerializeField] private NPCStateData stateData;
     private bool startsFlipped;
 
     private void Start()

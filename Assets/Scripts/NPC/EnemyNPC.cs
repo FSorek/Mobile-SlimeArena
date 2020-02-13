@@ -51,11 +51,6 @@ public abstract class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
         CreateTransitions();
     }
 
-    private void Start()
-    {
-        npcStateData.ChangeState(NPCStates.Idle);
-    }
-
     protected abstract void CreateTransitions();
 
     protected virtual void OnEnable()

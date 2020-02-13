@@ -53,9 +53,6 @@ public class Projectile : MonoBehaviour, ITakeDamage, IGameObjectPooled
         gameObject.ReturnToPool();
     }
 
-    public event Action OnDeath;
-    public event Action OnTakeDamage;
-
     public void TakeDamage(int damage)
     {
         if(bouncedBack)
