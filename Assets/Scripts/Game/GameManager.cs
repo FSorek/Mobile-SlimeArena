@@ -15,7 +15,19 @@ public class GameManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         player.OnDeath += () => SetGamePaused(true);
+        player.PlayerInput.OnPrimaryAction += PlayerInputOnPrimaryAction;
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
+    }
+
+    private void PlayerInputOnPrimaryAction()
+    {
+        if(!gamePaused ||
+           (operation != null && !operation.isDone))
+            return;
+        if(!player.IsDead)
+            SetGamePaused(false);
+        else
+            operation = SceneManager.LoadSceneAsync(0);
     }
 
     private void SceneManagerOnSceneLoaded(Scene scene, LoadSceneMode loadMode)
@@ -23,21 +35,6 @@ public class GameManager : MonoBehaviour
         SetGamePaused(true);
     }
 
-    private void Update()
-    {
-        if(!gamePaused || 
-           Input.touchCount <= 0 ||
-           (operation != null && !operation.isDone))
-            return;
-        
-        var touch = Input.GetTouch(0);
-        if(!player.IsDead && touch.tapCount == 1)
-            SetGamePaused(false);
-        else if(player.IsDead && touch.tapCount >= 2)
-        {
-            operation = SceneManager.LoadSceneAsync(0);
-        } 
-    }
     private void SetGamePaused(bool paused)
     {
         Time.timeScale = paused ? 0f : 1f;

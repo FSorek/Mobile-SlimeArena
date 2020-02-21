@@ -12,7 +12,7 @@ public class Player : MonoBehaviour, ITakeDamage
     [SerializeField] private PlayerAbilityData abilityData;
     
     private Health health;
-    private PlayerInput playerInput;
+    private IPlayerInput playerInput;
     private PlayerAttack playerAttack;
     private PlayerAbility playerAbility;
     private PlayerScoreTracker playerScoreTracker;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour, ITakeDamage
     private IMovement currentMovement;
 
     public PlayerScoreTracker PlayerScoreTracker => playerScoreTracker;
-    public PlayerInput PlayerInput => playerInput;
+    public IPlayerInput PlayerInput => playerInput;
     public PlayerAttack PlayerAttack => playerAttack;
     public PlayerAbility PlayerAbility => playerAbility;
     public IMovement CurrentMovement => currentMovement;
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour, ITakeDamage
     private void Awake()
     {
         health = new Health(maxHealth);
-        playerInput = new PlayerInput();
+        playerInput = new PlayerGamepadOrKeyboardInput();
         playerAttack = new PlayerAttack(this, attackData);
         playerAbility = new PlayerAbility(this, abilityData);
         playerScoreTracker = new PlayerScoreTracker();

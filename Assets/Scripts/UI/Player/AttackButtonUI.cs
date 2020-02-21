@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class AttackButtonUI : MonoBehaviour
 {
@@ -18,7 +14,6 @@ public class AttackButtonUI : MonoBehaviour
         if(player.PlayerAbility.IsUsingAbility)
             return;
 
-        var attackDirection = player.PlayerInput.LastDirection;
-        player.PlayerAttack.Attack(attackDirection);
+        player.PlayerAttack.Attack();
     }
 }

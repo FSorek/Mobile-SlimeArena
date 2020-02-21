@@ -8,6 +8,7 @@ public class MoveDirectionUI : MonoBehaviour
     [SerializeField] private Joystick joystick;
     private void Start()
     {
-        FindObjectOfType<Player>().PlayerInput.RegisterJoystick(joystick);
+        var mobileInput = FindObjectOfType<Player>().PlayerInput as PlayerMobileInput;
+        mobileInput?.RegisterJoystick(joystick);
     }
 }

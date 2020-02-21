@@ -19,6 +19,6 @@ public class AttackDirectionUI : MonoBehaviour
             return;
         
         if(attackJoystick.Direction.magnitude > 0)
-            player.PlayerAttack.Attack(attackJoystick.Direction);
+            player.PlayerAttack.Attack();
     }
 }

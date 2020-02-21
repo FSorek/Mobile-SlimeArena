@@ -20,12 +20,14 @@ public class PlayerAttack
         this.owner = owner;
         this.attackData = attackData;
         enemyLayer = LayerMask.GetMask("NPC");
+        if (owner.PlayerInput is PlayerGamepadOrKeyboardInput playerInput)
+            playerInput.OnPrimaryAction += Attack;
     }
-    public void Attack(Vector2 direction)
+    public void Attack()
     {
         if(Time.time - lastAttackTime < attackData.AttackDelay)
             return;
-        //var resultAmount = Physics2D.CapsuleCastNonAlloc(owner.transform.position, attackData.AttackSize, CapsuleDirection2D.Vertical, Vector2.Angle(Vector2.up, direction), direction, targetsHit, 1, enemyLayer);
+        var direction = owner.PlayerInput.AttackDirection;
         var resultAmount = Physics2D.OverlapBoxNonAlloc((Vector2) owner.transform.position + direction,
             attackData.AttackSize, 0, targetsHit, enemyLayer);
         OnAttack(direction);
