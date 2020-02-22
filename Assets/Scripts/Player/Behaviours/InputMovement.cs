@@ -15,7 +15,6 @@ internal class InputMovement : IMovement
         playerRbody = player.GetComponent<Rigidbody2D>();
     }
 
-
     public void Initialize()
     {
         playerRbody.velocity = Vector2.zero;

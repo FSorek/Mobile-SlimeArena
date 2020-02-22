@@ -1,23 +1,15 @@
 ﻿using System;
 
-public class StateTransition<T> where T : Enum
+public class StateTransition
 {
-    private readonly T fromState;
-    private readonly T toState;
-    private readonly Func<bool> condition;
-    private readonly Action callback;
+    public readonly IState From;
+    public readonly IState To;
+    public readonly Func<bool> Condition;
 
-    public T FromState => fromState;
-    public T ToState => toState;
-    public bool CanTransition => condition.Invoke();
-
-    public Action TransitionCallback => callback;
-
-    public StateTransition(T fromState, T toState, Func<bool> condition, Action callback)
+    public StateTransition(IState from, IState to, Func<bool> condition)
     {
-        this.fromState = fromState;
-        this.toState = toState;
-        this.condition = condition;
-        this.callback = callback;
+        From = from;
+        To = to;
+        Condition = condition;
     }
 }

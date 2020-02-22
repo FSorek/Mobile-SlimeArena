@@ -2,77 +2,64 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine<T> where T : Enum
+public class StateMachine
 {
-    private readonly Dictionary<T, IState> availableStates = new Dictionary<T, IState>();
-    private readonly List<StateTransition<T>> transitions = new List<StateTransition<T>>();
-    private readonly Dictionary<T, float> lastExitTimes = new Dictionary<T, float>();
-    private readonly StateData<T> data;
+    public event Action<IState> OnStateChanged = delegate {  };
     
+    private List<StateTransition> stateTransitions = new List<StateTransition>();
+    private List<StateTransition> anyStateTransition = new List<StateTransition>();
+
     private IState currentState;
-    
-    public StateMachine(StateData<T> stateData)
-    {
-        data = stateData;
-        data.OnStateChanged += DataOnStateChanged;
-    }
+    public IState CurrentState => currentState;
+
     public void Tick()
     {
-        if(currentState == null)
+        StateTransition transition = CheckForTransition();
+        if (transition != null)
         {
-            data.ChangeState(data.CurrentState);
+            SetState(transition.To);
         }
+        
         currentState.ListenToState();
-        if(!currentState.CanExit)
-            return;
-
-        StateTransition<T> transition = CheckTransition();
-        if (transition != null && transition.CanTransition)
-        {
-            data.ChangeState(transition.ToState);
-            transition.TransitionCallback?.Invoke();
-        }
     }
 
-    private StateTransition<T> CheckTransition()
+    private StateTransition CheckForTransition()
     {
-        foreach (StateTransition<T> transition in transitions)
+        foreach (var transition in anyStateTransition)
         {
-            if (Equals(transition.FromState, data.CurrentState))
-            {
+            if (transition.Condition())
                 return transition;
-            }
         }
+        
+        foreach (var transition in stateTransitions)
+        {
+            if (transition.From == currentState && transition.Condition())
+                return transition;
+        }
+
         return null;
     }
 
-    public void RegisterState(T key, IState state)
+    public void CreateTransition(IState from, IState to, Func<bool> condition)
     {
-        availableStates.Add(key, state);
-        lastExitTimes.Add(key, -Mathf.Infinity);
-    }
 
-    public void CreateTransition(T fromState, T toState, Func<bool> condition, Action onTransitionCallback = null)
-    {
-        var transition = new StateTransition<T>(fromState, toState, condition, onTransitionCallback);
-        transitions.Add(transition);
+        var transition = new StateTransition(from, to, condition);
+        stateTransitions.Add(transition);
     }
+    public void CreateAnyTransition(IState to, Func<bool> condition)
+    {
+        var transition = new StateTransition(null, to, condition);
+        anyStateTransition.Add(transition);
+    }
+    public void SetState(IState state)
+    {
+        if(currentState == state) return;
+        
+        currentState?.StateExit();
+        currentState = state;
+        currentState.StateEnter();
 
-    public float TimeSinceStateExit(T state)
-    {
-        if (lastExitTimes.ContainsKey(state))
-            return Time.fixedTime - lastExitTimes[state];
-        return Mathf.Infinity;
+        OnStateChanged(currentState);
     }
-
-    private void DataOnStateChanged(T key)
-    {
-        if (availableStates.ContainsKey(key))
-        {
-            currentState?.StateExit();
-            lastExitTimes[key] = Time.fixedTime;
-            currentState = availableStates[key];
-            currentState.StateEnter();
-        }
-    }
+    
 }

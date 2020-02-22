@@ -2,33 +2,53 @@
 
 public class NPCAttackState : IState
 {
+    private readonly Transform attackOrigin;
     private readonly NPCAttackData attackData;
-    private readonly EnemyNPC owner;
+    private readonly Player player;
+    private readonly LayerMask obstacleMask;
+    private double lastAttackTime;
 
-    
-    public NPCAttackState(EnemyNPC owner, NPCAttackData attackData)
+    public NPCAttackState(Player player, Transform attackOrigin, NPCAttackData attackData)
     {
-        this.owner = owner;
+        this.attackOrigin = attackOrigin;
         this.attackData = attackData;
+        this.player = player;
+        obstacleMask = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("World"));
     }
     public void StateEnter()
     {
         var projectile = ProjectilePool.Instance.Get().GetComponent<Projectile>();
-        projectile.transform.position = (Vector2)owner.transform.position + attackData.ShootPositionOffset;
-        projectile.Shoot(owner.Target, attackData);
+        projectile.transform.position = attackOrigin.position;
+        projectile.Shoot(player.transform, attackData);
         projectile.gameObject.SetActive(true);
+        lastAttackTime = Time.time;
     }
 
     public void ListenToState()
     {
-
+        
     }
-
-
+    
     public void StateExit()
     {
         
     }
+    
+    public bool HasCleanAttackPath()
+    {
+        Vector2 attackPosition = attackOrigin.position;
+        Vector2 playerPosition = player.transform.position;
+        Vector2 directionToPlayer = (playerPosition - attackPosition).normalized;
 
-    public bool CanExit => true;
+        RaycastHit2D hit = Physics2D.Raycast(attackPosition, directionToPlayer, attackData.MaxAttackRange, obstacleMask);
+        if (hit.collider != null)
+            return hit.transform == player.transform;
+        return false;
+    }
+
+    public bool CanAttack()
+    {
+        var canFireProjectile = Time.time - lastAttackTime >= attackData.ShootingRate;
+        return HasCleanAttackPath() && canFireProjectile;
+    }
 }
