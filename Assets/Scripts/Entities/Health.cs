@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class Health
 {
-    private readonly int maxHealth;
+    public event Action OnDeath = delegate { };
+    public event Action<int> OnTakeDamage = delegate {  };
     
+    private readonly int maxHealth;
     private int currentHealth;
     public int CurrentHealth => currentHealth;
+    public bool IsDead => currentHealth <= 0;
 
     public Health(int maxHealth)
     {
@@ -17,8 +20,20 @@ public class Health
         currentHealth = maxHealth;
     }
 
+    public void RestoreHealth(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+    }
+
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        OnTakeDamage(damage);
+        if (IsDead)
+        {
+            OnDeath();
+        }
     }
 }

@@ -20,7 +20,7 @@ public class StartscreenUI : MonoBehaviour
     }
     private void GameManagerOnPauseStateChanged(bool paused)
     {
-        if(!player.IsDead && startscreen != null)
+        if(!player.Health.IsDead && startscreen != null)
             startscreen.SetActive(paused);
     }
   

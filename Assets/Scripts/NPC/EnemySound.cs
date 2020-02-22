@@ -5,7 +5,7 @@ public class EnemySound : EntitySound<EnemyNPC>
     [SerializeField] private AudioClip deathSound;
     protected override void Subscribe()
     {
-        owner.OnDeath += EnemyOnDeath;
+        owner.Health.OnDeath += EnemyOnDeath;
     }
     private void EnemyOnDeath()
     {

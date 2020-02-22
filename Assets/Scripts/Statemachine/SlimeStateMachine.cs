@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(EnemyNPC))]
 [RequireComponent(typeof(NPCMover))]
+[RequireComponent(typeof(NPCDodger))]
 public class SlimeStateMachine : MonoBehaviour
 {
     [SerializeField] private NPCAttackData attackData;
@@ -47,7 +48,7 @@ public class SlimeStateMachine : MonoBehaviour
         
         stateMachine.CreateAnyTransition(
             dead,
-            () => enemyNPC.IsDead);
+            () => enemyNPC.Health.IsDead);
 
         stateMachine.SetState(idle);
     }

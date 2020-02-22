@@ -9,7 +9,7 @@ public class NPCAnimation : EntityAnimator<EnemyNPC>
     private void Start()
     {
         startsFlipped = renderer.flipX;
-        owner.OnDeath += () => animator.SetBool(IsDead, true);
+        owner.Health.OnDeath += () => animator.SetBool(IsDead, true);
     }
 
     protected override void Tick()

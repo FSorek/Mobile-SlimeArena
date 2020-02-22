@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>();
-        player.OnDeath += () => SetGamePaused(true);
+        player.Health.OnDeath += () => SetGamePaused(true);
         player.PlayerInput.OnPrimaryAction += PlayerInputOnPrimaryAction;
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
     }
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         if(!gamePaused ||
            (operation != null && !operation.isDone))
             return;
-        if(!player.IsDead)
+        if(!player.Health.IsDead)
             SetGamePaused(false);
         else
             operation = SceneManager.LoadSceneAsync(0);

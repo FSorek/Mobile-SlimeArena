@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Projectile : MonoBehaviour, ITakeDamage, IGameObjectPooled
+public class Projectile : MonoBehaviour, IGameObjectPooled
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float lifetime = 2f;
@@ -48,7 +48,7 @@ public class Projectile : MonoBehaviour, ITakeDamage, IGameObjectPooled
         var damagable = other.GetComponent<ITakeDamage>();
         if (damagable != null)
         {
-            damagable.TakeDamage(attackData.Damage);
+            damagable.Health.TakeDamage(attackData.Damage);
         }
         gameObject.ReturnToPool();
     }
@@ -62,6 +62,5 @@ public class Projectile : MonoBehaviour, ITakeDamage, IGameObjectPooled
         bouncedBack = true;
     }
 
-    public bool IsDead => false;
     public ObjectPool Pool { get; set; }
 }

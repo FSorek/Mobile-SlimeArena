@@ -2,6 +2,6 @@
 {
     protected override void Subscribe()
     {
-        listenedComponent.OnDeath += () => ListenedComponentEventFired();
+        listenedComponent.Health.OnDeath += () => ListenedComponentEventFired();
     }
 }

@@ -1,17 +1,15 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour, ITakeDamage
 {
     public event Action OnSpawn = delegate { };
-    public event Action OnDeath = delegate { };
-    public event Action OnTakeDamage = delegate {  };
     [SerializeField] private int maxHealth = 1;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private PlayerAttackData attackData;
     [SerializeField] private PlayerAbilityData abilityData;
     
-    private Health health;
     private IPlayerInput playerInput;
     private PlayerAttack playerAttack;
     private PlayerAbility playerAbility;
@@ -25,20 +23,35 @@ public class Player : MonoBehaviour, ITakeDamage
     public PlayerAttack PlayerAttack => playerAttack;
     public PlayerAbility PlayerAbility => playerAbility;
     public IMovement CurrentMovement => currentMovement;
-    public bool IsDead => health.CurrentHealth <= 0;
-    public int CurrentHealth => health.CurrentHealth;
+    public Health Health { get; private set; }
+
     private void Awake()
     {
-        health = new Health(maxHealth);
+        Health = new Health(maxHealth);
         playerInput = new PlayerGamepadOrKeyboardInput();
         playerAttack = new PlayerAttack(this, attackData);
         playerAbility = new PlayerAbility(this, abilityData);
         playerScoreTracker = new PlayerScoreTracker();
         currentMovement = initialMovement = new InputMovement(this, moveSpeed);
+        
+        Health.OnTakeDamage += OnTakeDamage;
+        Health.OnDeath += OnDeath;
     }
+
+    private void OnDeath()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnTakeDamage(int damage)
+    {
+        if(playerAbility.IsUsingAbility)
+            Health.RestoreHealth(damage);
+    }
+
     private void OnEnable()
     {
-        health.Reset();
+        Health.Reset();
         playerAbility.Reset();
         OnSpawn();
     }
@@ -63,19 +76,6 @@ public class Player : MonoBehaviour, ITakeDamage
     public void ResetMovementStyle()
     {
         ChangeMovementStyle(initialMovement);
-    }
-    public void TakeDamage(int damage)
-    {
-        if(playerAbility.IsUsingAbility)
-            return;
-        
-        health.TakeDamage(damage);
-        OnTakeDamage();
-        if (IsDead && health.CurrentHealth + damage > 0)
-        {
-            OnDeath();
-            gameObject.SetActive(false);
-        }
     }
 
     private void OnDrawGizmosSelected()

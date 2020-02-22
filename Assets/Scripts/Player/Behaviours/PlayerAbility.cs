@@ -39,7 +39,7 @@ public class PlayerAbility
 
     private void PlayerOnTargetHit(ITakeDamage target)
     {
-        if(target.IsDead && !isUsingAbility)
+        if(target.Health.IsDead && !isUsingAbility)
             RefillPool();
     }
 

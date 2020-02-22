@@ -43,9 +43,9 @@ public class PlayerAttack
     {
         if(target == null) 
             return;
-        target.TakeDamage(damage);
+        target.Health.TakeDamage(damage);
         OnTargetHit(target);
-        if (target.IsDead)
+        if (target.Health.IsDead)
         {
             owner.PlayerScoreTracker.AddScore();
         }

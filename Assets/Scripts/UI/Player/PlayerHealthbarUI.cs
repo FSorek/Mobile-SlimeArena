@@ -19,12 +19,12 @@ public class PlayerHealthbarUI : MonoBehaviour
 
     private void Start()
     {
-        player.OnTakeDamage += PlayerOnTakeDamage;
+        player.Health.OnTakeDamage += PlayerOnTakeDamage;
     }
 
-    private void PlayerOnTakeDamage()
+    private void PlayerOnTakeDamage(int damage)
     {
-        if(player.CurrentHealth <= healthImages.Length - 1)
-            healthImages[player.CurrentHealth].sprite = inactiveHealth;
+        if(player.Health.CurrentHealth <= healthImages.Length - 1)
+            healthImages[player.Health.CurrentHealth].sprite = inactiveHealth;
     }
 }

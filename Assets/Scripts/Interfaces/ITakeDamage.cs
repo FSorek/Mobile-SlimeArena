@@ -2,6 +2,5 @@
 
 public interface ITakeDamage
 {
-    void TakeDamage(int damage);
-    bool IsDead { get; }
+    Health Health { get; }
 }

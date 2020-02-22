@@ -13,7 +13,7 @@ public class DeathscreenUI : MonoBehaviour
     }
     private void Start()
     {
-        player.OnDeath += () => DeathscreenSetActive(true);
+        player.Health.OnDeath += () => DeathscreenSetActive(true);
         player.OnSpawn += () => DeathscreenSetActive(false);
         DeathscreenSetActive(false);
     }
