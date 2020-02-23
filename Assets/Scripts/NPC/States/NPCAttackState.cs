@@ -13,7 +13,7 @@ public class NPCAttackState : IState
         this.attackOrigin = attackOrigin;
         this.attackData = attackData;
         this.player = player;
-        obstacleMask = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("World"));
+        obstacleMask = LayerMask.GetMask("Player", "World");
     }
     public void StateEnter()
     {
