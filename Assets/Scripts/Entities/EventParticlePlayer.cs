@@ -1,10 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class EventParticlePlayer<T> : MonoBehaviour where T : Component
 {
     [SerializeField] protected ParticleSystem particle;
-    [SerializeField] protected T listenedComponent;
-    
+    protected T ListenedComponent { get; private set; }
+
+    private void Awake()
+    {
+        ListenedComponent = GetComponent<T>();
+    }
+
     private void Start()
     {
         Subscribe();

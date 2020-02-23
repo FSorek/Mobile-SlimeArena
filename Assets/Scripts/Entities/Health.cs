@@ -4,8 +4,8 @@ using UnityEngine;
 public class Health
 {
     public event Action OnDeath = delegate { };
-    public event Action<int> OnTakeDamage = delegate {  };
-    
+    public event Action<int> OnTakeDamage = delegate { };
+
     private readonly int maxHealth;
     private int currentHealth;
     public int CurrentHealth => currentHealth;
@@ -15,6 +15,7 @@ public class Health
     {
         this.maxHealth = maxHealth;
     }
+
     public void Reset()
     {
         currentHealth = maxHealth;

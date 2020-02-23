@@ -10,7 +10,7 @@ public class GameDifficultyController : MonoBehaviour
     private readonly Dictionary<int, Action> scoreBasedEvents = new Dictionary<int, Action>();
     private void Awake()
     {
-        Instantiate(slimeSpawner);
+        Instantiate(skeletonSpawner);
     }
 
     private void Start()

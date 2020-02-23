@@ -15,7 +15,6 @@ public class PlayerAbility
     private bool isUsingAbility;
     private float currentPool;
     private float lastDamageTime;
-
     public bool IsUsingAbility => isUsingAbility;
     public double CurrentPoolPercentage => currentPool / abilityData.MaxPoolAmount;
 

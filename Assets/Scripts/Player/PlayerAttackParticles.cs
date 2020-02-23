@@ -4,7 +4,7 @@ public class PlayerAttackParticles : EventParticlePlayer<Player>
 {
     protected override void Subscribe()
     {
-        listenedComponent.PlayerAttack.OnAttack += 
+        ListenedComponent.PlayerAttack.OnAttack += 
             (direction) => ListenedComponentEventFired();
     }
 }

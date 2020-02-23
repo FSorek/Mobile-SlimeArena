@@ -31,7 +31,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
 
     private void OnEnable()
     {
-        Health.Reset();
+        Health?.Reset();
         activeCollider.enabled = true;
     }
 
