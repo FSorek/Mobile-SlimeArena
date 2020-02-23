@@ -1,40 +1,46 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Spawner : MonoBehaviour
+public class Spawner
 {
-    
-    [SerializeField] private float spawnRate = 2f;
-    [SerializeField] private Vector2 spawnRateRandomOffset;
-    [SerializeField] private ObjectPool prefabPool;
+    private readonly ObjectPool prefabPool;
+    private readonly Camera playerCamera;
+    private readonly LayerMask unstuckMask;
+    public bool IsSpawning { get; private set; }
 
-    private Camera playerCamera;
-    private float lastSpawnTime;
-    private LayerMask unstuckMask;
-    private float randomizedSpawnRate;
-
-    private void Awake()
+    public Spawner(ObjectPool prefabPool)
     {
+        this.prefabPool = prefabPool;
         playerCamera = Camera.main;
         unstuckMask = LayerMask.GetMask("World");
-        randomizedSpawnRate = spawnRate + Random.Range(spawnRateRandomOffset.x, spawnRateRandomOffset.y);
-        lastSpawnTime = Time.time;
     }
 
-    private void Update()
+    public void OrderSpawn()
     {
-        if (Time.time - lastSpawnTime > randomizedSpawnRate)
-            Spawn();
+        if(IsSpawning)
+            return;
+        
+        IsSpawning = true;
+        var prefabInstance = prefabPool.Get();
+        prefabPool.StartCoroutine(TrySpawn(prefabInstance));
     }
 
-    private void Spawn()
+    private IEnumerator TrySpawn(GameObject prefabInstance)
     {
-        var enemy = prefabPool.Get();
-        enemy.transform.position = RandomPointOutsideCamera();
-        enemy.gameObject.SetActive(true);
-        lastSpawnTime = Time.time;
-        randomizedSpawnRate = spawnRate + Random.Range(spawnRateRandomOffset.x, spawnRateRandomOffset.y);
+        var point = RandomPointOutsideCamera();
+        var worldPosition = playerCamera.ViewportToWorldPoint(point);
+        while (Physics2D.OverlapCircle(worldPosition, 1f, unstuckMask) != null)
+        {
+            point = RandomPointOutsideCamera();
+            worldPosition = playerCamera.ViewportToWorldPoint(point);
+            yield return null;
+        }
+
+        prefabInstance.transform.position = new Vector3(worldPosition.x, worldPosition.y, 0);
+        prefabInstance.gameObject.SetActive(true);
+        IsSpawning = false;
     }
 
     private Vector2 RandomPointOutsideCamera()
@@ -61,11 +67,7 @@ public class Spawner : MonoBehaviour
             x = Random.Range(0f, 1f);
             y = -0.1f;
         }
-
-        var point = playerCamera.ViewportToWorldPoint(new Vector2(x, y));
-        if (Physics2D.OverlapCircle(point, 1f, unstuckMask))
-            return RandomPointOutsideCamera();
-
-        return point;
+        
+        return new Vector2(x,y);
     }
 }
