@@ -13,12 +13,10 @@ public class Player : MonoBehaviour, ITakeDamage
     private IPlayerInput playerInput;
     private PlayerAttack playerAttack;
     private PlayerAbility playerAbility;
-    private PlayerScoreTracker playerScoreTracker;
     
     private IMovement initialMovement;
     private IMovement currentMovement;
 
-    public PlayerScoreTracker PlayerScoreTracker => playerScoreTracker;
     public IPlayerInput PlayerInput => playerInput;
     public PlayerAttack PlayerAttack => playerAttack;
     public PlayerAbility PlayerAbility => playerAbility;
@@ -31,7 +29,6 @@ public class Player : MonoBehaviour, ITakeDamage
         playerInput = new PlayerGamepadOrKeyboardInput();
         playerAttack = new PlayerAttack(this, attackData);
         playerAbility = new PlayerAbility(this, abilityData);
-        playerScoreTracker = new PlayerScoreTracker();
         currentMovement = initialMovement = new InputMovement(this, moveSpeed);
         
         Health.OnTakeDamage += OnTakeDamage;

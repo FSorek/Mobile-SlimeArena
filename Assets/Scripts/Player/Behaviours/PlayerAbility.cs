@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using Cinemachine;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -26,20 +26,20 @@ public class PlayerAbility
         playerCamera = Object.FindObjectOfType<CinemachineVirtualCamera>();
         mainCamera = Camera.main;
         accelerometerMovement = new AccelerometerMovement(owner.GetComponent<Rigidbody2D>(), abilityData.TornadoAcceleration, abilityData.TornadoMaxSpeed);
-        owner.PlayerAttack.OnTargetHit += PlayerOnTargetHit;
         
+        owner.PlayerAttack.OnTargetHit += PlayerAttackOnTargetHit;
         InitializeAbilityWalls();
+    }
+
+    private void PlayerAttackOnTargetHit(ITakeDamage target)
+    {
+        if(target.Health.IsDead)
+            RefillPool();
     }
 
     public void Reset()
     {
         currentPool = abilityData.MaxPoolAmount;
-    }
-
-    private void PlayerOnTargetHit(ITakeDamage target)
-    {
-        if(target.Health.IsDead && !isUsingAbility)
-            RefillPool();
     }
 
     public void UseAbility()
@@ -80,7 +80,7 @@ public class PlayerAbility
         for (int i = 0; i < targets; i++)
         {
             var availableTarget = targetColliders[i].GetComponent<ITakeDamage>();
-            owner.PlayerAttack.HitTarget(availableTarget, abilityData.DamagePerTick);
+            availableTarget.Health.TakeDamage(abilityData.DamagePerTick);
         }
 
         currentPool -= abilityData.TickRate;
