@@ -8,9 +8,8 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
     [SerializeField] private Transform attackOrigin;
 
     private Collider2D activeCollider;
-    private Transform target;
 
-    public Transform Target => target;
+    public Transform Target { get; private set; }
     public Transform AttackOrigin => attackOrigin;
     public Health Health { get; private set; }
     public ObjectPool Pool { get; set; }
@@ -19,7 +18,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
     {
         Health = new Health(maxHealth);
         activeCollider = GetComponent<Collider2D>();
-        target = FindObjectOfType<Player>().transform;
+        Target = FindObjectOfType<Player>().transform;
         Health.OnDeath += OnDeath;
     }
 

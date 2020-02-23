@@ -9,27 +9,22 @@ public class Player : MonoBehaviour, ITakeDamage
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private PlayerAttackData attackData;
     [SerializeField] private PlayerAbilityData abilityData;
-    
-    private IPlayerInput playerInput;
-    private PlayerAttack playerAttack;
-    private PlayerAbility playerAbility;
-    
-    private IMovement initialMovement;
-    private IMovement currentMovement;
 
-    public IPlayerInput PlayerInput => playerInput;
-    public PlayerAttack PlayerAttack => playerAttack;
-    public PlayerAbility PlayerAbility => playerAbility;
-    public IMovement CurrentMovement => currentMovement;
+    private IMovement initialMovement;
+
+    public IPlayerInput PlayerInput { get; private set; }
+    public PlayerAttack PlayerAttack { get; private set; }
+    public PlayerAbility PlayerAbility { get; private set; }
+    public IMovement CurrentMovement { get; private set; }
     public Health Health { get; private set; }
 
     private void Awake()
     {
         Health = new Health(maxHealth);
-        playerInput = new PlayerGamepadOrKeyboardInput();
-        playerAttack = new PlayerAttack(this, attackData);
-        playerAbility = new PlayerAbility(this, abilityData);
-        currentMovement = initialMovement = new InputMovement(this, moveSpeed);
+        PlayerInput = new PlayerGamepadOrKeyboardInput();
+        PlayerAttack = new PlayerAttack(this, attackData);
+        PlayerAbility = new PlayerAbility(this, abilityData);
+        CurrentMovement = initialMovement = new InputMovement(this, moveSpeed);
         
         Health.OnTakeDamage += OnTakeDamage;
         Health.OnDeath += OnDeath;
@@ -42,33 +37,33 @@ public class Player : MonoBehaviour, ITakeDamage
 
     private void OnTakeDamage(int damage)
     {
-        if(playerAbility.IsUsingAbility)
+        if(PlayerAbility.IsUsingAbility)
             Health.RestoreHealth(damage);
     }
 
     private void OnEnable()
     {
         Health.Reset();
-        playerAbility.Reset();
+        PlayerAbility.Reset();
         OnSpawn();
     }
     private void Update()
     {
-        playerInput.Tick();
-        playerAbility.Tick();
+        PlayerInput.Tick();
+        PlayerAbility.Tick();
         
     }
     private void FixedUpdate()
     {
-        if(!playerAttack.IsAttacking)
-            currentMovement.Move();
+        if(!PlayerAttack.IsAttacking)
+            CurrentMovement.Move();
         else
-            currentMovement.Move(attackData.SpeedPercentageOnAttack);
+            CurrentMovement.Move(attackData.SpeedPercentageOnAttack);
     }
     public void ChangeMovementStyle(IMovement movement)
     {
-        currentMovement = movement;
-        currentMovement.Initialize();
+        CurrentMovement = movement;
+        CurrentMovement.Initialize();
     }
     public void ResetMovementStyle()
     {

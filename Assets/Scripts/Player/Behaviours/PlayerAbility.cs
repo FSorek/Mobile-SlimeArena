@@ -12,10 +12,9 @@ public class PlayerAbility
     private readonly IMovement accelerometerMovement;
     private readonly BoxCollider2D[] abilityWalls = new BoxCollider2D[4];
     private readonly Collider2D[] targetColliders = new Collider2D[20];
-    private bool isUsingAbility;
     private float currentPool;
     private float lastDamageTime;
-    public bool IsUsingAbility => isUsingAbility;
+    public bool IsUsingAbility { get; private set; }
     public double CurrentPoolPercentage => currentPool / abilityData.MaxPoolAmount;
 
     public PlayerAbility(Player owner, PlayerAbilityData abilityData)
@@ -48,12 +47,12 @@ public class PlayerAbility
             return;
         playerCamera.Follow = null;
         owner.ChangeMovementStyle(accelerometerMovement);
-        isUsingAbility = true;
+        IsUsingAbility = true;
     }
 
     public void Tick()
     {
-        if (isUsingAbility && Time.time - lastDamageTime >= abilityData.TickRate)
+        if (IsUsingAbility && Time.time - lastDamageTime >= abilityData.TickRate)
         {
             DealAreaDamage();
         }
@@ -63,7 +62,7 @@ public class PlayerAbility
     {
         playerCamera.Follow = owner.transform;
         owner.ResetMovementStyle();
-        isUsingAbility = false;
+        IsUsingAbility = false;
     }
 
     public void RefillPool()
