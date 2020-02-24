@@ -27,6 +27,13 @@ public class Spawner
         prefabPool.StartCoroutine(TrySpawn(prefabInstance));
     }
 
+    public void SpawnAt(Vector2 position)
+    {
+        var prefabInstance = prefabPool.Get();
+        prefabInstance.transform.position = position;
+        prefabInstance.gameObject.SetActive(true);
+    }
+
     private IEnumerator TrySpawn(GameObject prefabInstance)
     {
         var point = RandomPointOutsideCamera();

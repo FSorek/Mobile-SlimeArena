@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
 {
+    public static List<EnemyNPC> Alive;
     [SerializeField] private int maxHealth;
     [SerializeField] private float timeUntilBodyIsGone = 2f;
     [SerializeField] private Transform attackOrigin;
@@ -30,6 +32,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
 
     private void OnEnable()
     {
+        Alive.Add(this);
         Health?.Reset();
         activeCollider.enabled = true;
     }
@@ -42,6 +45,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
 
     private void ReturnToPool()
     {
+        Alive.Remove(this);
         gameObject.ReturnToPool();
     }
 }

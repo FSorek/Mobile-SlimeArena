@@ -28,6 +28,7 @@ public class PlayerAbility
         
         owner.PlayerAttack.OnTargetHit += PlayerAttackOnTargetHit;
         InitializeAbilityWalls();
+        SetWallsActive(false);
     }
 
     private void PlayerAttackOnTargetHit(ITakeDamage target)
@@ -46,6 +47,7 @@ public class PlayerAbility
         if(currentPool < abilityData.TickRate)
             return;
         playerCamera.Follow = null;
+        SetWallsActive(true);
         owner.ChangeMovementStyle(accelerometerMovement);
         IsUsingAbility = true;
     }
@@ -61,6 +63,7 @@ public class PlayerAbility
     public void StopAbility()
     {
         playerCamera.Follow = owner.transform;
+        SetWallsActive(false);
         owner.ResetMovementStyle();
         IsUsingAbility = false;
     }
@@ -89,6 +92,14 @@ public class PlayerAbility
             currentPool = 0;
         }
         lastDamageTime = Time.time;
+    }
+
+    private void SetWallsActive(bool active)
+    {
+        foreach (var wall in abilityWalls)
+        {
+            wall.gameObject.SetActive(active);
+        }
     }
 
     private void InitializeAbilityWalls()
