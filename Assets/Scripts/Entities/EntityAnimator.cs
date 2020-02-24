@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public abstract class EntityAnimator<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class EntityAnimator<T> : MonoBehaviour
 {
     [SerializeField] protected Animator animator;
     [SerializeField] protected SpriteRenderer renderer;
@@ -9,11 +9,4 @@ public abstract class EntityAnimator<T> : MonoBehaviour where T : MonoBehaviour
     {
         owner = GetComponent<T>();
     }
-
-    private void Update()
-    {
-        Tick();
-    }
-
-    protected abstract void Tick();
 }

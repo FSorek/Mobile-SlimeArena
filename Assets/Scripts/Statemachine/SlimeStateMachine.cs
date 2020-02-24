@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(EnemyNPC))]
 [RequireComponent(typeof(NPCMover))]
 [RequireComponent(typeof(NPCDodger))]
-public class SlimeStateMachine : MonoBehaviour
+public class SlimeStateMachine : MonoBehaviour, IEnemyStateMachine
 {
+    public event Action<IState> OnEnemyStateChanged = delegate {  };
     [SerializeField] private NPCAttackData attackData;
     private StateMachine stateMachine = new StateMachine();
     private void Awake()
@@ -20,6 +22,8 @@ public class SlimeStateMachine : MonoBehaviour
         var attack = new NPCAttackState(player, enemyNPC.AttackOrigin, attackData);
         var dodge = new NPCRepositionState(npcDodger);
         var dead = new NPCDeadState();
+
+        stateMachine.OnStateChanged += (state) => OnEnemyStateChanged(state);
         
         stateMachine.CreateTransition(
             idle,

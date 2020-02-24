@@ -21,7 +21,7 @@ public class PlayerAnimation : EntityAnimator<Player>
         
     }
 
-    protected override void Tick()
+    private void Update()
     {
         animator.SetBool("IsAbilityActive", owner.PlayerAbility.IsUsingAbility);
         if(owner.PlayerAbility.IsUsingAbility)

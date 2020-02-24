@@ -1,23 +1,23 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 [RequireComponent(typeof(EnemyNPC))]
-public class NPCAnimation : EntityAnimator<EnemyNPC>
+public class NPCAnimation : EntityAnimator<IEnemyStateMachine>
 {
     private static readonly int IsDead = Animator.StringToHash("IsDead");
+    private static readonly int IsMoving = Animator.StringToHash("IsMoving");
+    private static readonly int IsRepositioning = Animator.StringToHash("IsRepositioning");
     private bool startsFlipped;
 
     private void Start()
     {
         startsFlipped = renderer.flipX;
-        owner.Health.OnDeath += () => animator.SetBool(IsDead, true);
+        owner.OnEnemyStateChanged += OwnerOnStateChanged;
     }
 
-    protected override void Tick()
+    private void OwnerOnStateChanged(IState state)
     {
-        //animator.SetBool("IsMoving", owner.CurrentState == NPCStates.GoToCurrentTarget && !owner.IsDead);
-        //animator.SetBool("IsRepositioning", owner.CurrentState == NPCStates.Reposition && !owner.IsDead);
-        
-        bool shouldFlip = (owner.transform.position.x - owner.Target.position.x) < 0;
-        renderer.flipX = startsFlipped ? !shouldFlip : shouldFlip;
+        animator.SetBool(IsMoving, state is NPCGoToPlayer);
+        animator.SetBool(IsRepositioning, state is NPCRepositionState);
+        if(state is NPCDeadState)
+            animator.SetTrigger(IsDead);
     }
 }

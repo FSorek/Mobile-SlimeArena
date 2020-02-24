@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
 {
-    public static List<EnemyNPC> Alive;
+    public static readonly List<EnemyNPC> Alive = new List<EnemyNPC>();
     [SerializeField] private int maxHealth;
     [SerializeField] private float timeUntilBodyIsGone = 2f;
     [SerializeField] private Transform attackOrigin;
@@ -21,10 +21,10 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
         Health = new Health(maxHealth);
         activeCollider = GetComponent<Collider2D>();
         Target = FindObjectOfType<Player>().transform;
-        Health.OnDeath += OnDeath;
+        Health.OnDeath += Death;
     }
 
-    private void OnDeath()
+    private void Death()
     {
         activeCollider.enabled = false;
         Invoke(nameof(ReturnToPool), timeUntilBodyIsGone);
@@ -35,12 +35,6 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
         Alive.Add(this);
         Health?.Reset();
         activeCollider.enabled = true;
-    }
-
-    public void TakeDamage(int damage)
-    {
-        Health.TakeDamage(damage);
-
     }
 
     private void ReturnToPool()
