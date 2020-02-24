@@ -16,7 +16,7 @@ public class SkeletonStateMachine : MonoBehaviour
         
         var idle = new NPCIdleState();
         var goToPlayer = new NPCGoToPlayer(player, npcMover);
-        var attack = new NPCAttackState(player, enemyNPC.AttackOrigin, attackData);
+        var attack = new NPCAttackState(player.transform, enemyNPC.AttackOrigin, attackData);
         var dodge = new NPCRepositionState(npcDodger);
         var attackSequenceState = new NPCSequenceState(attacksInSequence);
         var dead = new NPCDeadState();
@@ -24,12 +24,12 @@ public class SkeletonStateMachine : MonoBehaviour
         stateMachine.CreateTransition(
             idle,
             goToPlayer,
-            () => !attack.HasCleanAttackPath() || Vector2.Distance(transform.position, player.transform.position) > attackData.MaxAttackRange);
+            () => !enemyNPC.HasLineOfSightTo(player.transform.position) || Vector2.Distance(transform.position, player.transform.position) > attackData.MaxAttackRange);
         
         stateMachine.CreateTransition(
             goToPlayer,
             idle,
-            () => attack.HasCleanAttackPath() && Vector2.Distance(transform.position, player.transform.position) <= attackData.MinAttackRange);
+            () => enemyNPC.HasLineOfSightTo(player.transform.position) && Vector2.Distance(transform.position, player.transform.position) <= attackData.MinAttackRange);
         
         stateMachine.CreateTransition(
             idle,

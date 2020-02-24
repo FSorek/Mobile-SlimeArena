@@ -10,6 +10,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
     [SerializeField] private Transform attackOrigin;
 
     private Collider2D activeCollider;
+    private LayerMask obstacleMask;
 
     public Transform Target { get; private set; }
     public Transform AttackOrigin => attackOrigin;
@@ -22,6 +23,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
         activeCollider = GetComponent<Collider2D>();
         Target = FindObjectOfType<Player>().transform;
         Health.OnDeath += Death;
+        obstacleMask = LayerMask.GetMask("World");
     }
 
     private void Death()
@@ -41,5 +43,15 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
     {
         Alive.Remove(this);
         gameObject.ReturnToPool();
+    }
+    
+    public bool HasLineOfSightTo(Vector2 targetPosition)
+    {
+        Vector2 attackPosition = attackOrigin.position;
+        Vector2 directionToPlayer = (targetPosition - attackPosition).normalized;
+        var distance = Vector2.Distance(attackPosition, targetPosition);
+
+        RaycastHit2D hit = Physics2D.Raycast(attackPosition, directionToPlayer, distance, obstacleMask);
+        return hit.collider == null;
     }
 }

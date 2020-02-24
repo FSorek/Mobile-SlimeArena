@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.AI;
 
 [RequireComponent(typeof(EnemyNPC))]
 [RequireComponent(typeof(NPCMover))]
@@ -19,7 +18,7 @@ public class SlimeStateMachine : MonoBehaviour, IEnemyStateMachine
         
         var idle = new NPCIdleState();
         var goToPlayer = new NPCGoToPlayer(player, npcMover);
-        var attack = new NPCAttackState(player, enemyNPC.AttackOrigin, attackData);
+        var attack = new NPCAttackState(player.transform, enemyNPC.AttackOrigin, attackData);
         var dodge = new NPCRepositionState(npcDodger);
         var dead = new NPCDeadState();
 
@@ -28,17 +27,17 @@ public class SlimeStateMachine : MonoBehaviour, IEnemyStateMachine
         stateMachine.CreateTransition(
             idle,
             goToPlayer,
-            () => !attack.HasCleanAttackPath() || Vector2.Distance(transform.position, player.transform.position) > attackData.MaxAttackRange);
+            () => !enemyNPC.HasLineOfSightTo(player.transform.position) || Vector2.Distance(transform.position, player.transform.position) > attackData.MaxAttackRange);
         
         stateMachine.CreateTransition(
             goToPlayer,
             idle,
-            () => attack.HasCleanAttackPath() && Vector2.Distance(transform.position, player.transform.position) <= attackData.MinAttackRange);
+            () => enemyNPC.HasLineOfSightTo(player.transform.position) && Vector2.Distance(transform.position, player.transform.position) <= attackData.MinAttackRange);
         
         stateMachine.CreateTransition(
             idle,
             attack,
-            () => attack.CanAttack() && Vector2.Distance(transform.position, player.transform.position) <= attackData.MaxAttackRange);
+            () => attack.CanAttack() && enemyNPC.HasLineOfSightTo(player.transform.position) && Vector2.Distance(transform.position, player.transform.position) <= attackData.MaxAttackRange);
         
         stateMachine.CreateTransition(
             attack,
