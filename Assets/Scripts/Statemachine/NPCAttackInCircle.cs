@@ -1,31 +1,29 @@
 ﻿using UnityEngine;
 
-public class NPCAttackInCircleState : IState
+public class NPCAttackInCircle : IState
 {
     private readonly Transform attackOrigin;
-    private readonly NPCAttackData attackData;
-    private readonly int numberOfProjectiles;
+    private readonly NPCAttackInCircleData attackData;
     private float lastAttackTime;
+    private int attackOffset;
 
-    public NPCAttackInCircleState(Transform attackOrigin, NPCAttackData attackData, int numberOfProjectiles)
+    public NPCAttackInCircle(Transform attackOrigin, NPCAttackInCircleData attackData)
     {
         this.attackOrigin = attackOrigin;
         this.attackData = attackData;
-        this.numberOfProjectiles = numberOfProjectiles;
     }
     public void StateEnter()
     {
-        for (int i = 0; i < numberOfProjectiles; i++)
+        for (int i = 0; i < attackData.NumberOfProjectiles; i++)
         {
-            float angle = i * Mathf.PI * 2 / numberOfProjectiles;
-            Vector2 pos = (Vector2)attackOrigin.position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+            float angle = attackOffset + i * Mathf.PI * 2 / attackData.NumberOfProjectiles;
+            Vector2 fireDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
             
             var projectile = ProjectilePool.Instance.Get().GetComponent<Projectile>();
             projectile.transform.position = attackOrigin.position;
-            projectile.Shoot(pos, attackData);
+            projectile.Shoot(fireDirection, attackData.Damage);
             projectile.gameObject.SetActive(true);
         }
-        lastAttackTime = Time.time;
     }
 
     public void ListenToState()
@@ -34,6 +32,8 @@ public class NPCAttackInCircleState : IState
 
     public void StateExit()
     {
+        attackOffset += attackData.NextAttackOFfset;
+        lastAttackTime = Time.time;
     }
     
     public bool CanAttack()

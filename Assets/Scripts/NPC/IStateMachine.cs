@@ -1,6 +1,6 @@
 ﻿using System;
 
-public interface IEnemyStateMachine
+public interface IStateMachine
 {
     event Action<IState> OnEnemyStateChanged;
 }

@@ -9,6 +9,7 @@ public class Health
     private readonly int maxHealth;
     private int currentHealth;
     public int CurrentHealth => currentHealth;
+    public int MaxHealth => maxHealth;
     public bool IsDead => currentHealth <= 0;
 
     public Health(int maxHealth)
@@ -21,7 +22,7 @@ public class Health
         currentHealth = maxHealth;
     }
 
-    public void RestoreHealth(int amount)
+    public void Restore(int amount)
     {
         currentHealth += amount;
         if (currentHealth > maxHealth)

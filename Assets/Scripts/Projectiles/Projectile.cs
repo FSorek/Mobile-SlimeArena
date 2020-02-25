@@ -28,11 +28,10 @@ public class Projectile : MonoBehaviour, IGameObjectPooled
         gameObject.layer = enemyLayer;
     }
 
-    public void Shoot(Vector2 targetPosition, NPCAttackData attackData)
+    public void Shoot(Vector2 direction, int damage)
     {
-        damage = attackData.Damage;
-        var directionToTarget = (targetPosition - (Vector2) transform.position).normalized;
-        shootDirection = (directionToTarget + Random.insideUnitCircle * attackData.AccuracySpread).normalized;
+        this.damage = damage;
+        shootDirection = direction;
         shotTime = Time.time;
     }
 

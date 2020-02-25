@@ -1,25 +1,30 @@
 ﻿using System;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyNPC))]
 [RequireComponent(typeof(NPCMover))]
-[RequireComponent(typeof(NPCDodger))]
-public class SlimeStateMachine : MonoBehaviour, IStateMachine
+public class BossStateMachine : MonoBehaviour, IStateMachine
 {
     public event Action<IState> OnEnemyStateChanged = delegate {  };
-    [SerializeField] private NPCAttackData attackData;
-    private StateMachine stateMachine = new StateMachine();
+
+    [SerializeField] private NPCAttackInCircleData attackData;
+    [SerializeField] private NPCSequenceData sequenceData;
+    [Range(0f, 1f)]
+    [SerializeField] private float secondStageHealthThreshold = .5f;
+    
+    private readonly StateMachine stateMachine = new StateMachine();
+
     private void Awake()
     {
-        var npcMover = GetComponent<NPCMover>();
-        var npcDodger = GetComponent<NPCDodger>();
-        var enemyNPC = GetComponent<EnemyNPC>();
         var player = FindObjectOfType<Player>();
+        var npcMover = GetComponent<NPCMover>();
+        var enemyNPC = GetComponent<EnemyNPC>();
         
         var idle = new NPCIdle();
         var goToPlayer = new NPCGoToPlayer(player, npcMover);
-        var attack = new NPCAttack(player.transform, enemyNPC.AttackOrigin, attackData);
-        var dodge = new NPCDodge(npcDodger);
+        var attack = new NPCAttackInCircle(enemyNPC.AttackOrigin, attackData);
+        var sequenceAttack = new NPCSequence(sequenceData);
         var dead = new NPCDead();
 
         stateMachine.OnStateChanged += (state) => OnEnemyStateChanged(state);
@@ -41,18 +46,30 @@ public class SlimeStateMachine : MonoBehaviour, IStateMachine
         
         stateMachine.CreateTransition(
             attack,
-            dodge,
-            () => true);
+            idle,
+            () => enemyNPC.Health.CurrentHealth >= enemyNPC.Health.MaxHealth * secondStageHealthThreshold);
         
         stateMachine.CreateTransition(
-            dodge,
+            attack,
+            sequenceAttack,
+            () => enemyNPC.Health.CurrentHealth < enemyNPC.Health.MaxHealth * secondStageHealthThreshold);
+        
+        stateMachine.CreateTransition(
+            sequenceAttack,
+            attack,
+            () => sequenceAttack.CanContinueSequence
+            );
+        
+        stateMachine.CreateTransition(
+            sequenceAttack,
             idle,
-            () => !npcDodger.IsDodging);
+            () => !sequenceAttack.CanContinueSequence
+        );
         
         stateMachine.CreateAnyTransition(
             dead,
             () => enemyNPC.Health.IsDead);
-
+        
         stateMachine.SetState(idle);
     }
 

@@ -6,8 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class NPCMover : MonoBehaviour
 {
+    private const float WaypointStoppingDistance = 1f;
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float stoppingDistance;
 
     private int currentWaypoint;
     private Seeker seeker;
@@ -32,7 +32,7 @@ public class NPCMover : MonoBehaviour
             return;
         var moveDirection = ((Vector2)path.vectorPath[currentWaypoint] - rigidBody.position).normalized;
         rigidBody.MovePosition(rigidBody.position + Time.fixedDeltaTime * moveSpeed * moveDirection);
-        if (Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]) < stoppingDistance)
+        if (Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]) < WaypointStoppingDistance)
             currentWaypoint++;
         if (currentWaypoint >= path.vectorPath.Count - 1)
             IsMoving = false;

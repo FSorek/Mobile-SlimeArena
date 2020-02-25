@@ -38,7 +38,7 @@ public class Player : MonoBehaviour, ITakeDamage
     private void OnTakeDamage(int damage)
     {
         if(PlayerAbility.IsUsingAbility)
-            Health.RestoreHealth(damage);
+            Health.Restore(damage);
     }
 
     private void OnEnable()

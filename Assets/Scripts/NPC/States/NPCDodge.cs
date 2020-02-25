@@ -1,8 +1,8 @@
-﻿public class NPCRepositionState : IState
+﻿public class NPCDodge : IState
 {
     private readonly NPCDodger dodger;
 
-    public NPCRepositionState(NPCDodger dodger)
+    public NPCDodge(NPCDodger dodger)
     {
         this.dodger = dodger;
     }

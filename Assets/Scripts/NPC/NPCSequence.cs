@@ -1,19 +1,19 @@
-﻿public class NPCSequenceState : IState
+﻿public class NPCSequence : IState
 {
-    private readonly int sequenceIterations;
+    private readonly NPCSequenceData sequenceData;
     private int sequenceCounter;
     
     public bool CanContinueSequence { get; private set; }
 
-    public NPCSequenceState(int sequenceIterations)
+    public NPCSequence(NPCSequenceData sequenceData)
     {
-        this.sequenceIterations = sequenceIterations;
+        this.sequenceData = sequenceData;
         CanContinueSequence = true;
     }
     public void StateEnter()
     {
         sequenceCounter++;
-        CanContinueSequence = sequenceCounter < sequenceIterations;
+        CanContinueSequence = sequenceCounter < sequenceData.RepeatAmount;
     }
 
     public void ListenToState()

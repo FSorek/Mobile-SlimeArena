@@ -42,7 +42,13 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
     private void ReturnToPool()
     {
         Alive.Remove(this);
-        gameObject.ReturnToPool();
+        if(Pool != null)
+            gameObject.ReturnToPool();
+        else
+        {
+            Debug.LogWarning("No pool assigned to the object, destroying");
+            Destroy(gameObject);
+        }
     }
     
     public bool HasLineOfSightTo(Vector2 targetPosition)

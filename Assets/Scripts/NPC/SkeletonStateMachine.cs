@@ -2,9 +2,9 @@
 
 public class SkeletonStateMachine : MonoBehaviour
 {
-    [SerializeField] private int attacksInSequence;
     [SerializeField] private NPCAttackData attackData;
-    
+    [SerializeField] private NPCSequenceData sequenceData;
+
     private StateMachine stateMachine = new StateMachine();
     
     private void Awake()
@@ -14,12 +14,12 @@ public class SkeletonStateMachine : MonoBehaviour
         var enemyNPC = GetComponent<EnemyNPC>();
         var player = FindObjectOfType<Player>();
         
-        var idle = new NPCIdleState();
+        var idle = new NPCIdle();
         var goToPlayer = new NPCGoToPlayer(player, npcMover);
-        var attack = new NPCAttackState(player.transform, enemyNPC.AttackOrigin, attackData);
-        var dodge = new NPCRepositionState(npcDodger);
-        var attackSequenceState = new NPCSequenceState(attacksInSequence);
-        var dead = new NPCDeadState();
+        var attack = new NPCAttack(player.transform, enemyNPC.AttackOrigin, attackData);
+        var dodge = new NPCDodge(npcDodger);
+        var attackSequenceState = new NPCSequence(sequenceData);
+        var dead = new NPCDead();
         
         stateMachine.CreateTransition(
             idle,
@@ -48,13 +48,13 @@ public class SkeletonStateMachine : MonoBehaviour
         
         stateMachine.CreateTransition(
             attackSequenceState,
-            idle,
-            () => !attackSequenceState.CanContinueSequence);
+            attack,
+            () => attackSequenceState.CanContinueSequence);
         
         stateMachine.CreateTransition(
             attackSequenceState,
-            attack,
-            () => attackSequenceState.CanContinueSequence);
+            idle,
+            () => !attackSequenceState.CanContinueSequence);
         
         stateMachine.CreateAnyTransition(
             dead,

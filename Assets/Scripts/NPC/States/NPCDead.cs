@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class NPCIdleState : IState
+﻿public class NPCDead : IState
 {
     public void StateEnter()
     {
@@ -13,6 +11,4 @@ public class NPCIdleState : IState
     public void StateExit()
     {
     }
-
-    public bool CanExit => true;
 }
