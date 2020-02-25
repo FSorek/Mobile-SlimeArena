@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: NPC Attack In Circle Data
   m_EditorClassIdentifier: Assembly-CSharp::NPCAttackInCircleData
   damage: 1
-  numberOfProjectiles: 3
-  nextAttackOFfset: 3
+  numberOfProjectiles: 6
+  nextAttackOffset: 3
   shootingRate: 2
   minAttackRange: 5
   maxAttackRange: 10

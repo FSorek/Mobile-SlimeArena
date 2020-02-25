@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   attackSize: {x: 2, y: 2}
-  attackDelay: 0.4
-  attackRootDuration: 0.3
-  speedPercentageOnAttack: 0.5
+  attackDelay: 0.2
+  attackRootDuration: 0.15
+  speedPercentageOnAttack: 1.5
