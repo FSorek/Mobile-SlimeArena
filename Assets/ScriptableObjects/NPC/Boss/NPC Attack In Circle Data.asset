@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eb1d1ee779cd39991d3c2c9bf2879926af9c8369c4a56f550210c941de00f59e
-size 514
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: NPC Attack In Circle Data
+  m_EditorClassIdentifier: Assembly-CSharp::NPCAttackInCircleData
+  damage: 1
+  numberOfProjectiles: 3
+  nextAttackOFfset: 3
+  shootingRate: 2
+  minAttackRange: 5
+  maxAttackRange: 10

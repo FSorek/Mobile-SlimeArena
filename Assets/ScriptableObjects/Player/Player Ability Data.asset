@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a860a936facbdb0a2418d9ec18db7c4c0a07da3584899b25da33fe941bc03d18
-size 644
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a1fd3636ca4d2c845795b441b6ffb4, type: 3}
+  m_Name: Player Ability Data
+  m_EditorClassIdentifier: 
+  wallPrefab: {fileID: 5721988294099757917, guid: 8e9da0e766939dd43ac42b8432ecd673,
+    type: 3}
+  damageRadius: 2
+  damagePerTick: 1
+  tickRate: 0.2
+  maxPoolAmount: 12
+  refillAmount: 1
+  tornadoAcceleration: 60
+  tornadoMaxSpeed: 10

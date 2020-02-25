@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6194989472faf884c533722a0951d8a14517684ce44dbe130a9d1483c7b9e02a
-size 457
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77df8e9fca144c78f5150de4ebebe25, type: 3}
+  m_Name: Slime Reposition Data
+  m_EditorClassIdentifier: 
+  RepositionSpeed: 1
+  RepositionDistance: 1.2
