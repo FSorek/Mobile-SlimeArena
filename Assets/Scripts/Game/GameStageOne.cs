@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class GameStageOneState : IState
+public class GameStageOne : IState
 {
     private readonly ObjectPool starterEnemy;
     private readonly float spawnFrequency;
     private float lastSpawnTime;
     private Spawner spawner;
-    public GameStageOneState(ObjectPool starterEnemy, float spawnFrequency)
+    public GameStageOne(ObjectPool starterEnemy, float spawnFrequency)
     {
         this.starterEnemy = starterEnemy;
         this.spawnFrequency = spawnFrequency;

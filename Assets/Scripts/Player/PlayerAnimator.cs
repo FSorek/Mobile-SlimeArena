@@ -2,7 +2,7 @@
 using UnityEngine;
 [RequireComponent(typeof(Player))]
 
-public class PlayerAnimation : EntityAnimator<Player>
+public class PlayerAnimator : EntityAnimator<Player>
 {
     private Vector2 initialPosition;
     private Vector2 minVector = new Vector2(1,.25f).normalized;
@@ -28,7 +28,5 @@ public class PlayerAnimation : EntityAnimator<Player>
             return;
         
         animator.SetBool("IsMoving", owner.CurrentMovement.IsMoving);
-        if(owner.CurrentMovement.IsMoving)
-            renderer.flipX = owner.PlayerInput.MoveVector.x < 0;
     }
 }

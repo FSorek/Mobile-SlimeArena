@@ -12,47 +12,38 @@ public class GameStateMachine : MonoBehaviour
 
     private readonly StateMachine stateMachine = new StateMachine();
 
+    public static IState CurrentGameState { get; private set; }
+
     private void Awake()
     {
         var playableDirector = FindObjectOfType<PlayableDirector>();
         
-        var stageOne = new GameStageOneState(slimePool, 5f);
-        var bossCinematic = new GameBossCinematicState(playableDirector, bossPool, bossSpawnPosition.position);
-        var bossFight = new GameBossFightState();
+        var stageOne = new GameStageOne(slimePool, 5f);
+        var bossStartCinematic = new GameStartBossCinematic(playableDirector, bossPool, bossSpawnPosition.position);
+        var bossFight = new GameBossFight();
         
+        stateMachine.OnStateChanged += StateMachineOnStateChanged;
+
         stateMachine.CreateTransition(
             stageOne,
-            bossCinematic,
-            () => ScoreTracker.Score == 1);
+            bossStartCinematic,
+            () => ScoreTracker.Score >= 1);
         
         stateMachine.CreateTransition(
-            bossCinematic,
+            bossStartCinematic,
             bossFight,
-            () => bossCinematic.IsCinematicFinished);
+            () => bossStartCinematic.IsCinematicFinished);
 
         stateMachine.SetState(stageOne);
+    }
+
+    private void StateMachineOnStateChanged(IState state)
+    {
+        CurrentGameState = state;
     }
 
     private void Update()
     {
         stateMachine.Tick();
-    }
-}
-
-public class GameBossFightState : IState
-{
-    public void StateEnter()
-    {
-        
-    }
-
-    public void ListenToState()
-    {
-        
-    }
-
-    public void StateExit()
-    {
-        
     }
 }

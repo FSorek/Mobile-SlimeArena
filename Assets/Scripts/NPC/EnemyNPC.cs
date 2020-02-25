@@ -12,7 +12,6 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
     private Collider2D activeCollider;
     private LayerMask obstacleMask;
 
-    public Transform Target { get; private set; }
     public Transform AttackOrigin => attackOrigin;
     public Health Health { get; private set; }
     public ObjectPool Pool { get; set; }
@@ -21,7 +20,6 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
     {
         Health = new Health(maxHealth);
         activeCollider = GetComponent<Collider2D>();
-        Target = FindObjectOfType<Player>().transform;
         Health.OnDeath += Death;
         obstacleMask = LayerMask.GetMask("World");
     }
@@ -32,16 +30,20 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
         Invoke(nameof(ReturnToPool), timeUntilBodyIsGone);
     }
 
+    private void OnDisable()
+    {
+        Alive.Remove(this);
+    }
+
     private void OnEnable()
     {
-        Alive.Add(this);
         Health?.Reset();
+        Alive.Add(this);
         activeCollider.enabled = true;
     }
 
     private void ReturnToPool()
     {
-        Alive.Remove(this);
         if(Pool != null)
             gameObject.ReturnToPool();
         else

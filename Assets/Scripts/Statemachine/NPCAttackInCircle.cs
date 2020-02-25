@@ -32,7 +32,7 @@ public class NPCAttackInCircle : IState
 
     public void StateExit()
     {
-        attackOffset += attackData.NextAttackOFfset;
+        attackOffset += attackData.NextAttackOffset;
         lastAttackTime = Time.time;
     }
     
