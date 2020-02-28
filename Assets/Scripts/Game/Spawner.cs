@@ -9,6 +9,7 @@ public class Spawner
     private readonly Camera playerCamera;
     private readonly LayerMask unstuckMask;
     public bool IsSpawning { get; private set; }
+    public float LastSpawnTime { get; private set; }
 
     public Spawner(ObjectPool prefabPool)
     {
@@ -47,6 +48,7 @@ public class Spawner
 
         prefabInstance.transform.position = new Vector3(worldPosition.x, worldPosition.y, 0);
         prefabInstance.gameObject.SetActive(true);
+        LastSpawnTime = Time.time;
         IsSpawning = false;
     }
 
