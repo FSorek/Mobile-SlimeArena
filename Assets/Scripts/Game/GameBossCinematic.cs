@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
 
-public class GameStartBossCinematic : IState
+public class GameBossCinematic : IState
 {
     private readonly PlayableDirector director;
     private readonly Vector2 bossSpawnPosition;
     private Spawner spawner;
     public bool IsCinematicFinished { get; private set; }
 
-    public GameStartBossCinematic(PlayableDirector director, ObjectPool bossPool, Vector2 bossSpawnPosition)
+    public GameBossCinematic(PlayableDirector director, ObjectPool bossPool, Vector2 bossSpawnPosition)
     {
         this.director = director;
         this.bossSpawnPosition = bossSpawnPosition;

@@ -21,7 +21,6 @@ public class NPCAttack : IState
     public void StateEnter()
     {
         attackCastingTimer = attackData.CastingTime;
-        Debug.Log("Entered attack");
     }
 
     public void ListenToState()

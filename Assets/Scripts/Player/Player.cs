@@ -49,6 +49,8 @@ public class Player : MonoBehaviour, ITakeDamage
     }
     private void Update()
     {
+        if(GameStateMachine.CurrentGameState is GameBossCinematic)
+            return;
         PlayerInput.Tick();
         PlayerAbility.Tick();
         

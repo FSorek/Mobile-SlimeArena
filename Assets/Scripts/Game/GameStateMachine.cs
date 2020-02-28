@@ -31,7 +31,7 @@ public class GameStateMachine : MonoBehaviour
         
         
         var stageOne = new GameRegularStage(stageOneSpawners);
-        var bossStartCinematic = new GameStartBossCinematic(playableDirector, bossPool, bossSpawnPosition.position);
+        var bossStartCinematic = new GameBossCinematic(playableDirector, bossPool, bossSpawnPosition.position);
         var bossFight = new GameBossFight();
         var stageTwo = new GameRegularStage(stageTwoSpawners);
         
