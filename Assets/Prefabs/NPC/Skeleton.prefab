@@ -4863,8 +4863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1963da2b2b4ee8b8321bbbca23f944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attacksInSequence: 3
   attackData: {fileID: 11400000, guid: e51534273c1acb8469072a92d2ced4b6, type: 2}
+  sequenceData: {fileID: 11400000, guid: 50e30b5dfe197fd49aab8411847e987f, type: 2}
 --- !u!1001 &1414863917430862321
 PrefabInstance:
   m_ObjectHideFlags: 0

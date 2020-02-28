@@ -1,12 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class SkeletonStateMachine : MonoBehaviour
+public class SkeletonStateMachine : MonoBehaviour, IStateMachine
 {
+    public event Action<IState> OnEnemyStateChanged = delegate {  };
+    
     [SerializeField] private NPCAttackData attackData;
     [SerializeField] private NPCSequenceData sequenceData;
 
     private StateMachine stateMachine = new StateMachine();
-    
+
+
     private void Awake()
     {
         var npcMover = GetComponent<NPCMover>();
@@ -20,6 +24,8 @@ public class SkeletonStateMachine : MonoBehaviour
         var dodge = new NPCDodge(npcDodger);
         var attackSequenceState = new NPCSequence(sequenceData);
         var dead = new NPCDead();
+        
+        stateMachine.OnStateChanged += (state) => OnEnemyStateChanged(state);
         
         stateMachine.CreateTransition(
             idle,
