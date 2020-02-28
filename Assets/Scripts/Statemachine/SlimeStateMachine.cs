@@ -7,7 +7,7 @@ using UnityEngine;
 public class SlimeStateMachine : MonoBehaviour, IStateMachine
 {
     public event Action<IState> OnEnemyStateChanged = delegate {  };
-    [SerializeField] private NPCAttackData attackData;
+    [SerializeField] private AttackData attackData;
     private StateMachine stateMachine = new StateMachine();
     private void Awake()
     {
@@ -16,9 +16,12 @@ public class SlimeStateMachine : MonoBehaviour, IStateMachine
         var enemyNPC = GetComponent<EnemyNPC>();
         var player = FindObjectOfType<Player>();
         
+        var projectile = new ProjectileShot(attackData.Damage);
+
+        
         var idle = new NPCIdle();
         var goToPlayer = new NPCGoToPlayer(player, npcMover);
-        var attack = new NPCAttack(player.transform, enemyNPC.AttackOrigin, attackData);
+        var attack = new NPCAttack(player.transform, enemyNPC.AttackOrigin, projectile, attackData);
         var dodge = new NPCDodge(npcDodger);
         var dead = new NPCDead();
 
@@ -42,7 +45,7 @@ public class SlimeStateMachine : MonoBehaviour, IStateMachine
         stateMachine.CreateTransition(
             attack,
             dodge,
-            () => true);
+            () => attack.HasCompletedAttack);
         
         stateMachine.CreateTransition(
             dodge,

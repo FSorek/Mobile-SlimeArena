@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: NPC Attack In Circle Data
-  m_EditorClassIdentifier: Assembly-CSharp::NPCAttackInCircleData
+  m_Script: {fileID: 11500000, guid: 267e2da9b79ece14394a246e655f415c, type: 3}
+  m_Name: Boss Attack Data
+  m_EditorClassIdentifier: 
   damage: 1
-  numberOfProjectiles: 6
-  nextAttackOffset: 3
-  shootingRate: 2
-  minAttackRange: 5
-  maxAttackRange: 10
+  shootingRate: 3
+  minAttackRange: 10
+  maxAttackRange: 14
+  castingTime: 0.5

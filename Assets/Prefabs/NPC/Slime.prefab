@@ -5089,7 +5089,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 8109113875466547080}
-  listenedComponent: {fileID: -3424810506799487300}
 --- !u!114 &2575506530091542110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5228,7 +5227,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  stoppingDistance: 1
 --- !u!114 &-710077083984895240
 MonoBehaviour:
   m_ObjectHideFlags: 0

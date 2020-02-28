@@ -16,7 +16,7 @@ public class BossAnimator : EntityAnimator<BossStateMachine>
         animator.SetBool(IsMoving, state is NPCGoToPlayer);
         if(state is NPCDead)
             animator.SetTrigger(Die);
-        if(state is NPCAttack || state is NPCAttackInCircle)
+        if(state is NPCAttack)
             animator.SetTrigger(Attack);
     }
 }

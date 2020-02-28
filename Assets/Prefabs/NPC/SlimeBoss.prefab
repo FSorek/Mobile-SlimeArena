@@ -272,8 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d704d2de69e45f093eac0d0a684f883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackData: {fileID: 11400000, guid: f6fedf575ccbc7c4b8cb6a603a3db757, type: 2}
-  sequenceData: {fileID: 11400000, guid: 0724bd09e1d370e4c9832ff13d4590ef, type: 2}
+  attackData: {fileID: 11400000, guid: ee8044e1c45a6ca4f93bf135831411c2, type: 2}
   secondStageHealthThreshold: 1
 --- !u!114 &4586117891349221965
 MonoBehaviour:

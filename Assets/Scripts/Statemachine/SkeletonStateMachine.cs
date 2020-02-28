@@ -5,7 +5,7 @@ public class SkeletonStateMachine : MonoBehaviour, IStateMachine
 {
     public event Action<IState> OnEnemyStateChanged = delegate {  };
     
-    [SerializeField] private NPCAttackData attackData;
+    [SerializeField] private AttackData attackData;
     [SerializeField] private NPCSequenceData sequenceData;
 
     private StateMachine stateMachine = new StateMachine();
@@ -17,10 +17,12 @@ public class SkeletonStateMachine : MonoBehaviour, IStateMachine
         var npcDodger = GetComponent<NPCDodger>();
         var enemyNPC = GetComponent<EnemyNPC>();
         var player = FindObjectOfType<Player>();
+
+        var projectile = new ProjectileShot(attackData.Damage);
         
         var idle = new NPCIdle();
         var goToPlayer = new NPCGoToPlayer(player, npcMover);
-        var attack = new NPCAttack(player.transform, enemyNPC.AttackOrigin, attackData);
+        var attack = new NPCAttack(player.transform, enemyNPC.AttackOrigin, projectile, attackData);
         var dodge = new NPCDodge(npcDodger);
         var attackSequenceState = new NPCSequence(sequenceData);
         var dead = new NPCDead();
@@ -45,7 +47,7 @@ public class SkeletonStateMachine : MonoBehaviour, IStateMachine
         stateMachine.CreateTransition(
             attack,
             dodge,
-            () => true);
+            () => attack.HasCompletedAttack);
 
         stateMachine.CreateTransition(
             dodge,

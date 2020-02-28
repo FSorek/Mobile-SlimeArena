@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 165b5144910d4d32a92b3e7ae2df3202, type: 3}
+  m_Script: {fileID: 11500000, guid: 267e2da9b79ece14394a246e655f415c, type: 3}
   m_Name: Skeleton Attack Data
   m_EditorClassIdentifier: 
   damage: 1
-  shootingRate: 5
-  minAttackRange: 6
+  shootingRate: 4
+  minAttackRange: 5
   maxAttackRange: 8
-  accuracyOffset: 1
+  castingTime: 0.2

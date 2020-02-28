@@ -2,39 +2,43 @@
 
 public class NPCAttack : IState
 {
-    private readonly Transform attackOrigin;
-    private readonly NPCAttackData attackData;
     private readonly Transform target;
-    private double lastAttackTime;
+    private readonly Transform attackOrigin;
+    private readonly Attack attack;
+    private readonly AttackData attackData;
+    private float attackCastingTimer;
+    private float lastAttackTime;
 
-    public NPCAttack(Transform target, Transform attackOrigin, NPCAttackData attackData)
+    public bool HasCompletedAttack { get; private set; }
+
+    public NPCAttack(Transform target, Transform attackOrigin, Attack attack, AttackData attackData)
     {
-        this.attackOrigin = attackOrigin;
-        this.attackData = attackData;
         this.target = target;
+        this.attackOrigin = attackOrigin;
+        this.attack = attack;
+        this.attackData = attackData;
     }
     public void StateEnter()
     {
-        var projectile = ProjectilePool.Instance.Get().GetComponent<Projectile>();
-        var attackPosition = attackOrigin.position;
-        
-        Vector2 directionToTarget = ((Vector2) target.position - (Vector2) attackPosition).normalized;
-        Vector2 shootDirection = (directionToTarget + Random.insideUnitCircle * attackData.AccuracySpread).normalized;
-        
-        projectile.transform.position = attackPosition;
-        projectile.Shoot(shootDirection, attackData.Damage);
-        projectile.gameObject.SetActive(true);
-        lastAttackTime = Time.time;
+        attackCastingTimer = attackData.CastingTime;
+        Debug.Log("Entered attack");
     }
 
     public void ListenToState()
     {
-        
+        attackCastingTimer -= Time.deltaTime;
+        if(attackCastingTimer <= 0 && !HasCompletedAttack)
+        {
+            Vector2 directionToTarget = ((Vector2) target.position - (Vector2) attackOrigin.position).normalized;
+            attack.Create(attackOrigin.position, directionToTarget);
+            HasCompletedAttack = true;
+            lastAttackTime = Time.time;
+        }
     }
-    
+
     public void StateExit()
     {
-        
+        HasCompletedAttack = false;
     }
 
     public bool CanAttack()

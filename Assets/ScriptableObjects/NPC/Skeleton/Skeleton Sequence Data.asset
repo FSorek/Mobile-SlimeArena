@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e7165de488e4b23a0df0be382bb46c4, type: 3}
-  m_Name: NPC Sequence Data
+  m_Name: Skeleton Sequence Data
   m_EditorClassIdentifier: 
-  repeatAmount: 0
+  repeatAmount: 3
