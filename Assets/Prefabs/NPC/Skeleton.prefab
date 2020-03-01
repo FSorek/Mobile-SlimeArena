@@ -4872,6 +4872,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3424810506799487300, guid: 814fc995ad34725478a1589d165ba691,
+        type: 3}
+      propertyPath: maxHealth
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -710077083984895240, guid: 814fc995ad34725478a1589d165ba691,
         type: 3}
       propertyPath: dodgeSpeed

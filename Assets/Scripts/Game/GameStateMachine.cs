@@ -29,7 +29,8 @@ public class GameStateMachine : MonoBehaviour
         stageTwoSpawners.Add((5f, slimeSpawner));
         stageTwoSpawners.Add((8f, skeletonSpawner));
         
-        
+        var loading = new GameLoading();
+        var started = new GameStarted();
         var stageOne = new GameRegularStage(stageOneSpawners);
         var bossStartCinematic = new GameBossCinematic(playableDirector, bossPool, bossSpawnPosition.position);
         var bossFight = new GameBossFight();
@@ -66,32 +67,38 @@ public class GameStateMachine : MonoBehaviour
     }
 }
 
-public class GameRegularStage : IState
+public class GameLoading : IState
+ {
+     public void StateEnter()
+     {
+         
+     }
+ 
+     public void ListenToState()
+     {
+         
+     }
+ 
+     public void StateExit()
+     {
+         
+     }
+ }
+ 
+public class GameStarted : IState
 {
-    private readonly List<(float, Spawner)> timerSpawners;
-    private float lastSpawnTime;
-    public GameRegularStage(List<(float, Spawner)> timerSpawners)
-    {
-        this.timerSpawners = timerSpawners;
-    }
     public void StateEnter()
     {
+        Time.timeScale = 0f;
     }
 
     public void ListenToState()
     {
-        foreach (var timerSpawner in timerSpawners)
-        {
-            if(timerSpawner.Item2.IsSpawning 
-               || Time.time - timerSpawner.Item2.LastSpawnTime < timerSpawner.Item1)
-                return;
-
-            timerSpawner.Item2.OrderSpawn();
-            lastSpawnTime = Time.time;
-        }
+        
     }
 
     public void StateExit()
     {
+        Time.timeScale = 1f;
     }
 }
