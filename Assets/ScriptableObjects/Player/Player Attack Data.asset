@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player Attack Data
   m_EditorClassIdentifier: 
   damage: 1
-  shootingRate: 2
-  minAttackRange: 1
-  maxAttackRange: 1
-  castingTime: 1
+  shootingRate: 0.2
+  minAttackRange: 2
+  maxAttackRange: 2
+  castingTime: 0

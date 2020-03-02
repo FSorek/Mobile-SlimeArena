@@ -6,6 +6,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPoole
 {
     public static readonly List<EnemyNPC> Alive = new List<EnemyNPC>();
     public static event Action<EnemyNPC> OnSpawned = delegate {  };
+    public static event Action<EnemyNPC> OnDespawned = delegate {  };
     public static event Action<EnemyNPC> OnDeath = delegate {  }; 
     [SerializeField] private int maxHealth;
     [SerializeField] private float timeUntilBodyIsGone = 2f;
@@ -20,7 +21,6 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPoole
     public Vector2 AttackDirection => (target.transform.position - transform.position).normalized;
     public ObjectPool Pool { get; set; }
 
-
     private void Awake()
     {
         Health = new Health(maxHealth, .2f);
@@ -33,13 +33,14 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPoole
     private void Death()
     {
         activeCollider.enabled = false;
+        OnDeath(this);
         Invoke(nameof(ReturnToPool), timeUntilBodyIsGone);
     }
 
     private void OnDisable()
     {
         Alive.Remove(this);
-        OnDeath(this);
+        OnDespawned(this);
     }
 
     private void OnEnable()

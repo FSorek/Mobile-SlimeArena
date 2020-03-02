@@ -41,7 +41,7 @@ public class GameStateMachine : MonoBehaviour
         stateMachine.CreateTransition(
             stageOne,
             bossStartCinematic,
-            () => ScoreTracker.Score >= 51);
+            () => ScoreTracker.Score >= 1);
         
         stateMachine.CreateTransition(
             bossStartCinematic,
