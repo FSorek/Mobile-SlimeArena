@@ -44,7 +44,7 @@ public class PlayerAbility
             return;
         playerCamera.Follow = null;
         SetWallsActive(true);
-        owner.ChangeMovementStyle(accelerometerMovement);
+        //owner.ChangeMovementStyle(accelerometerMovement);
         IsUsingAbility = true;
     }
 
@@ -60,7 +60,7 @@ public class PlayerAbility
     {
         playerCamera.Follow = owner.transform;
         SetWallsActive(false);
-        owner.ResetMovementStyle();
+        //owner.ResetMovementStyle();
         IsUsingAbility = false;
     }
 

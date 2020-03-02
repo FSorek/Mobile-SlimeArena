@@ -9,10 +9,13 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
 
     private StateMachine stateMachine = new StateMachine();
     private StateMachine movementStateMachine = new StateMachine();
+    private Player player;
+
+    public bool IsMoving => player.PlayerInput.MoveVector.magnitude > 0f;
 
     private void Awake()
     {
-        var player = GetComponent<Player>();
+        player = GetComponent<Player>();
         
         var meleeAttack = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange));
         
@@ -38,10 +41,19 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
             () => player.Health.IsDead);
         
         stateMachine.SetState(idle);
+        
+        var inputMovement = new InputMovement(player, 5f);
+        movementStateMachine.SetState(inputMovement);
     }
 
     private void Update()
     {
         stateMachine.Tick();
+    }
+
+    private void FixedUpdate()
+    {
+        if(IsMoving)
+            movementStateMachine.Tick();
     }
 }
