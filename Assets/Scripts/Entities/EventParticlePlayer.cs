@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class EventParticlePlayer<T> : MonoBehaviour where T : Component
+public abstract class EventParticlePlayer<T> : MonoBehaviour
 {
     [SerializeField] protected ParticleSystem particle;
     protected T ListenedComponent { get; private set; }

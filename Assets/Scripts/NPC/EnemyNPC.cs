@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
+public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPooled
 {
     public static readonly List<EnemyNPC> Alive = new List<EnemyNPC>();
     public static event Action<EnemyNPC> OnSpawned = delegate {  };
@@ -13,17 +13,21 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
 
     private Collider2D activeCollider;
     private LayerMask obstacleMask;
+    private Player target;
 
     public Transform AttackOrigin => attackOrigin;
     public Health Health { get; private set; }
+    public Vector2 AttackDirection => (target.transform.position - transform.position).normalized;
     public ObjectPool Pool { get; set; }
+
 
     private void Awake()
     {
-        Health = new Health(maxHealth);
+        Health = new Health(maxHealth, .2f);
         activeCollider = GetComponent<Collider2D>();
         Health.OnDeath += Death;
         obstacleMask = LayerMask.GetMask("World");
+        target = FindObjectOfType<Player>();
     }
 
     private void Death()
@@ -56,7 +60,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, IGameObjectPooled
             Destroy(gameObject);
         }
     }
-    
+
     public bool HasLineOfSightTo(Vector2 targetPosition)
     {
         Vector2 attackPosition = attackOrigin.position;

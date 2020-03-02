@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BossAnimator : EntityAnimator<BossStateMachine>
+public class BossAnimator : EntityAnimator<BossEntityStateMachine>
 {
     private static readonly int Die = Animator.StringToHash("Die");
     private static readonly int IsMoving = Animator.StringToHash("IsMoving");
@@ -8,15 +8,15 @@ public class BossAnimator : EntityAnimator<BossStateMachine>
 
     private void Start()
     {
-        owner.OnEnemyStateChanged += OwnerOnStateChanged;
+        owner.OnEntityStateChanged += OwnerOnStateChanged;
     }
 
     private void OwnerOnStateChanged(IState state)
     {
         animator.SetBool(IsMoving, state is NPCGoToPlayer);
-        if(state is NPCDead)
+        if(state is EntityDead)
             animator.SetTrigger(Die);
-        if(state is NPCAttack)
+        if(state is EntityAttack)
             animator.SetTrigger(Attack);
     }
 }

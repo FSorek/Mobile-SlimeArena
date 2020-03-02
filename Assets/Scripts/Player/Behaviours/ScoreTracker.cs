@@ -8,14 +8,11 @@ public static class ScoreTracker
 
     static ScoreTracker()
     {
-        var player = Object.FindObjectOfType<Player>();
-        player.PlayerAttack.OnTargetHit += OnTargetHit;
+        EnemyNPC.OnDeath += AddScore;
     }
 
-    private static void OnTargetHit(ITakeDamage target)
+    private static void AddScore(EnemyNPC npc)
     {
-        if (!target.Health.IsDead)
-            return;
         Score++;
         OnScoreIncreased(Score);
     }

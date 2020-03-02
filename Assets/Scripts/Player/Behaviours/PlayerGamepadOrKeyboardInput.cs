@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerGamepadOrKeyboardInput : IPlayerInput
 {
-    public event Action OnPrimaryAction = delegate {  };
+    public bool PrimaryActionDown => Input.GetButtonDown("Fire1");
     public Vector2 MoveVector { get; private set; }
     public Vector2 AttackDirection { get; private set; }
     public void Tick()
@@ -13,8 +13,5 @@ public class PlayerGamepadOrKeyboardInput : IPlayerInput
         MoveVector = new Vector2(horizontalInput, verticalInput);
         if (MoveVector != Vector2.zero)
             AttackDirection = MoveVector;
-
-        if (Input.GetButtonDown("Fire1"))
-            OnPrimaryAction();
     }
 }

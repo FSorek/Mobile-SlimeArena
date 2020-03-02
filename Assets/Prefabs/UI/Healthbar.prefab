@@ -199,7 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 2928606349262366294}
   offsetPositionY: -1
-  updateSpeed: 0.5
+  updateSpeed: 0.2
 --- !u!114 &2928606349262366294
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
-[RequireComponent(typeof(IStateMachine))]
-public class NPCAnimator : EntityAnimator<IStateMachine>
+[RequireComponent(typeof(IEntityStateMachine))]
+public class NPCAnimator : EntityAnimator<IEntityStateMachine>
 {
     private static readonly int IsDead = Animator.StringToHash("IsDead");
     private static readonly int IsMoving = Animator.StringToHash("IsMoving");
@@ -9,14 +9,14 @@ public class NPCAnimator : EntityAnimator<IStateMachine>
 
     private void Start()
     {
-        owner.OnEnemyStateChanged += OwnerOnStateChanged;
+        owner.OnEntityStateChanged += OwnerOnStateChanged;
     }
 
     private void OwnerOnStateChanged(IState state)
     {
         animator.SetBool(IsMoving, state is NPCGoToPlayer);
         animator.SetBool(IsRepositioning, state is NPCDodge);
-        if(state is NPCDead)
+        if(state is EntityDead)
             animator.SetTrigger(IsDead);
     }
 }

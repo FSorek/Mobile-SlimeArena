@@ -7,14 +7,17 @@ public class Health
     public event Action<int> OnTakeDamage = delegate { };
 
     private readonly int maxHealth;
+    private readonly float invincibilityDuration;
     private int currentHealth;
+    private float lastTimeTookDamage;
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
     public bool IsDead => currentHealth <= 0;
 
-    public Health(int maxHealth)
+    public Health(int maxHealth, float invincibilityDuration)
     {
         this.maxHealth = maxHealth;
+        this.invincibilityDuration = invincibilityDuration;
     }
 
     public void Reset()
@@ -31,11 +34,16 @@ public class Health
 
     public void TakeDamage(int damage)
     {
+        if(Time.time - lastTimeTookDamage < invincibilityDuration)
+            return;
+        
         currentHealth -= damage;
         OnTakeDamage(damage);
         if (IsDead)
         {
             OnDeath();
         }
+
+        lastTimeTookDamage = Time.time;
     }
 }

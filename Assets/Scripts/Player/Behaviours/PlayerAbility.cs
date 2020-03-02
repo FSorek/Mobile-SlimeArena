@@ -1,8 +1,5 @@
-﻿using System;
-using Cinemachine;
+﻿using Cinemachine;
 using UnityEngine;
-using Object = UnityEngine.Object;
-
 public class PlayerAbility
 {
     private readonly Player owner;
@@ -26,7 +23,6 @@ public class PlayerAbility
         mainCamera = Camera.main;
         accelerometerMovement = new AccelerometerMovement(owner.GetComponent<Rigidbody2D>(), abilityData.TornadoAcceleration, abilityData.TornadoMaxSpeed);
         
-        owner.PlayerAttack.OnTargetHit += PlayerAttackOnTargetHit;
         InitializeAbilityWalls();
         SetWallsActive(false);
     }

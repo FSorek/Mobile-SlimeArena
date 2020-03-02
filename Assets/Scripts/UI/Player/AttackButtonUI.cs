@@ -3,17 +3,18 @@
 public class AttackButtonUI : MonoBehaviour
 {
     private Player player;
+    private PlayerMobileInput mobileInput;
     private Vector2 lastMoveVector;
     private void Awake()
     {
         player = FindObjectOfType<Player>();
+        mobileInput = player.PlayerInput as PlayerMobileInput;
     }
 
     public void Attack()
     {
-        if(player.PlayerAbility.IsUsingAbility)
+        if(mobileInput == null || player.PlayerAbility.IsUsingAbility)
             return;
-
-        player.PlayerAttack.Attack();
+        mobileInput.FirePrimaryAction();
     }
 }

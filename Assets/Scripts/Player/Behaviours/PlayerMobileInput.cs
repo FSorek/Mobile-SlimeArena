@@ -4,9 +4,9 @@ using UnityEngine.EventSystems;
 
 public class PlayerMobileInput : IPlayerInput
 {
-    public event Action OnPrimaryAction = delegate {  };
     private Joystick movementJoystick;
     public Vector2 MoveVector { get; private set; }
+    public bool PrimaryActionDown { get; private set; }
     public Vector2 AttackDirection => MoveVector != Vector2.zero ? MoveVector : AttackDirection;
     public void RegisterJoystick(Joystick joy)
     {
@@ -17,13 +17,20 @@ public class PlayerMobileInput : IPlayerInput
         if (Input.touchCount > 0)
         {
             var touch = Input.GetTouch(0);
-            if (touch.tapCount == 1)
-                OnPrimaryAction();
+            PrimaryActionDown = touch.tapCount == 1;
         }
 
         if (movementJoystick != null)
         {
             MoveVector = movementJoystick.Direction;
         }
+
+        if (PrimaryActionDown)
+            PrimaryActionDown = false;
+    }
+
+    public void FirePrimaryAction()
+    {
+        PrimaryActionDown = true;
     }
 }

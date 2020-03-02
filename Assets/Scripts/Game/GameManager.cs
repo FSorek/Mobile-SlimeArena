@@ -15,13 +15,12 @@ public class GameManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         player.Health.OnDeath += () => SetGamePaused(true);
-        player.PlayerInput.OnPrimaryAction += PlayerInputOnPrimaryAction;
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
     }
-
-    private void PlayerInputOnPrimaryAction()
+    private void Update()
     {
-        if(!gamePaused ||
+        if( !player.PlayerInput.PrimaryActionDown ||
+            !gamePaused ||
            (operation != null && !operation.isDone))
             return;
         if(!player.Health.IsDead)

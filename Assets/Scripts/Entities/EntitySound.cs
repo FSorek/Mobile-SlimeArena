@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class EntitySound<T> : MonoBehaviour where T : Component
+public abstract class EntitySound<T> : MonoBehaviour
 {
     [SerializeField] protected AudioSource audioSource;
     protected T owner;
