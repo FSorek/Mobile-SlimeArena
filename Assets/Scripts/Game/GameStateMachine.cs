@@ -29,8 +29,6 @@ public class GameStateMachine : MonoBehaviour
         stageTwoSpawners.Add((5f, slimeSpawner));
         stageTwoSpawners.Add((8f, skeletonSpawner));
         
-        var loading = new GameLoading();
-        var started = new GameStarted();
         var stageOne = new GameRegularStage(stageOneSpawners);
         var bossStartCinematic = new GameBossCinematic(playableDirector, bossPool, bossSpawnPosition.position);
         var bossFight = new GameBossFight();
@@ -64,41 +62,5 @@ public class GameStateMachine : MonoBehaviour
     private void Update()
     {
         stateMachine.Tick();
-    }
-}
-
-public class GameLoading : IState
- {
-     public void StateEnter()
-     {
-         
-     }
- 
-     public void ListenToState()
-     {
-         
-     }
- 
-     public void StateExit()
-     {
-         
-     }
- }
- 
-public class GameStarted : IState
-{
-    public void StateEnter()
-    {
-        Time.timeScale = 0f;
-    }
-
-    public void ListenToState()
-    {
-        
-    }
-
-    public void StateExit()
-    {
-        Time.timeScale = 1f;
     }
 }

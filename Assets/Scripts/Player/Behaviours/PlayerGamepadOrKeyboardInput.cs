@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerGamepadOrKeyboardInput : IPlayerInput
 {
+    public bool MenuAcceptAction => Input.GetButtonDown("Fire1");
     public bool PrimaryActionDown => Input.GetButtonDown("Fire1");
     public bool SecondaryActionDown => Input.GetButtonDown("Fire2");
     public bool SecondaryActionUp => Input.GetButtonUp("Fire2");

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface IPlayerInput
 {
+    bool MenuAcceptAction { get; }
     bool PrimaryActionDown { get; }
     bool SecondaryActionDown { get; }
     bool SecondaryActionUp { get; }

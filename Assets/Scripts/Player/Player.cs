@@ -17,7 +17,7 @@ public class Player : MonoBehaviour, ITakeDamage, ICanAttack
     private void Awake()
     {
         Health = new Health(maxHealth, .5f);
-        PlayerInput = new PlayerGamepadOrKeyboardInput();
+        PlayerInput = new PlayerMobileInput();
         Health.OnDeath += Death;
         AbilityPool = new AbilityPool(20);
     }

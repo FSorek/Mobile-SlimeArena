@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(!player.PlayerInput.PrimaryActionDown ||
+        if(!player.PlayerInput.MenuAcceptAction ||
             !gamePaused ||
            (operation != null && !operation.isDone))
             return;
