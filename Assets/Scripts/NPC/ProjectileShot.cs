@@ -15,7 +15,12 @@ public class ProjectileShot : Attack
         var attackPosition = creationPosition;
 
         projectile.transform.position = attackPosition;
-        projectile.Shoot(direction, damage);
+        projectile.Shoot(direction, HitTarget);
         projectile.gameObject.SetActive(true);
+    }
+
+    private void HitTarget(ITakeDamage target)
+    {
+        HitTarget(target,damage);
     }
 }

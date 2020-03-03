@@ -16,4 +16,11 @@
         if (CurrentPoolAmount < 0)
             CurrentPoolAmount = 0;
     }
+
+    public void Restore(int amount)
+    {
+        CurrentPoolAmount += amount;
+        if (CurrentPoolAmount > maxPool)
+            CurrentPoolAmount = maxPool;
+    }
 }

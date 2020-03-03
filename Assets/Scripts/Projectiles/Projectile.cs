@@ -9,12 +9,12 @@ public class Projectile : MonoBehaviour, IGameObjectPooled
     [SerializeField] private float wallCheckDistance;
     [SerializeField] private LayerMask wallLayer; 
     private Vector2 shootDirection;
-    private int damage;
     private RaycastHit2D[] wallCheck = new RaycastHit2D[1];
     private float shotTime;
     private bool bouncedBack;
     private int playerLayer;
     private int enemyLayer;
+    private Action<ITakeDamage> onHitCallback;
 
     private void Awake()
     {
@@ -28,10 +28,10 @@ public class Projectile : MonoBehaviour, IGameObjectPooled
         gameObject.layer = enemyLayer;
     }
 
-    public void Shoot(Vector2 direction, int damage)
+    public void Shoot(Vector2 direction, Action<ITakeDamage> onHitCallback)
     {
-        this.damage = damage;
         shootDirection = direction;
+        this.onHitCallback = onHitCallback;
         shotTime = Time.time;
     }
 
@@ -45,11 +45,9 @@ public class Projectile : MonoBehaviour, IGameObjectPooled
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var damagable = other.GetComponent<ITakeDamage>();
-        if (damagable != null)
-        {
-            damagable.Health.TakeDamage(damage);
-        }
+        var target = other.GetComponent<ITakeDamage>();
+        if (target != null)
+            onHitCallback(target);
         gameObject.ReturnToPool();
     }
 

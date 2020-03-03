@@ -17,11 +17,12 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
     {
         player = GetComponent<Player>();
         
-        var meleeAttack = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange));
+        var meleeSlash = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange));
+        var playerAttack = new PoolRestoring(2, player.AbilityPool, meleeSlash);
         var spinningAbility = new SpinningAbility(player.transform, .2f, 1, 1, new Vector2(2,2));
         
         var idle = new EntityIdle();
-        var attack = new EntityAttack(player, player.transform, meleeAttack, attackData);
+        var attack = new EntityAttack(player, player.transform, playerAttack, attackData);
         var ability = new CastingAbility(spinningAbility, player.AbilityPool);
         var dead = new EntityDead();
 

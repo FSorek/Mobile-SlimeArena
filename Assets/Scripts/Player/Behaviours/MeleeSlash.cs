@@ -19,8 +19,7 @@ public class MeleeSlash : Attack
             size, 0, targetsHit, enemyLayer);
         for (int i = 0; i < resultAmount; i++)
         {
-            var target = targetsHit[i].GetComponent<ITakeDamage>();
-            target?.Health.TakeDamage(damage);
+            HitTarget(targetsHit[i].GetComponent<ITakeDamage>(), damage);
         }
     }
 }

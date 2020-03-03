@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AttackDecorator : Attack
+public abstract class AttackDecorator : Attack
 {
     protected Attack attack;
 
