@@ -46,7 +46,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         stateMachine.CreateTransition(
             ability,
             idle,
-            () => player.PlayerInput.SecondaryActionUp);
+            () => player.PlayerInput.SecondaryActionUp || !ability.CanCast);
         
         stateMachine.CreateAnyTransition(
             dead,
