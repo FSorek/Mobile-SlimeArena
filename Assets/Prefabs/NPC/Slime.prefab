@@ -5255,7 +5255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: -6966778178813738180}
-  audioData: {fileID: 11400000, guid: 7cc144cbd86a0514bbf0d6accbe9384d, type: 2}
+  stateAudioData: {fileID: 11400000, guid: 7cc144cbd86a0514bbf0d6accbe9384d, type: 2}
 --- !u!1 &5502070612760164963
 GameObject:
   m_ObjectHideFlags: 0

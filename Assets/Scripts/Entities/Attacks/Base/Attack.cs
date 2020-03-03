@@ -8,7 +8,9 @@ public abstract class Attack
 
     protected void HitTarget(ITakeDamage target, int damage)
     {
-        target?.Health.TakeDamage(damage);
+        if(target == null)
+            return;
+        target.Health.TakeDamage(damage);
         OnTargetHit(target);
     }
 }
