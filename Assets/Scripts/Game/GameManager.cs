@@ -17,9 +17,10 @@ public class GameManager : MonoBehaviour
         player.Health.OnDeath += () => SetGamePaused(true);
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
     }
+
     private void Update()
     {
-        if( !player.PlayerInput.PrimaryActionDown ||
+        if(!player.PlayerInput.PrimaryActionDown ||
             !gamePaused ||
            (operation != null && !operation.isDone))
             return;

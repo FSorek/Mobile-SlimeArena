@@ -18,9 +18,12 @@ public class AbilityPoolUI : MonoBehaviour
 
     private void Update()
     {
-        if (lastPoolPercentage != player.PlayerAbility.CurrentPoolPercentage)
+        if(player.AbilityPool == null)
+            return;
+        
+        if (lastPoolPercentage != player.AbilityPool.CurrentPoolPercentage)
         {
-            lastPoolPercentage = player.PlayerAbility.CurrentPoolPercentage;
+            lastPoolPercentage = player.AbilityPool.CurrentPoolPercentage;
             poolImage.fillAmount = (float)lastPoolPercentage;
         }
     }

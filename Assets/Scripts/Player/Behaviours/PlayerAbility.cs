@@ -43,7 +43,6 @@ public class PlayerAbility
         if(currentPool < abilityData.TickRate)
             return;
         playerCamera.Follow = null;
-        SetWallsActive(true);
         //owner.ChangeMovementStyle(accelerometerMovement);
         IsUsingAbility = true;
     }

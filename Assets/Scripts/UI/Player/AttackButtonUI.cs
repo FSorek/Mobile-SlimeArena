@@ -3,6 +3,7 @@
 public class AttackButtonUI : MonoBehaviour
 {
     private Player player;
+    private PlayerEntityStateMachine playerStateMachine;
     private PlayerMobileInput mobileInput;
     private Vector2 lastMoveVector;
     private void Awake()
@@ -13,8 +14,8 @@ public class AttackButtonUI : MonoBehaviour
 
     public void Attack()
     {
-        if(mobileInput == null || player.PlayerAbility.IsUsingAbility)
+        if(mobileInput == null)
             return;
-        mobileInput.FirePrimaryAction();
+        mobileInput.FirePrimaryActionDown();
     }
 }

@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 public class PlayerAnimator : EntityAnimator<PlayerEntityStateMachine>
 {
     private static readonly int IsMoving = Animator.StringToHash("IsMoving");
+    private static readonly int CastAbility = Animator.StringToHash("CastAbility");
     private static readonly int Attack = Animator.StringToHash("Attack");
     private static readonly int UpperAttack = Animator.StringToHash("UpperAttack");
     private IState currentState;
@@ -18,6 +19,8 @@ public class PlayerAnimator : EntityAnimator<PlayerEntityStateMachine>
     {
         if (state is EntityAttack)
             animator.SetTrigger(Random.value <= .5f ? Attack : UpperAttack);
+        if(state is CastingAbility)
+            animator.SetTrigger(CastAbility);
         currentState = state;
     }
 

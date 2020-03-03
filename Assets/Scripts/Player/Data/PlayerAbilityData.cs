@@ -17,10 +17,7 @@ public class PlayerAbilityData : ScriptableObject
     public int DamagePerTick => damagePerTick;
     public float TickRate => tickRate;
     public int MaxPoolAmount => maxPoolAmount;
-
     public float TornadoAcceleration => tornadoAcceleration;
-
     public float RefillAmount => refillAmount;
-
     public float TornadoMaxSpeed => tornadoMaxSpeed;
 }

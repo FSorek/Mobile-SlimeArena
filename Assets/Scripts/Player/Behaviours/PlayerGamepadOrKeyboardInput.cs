@@ -4,6 +4,8 @@ using UnityEngine;
 public class PlayerGamepadOrKeyboardInput : IPlayerInput
 {
     public bool PrimaryActionDown => Input.GetButtonDown("Fire1");
+    public bool SecondaryActionDown => Input.GetButtonDown("Fire2");
+    public bool SecondaryActionUp => Input.GetButtonUp("Fire2");
     public Vector2 MoveVector { get; private set; }
     public Vector2 AttackDirection { get; private set; }
     public void Tick()

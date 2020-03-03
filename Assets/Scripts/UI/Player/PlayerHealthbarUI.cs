@@ -24,8 +24,6 @@ public class PlayerHealthbarUI : MonoBehaviour
 
     private void PlayerOnTakeDamage(int damage)
     {
-        if(player.PlayerAbility.IsUsingAbility)
-            return;
         if(player.Health.CurrentHealth <= healthImages.Length - 1)
             healthImages[player.Health.CurrentHealth].sprite = inactiveHealth;
     }

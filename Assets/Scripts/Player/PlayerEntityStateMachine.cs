@@ -18,9 +18,11 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         player = GetComponent<Player>();
         
         var meleeAttack = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange));
+        var spinningAbility = new SpinningAbility(.2f, 2f);
         
         var idle = new EntityIdle();
         var attack = new EntityAttack(player, player.transform, meleeAttack, attackData);
+        var ability = new CastingAbility(spinningAbility, player.AbilityPool);
         var dead = new EntityDead();
 
         stateMachine.OnStateChanged += (state) => OnEntityStateChanged(state);
@@ -28,7 +30,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         stateMachine.CreateTransition(
             idle,
             attack,
-            () => player.PlayerInput.PrimaryActionDown 
+            () => player.PlayerInput.PrimaryActionDown
                   && attack.CanAttack());
         
         stateMachine.CreateTransition(
@@ -36,10 +38,20 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
             idle,
             () =>  attack.HasCompletedAttack);
         
+        stateMachine.CreateTransition(
+            idle,
+            ability,
+            () => player.PlayerInput.SecondaryActionDown && ability.CanCast);
+        
+        stateMachine.CreateTransition(
+            ability,
+            idle,
+            () => player.PlayerInput.SecondaryActionUp);
+        
         stateMachine.CreateAnyTransition(
             dead,
             () => player.Health.IsDead);
-        
+
         stateMachine.SetState(idle);
         
         var inputMovement = new InputMovement(player, 5f);
@@ -53,7 +65,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
 
     private void FixedUpdate()
     {
-        if(IsMoving)
+        if(IsMoving && !(GameStateMachine.CurrentGameState is GameBossCinematic))
             movementStateMachine.Tick();
     }
 }

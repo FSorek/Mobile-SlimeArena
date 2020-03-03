@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15b70e0a9b04a069783c2943fd98e58, type: 3}
   m_Name: NPC Audio Data
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 9f3558613130c374480263eebf1433c6, type: 3}
   hitSound: {fileID: 0}
