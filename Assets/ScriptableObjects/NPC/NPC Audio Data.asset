@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: NPC Audio Data
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: 9f3558613130c374480263eebf1433c6, type: 3}
-  hitSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: 4d38c037c51b65a4d818f5215887e0c0, type: 3}

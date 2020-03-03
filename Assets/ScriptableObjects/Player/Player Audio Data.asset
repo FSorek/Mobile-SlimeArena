@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Player Audio Data
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: 95cfa119573140e4e8d77626262d2859, type: 3}
-  hitSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: 4d38c037c51b65a4d818f5215887e0c0, type: 3}

@@ -15,5 +15,7 @@ public class EntityStateBasedSound : EntitySound<IEntityStateMachine>
     {
         if(state is EntityAttack && stateAudioData.AttackSound != null)
             audioSource.PlayOneShot(stateAudioData.AttackSound);
+        if(state is EntityDead && stateAudioData.DeathSound != null)
+            audioSource.PlayOneShot(stateAudioData.DeathSound);
     }
 }
