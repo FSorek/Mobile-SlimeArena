@@ -19,7 +19,7 @@ public class Player : MonoBehaviour, ITakeDamage, ICanAttack
         Health = new Health(maxHealth, .5f);
         PlayerInput = new PlayerGamepadOrKeyboardInput();
         Health.OnDeath += Death;
-        AbilityPool = new PlayerPool(20);
+        AbilityPool = new AbilityPool(20);
     }
 
     private void Death()

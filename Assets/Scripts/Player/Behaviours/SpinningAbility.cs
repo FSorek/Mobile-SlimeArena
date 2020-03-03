@@ -8,9 +8,9 @@ public class SpinningAbility : IAbility
     private readonly Attack attack;
     private Transform wallParent;
     public float TickTime { get; }
-    public float Cost { get; }
+    public int Cost { get; }
 
-    public SpinningAbility(Transform owner, float tickTime, float cost, int damage, Vector2 hitSize)
+    public SpinningAbility(Transform owner, float tickTime, int cost, int damage, Vector2 hitSize)
     {
         this.owner = owner;
         TickTime = tickTime;

@@ -24,6 +24,7 @@ public class CastingAbility : IState
         if (Time.time - lastTickTime >= ability.TickTime)
         {
             ability.Tick();
+            pool.Reduce(ability.Cost);
             lastTickTime = Time.time;
         }
     }
