@@ -1,75 +1,74 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class EnemyNPC : MonoBehaviour, ITakeDamage
+public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPooled
 {
-
-    public event Action OnDeath = delegate { }; 
-    [SerializeField] private NPCAttackData attackData;
-    [SerializeField] private NPCMoveData moveData;
+    public static readonly List<EnemyNPC> Alive = new List<EnemyNPC>();
+    public static event Action<EnemyNPC> OnSpawned = delegate {  };
+    public static event Action<EnemyNPC> OnDespawned = delegate {  };
+    public static event Action<EnemyNPC> OnDeath = delegate {  }; 
     [SerializeField] private int maxHealth;
     [SerializeField] private float timeUntilBodyIsGone = 2f;
+    [SerializeField] private Transform attackOrigin;
 
-    private readonly NPCStateData npcStateData = new NPCStateData();
-    private StateMachine<NPCStates> stateMachine;
     private Collider2D activeCollider;
-    private float attackRange;
-    private Transform target;
-    private Health health;
+    private LayerMask obstacleMask;
+    private Player target;
 
-    public Transform Target => target;
-    public float AttackRange => attackRange;
-    //public bool IsMoving => !IsDead && npcStateData.CurrentState == NPCStates.GoWithinRange;
-    public NPCStates CurrentState => npcStateData.CurrentState;
-    public bool IsDead => health.CurrentHealth <= 0;
-
+    public Transform AttackOrigin => attackOrigin;
+    public Health Health { get; private set; }
+    public Vector2 AttackDirection => (target.transform.position - transform.position).normalized;
+    public ObjectPool Pool { get; set; }
 
     private void Awake()
     {
-        health = new Health(maxHealth);
+        Health = new Health(maxHealth, .2f);
         activeCollider = GetComponent<Collider2D>();
-        target = FindObjectOfType<Player>().transform;
-        stateMachine = new StateMachine<NPCStates>(npcStateData);
-        attackRange = Random.Range(attackData.MinAttackRange, attackData.MaxAttackRange);
-        
-        var npcGoToPositionState = new NPCGoWithinAttackRange(npcStateData, this, moveData);
-        var npcAttackState = new NPCAttackState(attackData, this, npcStateData);
-        var npcRepositionAttackState = new NPCRepositionAttackState(this, moveData, npcStateData);
-        
-        stateMachine.RegisterState(NPCStates.GoWithinRange, npcGoToPositionState);
-        stateMachine.RegisterState(NPCStates.Attack, npcAttackState);
-        stateMachine.RegisterState(NPCStates.RepositionAttack, npcRepositionAttackState);
+        Health.OnDeath += Death;
+        obstacleMask = LayerMask.GetMask("World");
+        target = FindObjectOfType<Player>();
+    }
+
+    private void Death()
+    {
+        activeCollider.enabled = false;
+        OnDeath(this);
+        Invoke(nameof(ReturnToPool), timeUntilBodyIsGone);
+    }
+
+    private void OnDisable()
+    {
+        Alive.Remove(this);
+        OnDespawned(this);
     }
 
     private void OnEnable()
     {
-        health.Reset();
-        npcStateData.ChangeState(NPCStates.GoWithinRange);
+        Health?.Reset();
+        Alive.Add(this);
         activeCollider.enabled = true;
-    }
-
-    private void FixedUpdate()
-    {
-        if(IsDead)
-            return;
-        
-        stateMachine.Tick();
-    }
-
-    public void TakeDamage(int damage)
-    {
-        health.TakeDamage(damage);
-        if (IsDead)
-        {
-            activeCollider.enabled = false;
-            Invoke(nameof(ReturnToPool), timeUntilBodyIsGone);
-            OnDeath();
-        }
+        OnSpawned(this);
     }
 
     private void ReturnToPool()
     {
-        EnemyPool.Instance.ReturnToPool(this);
+        if(Pool != null)
+            gameObject.ReturnToPool();
+        else
+        {
+            Debug.LogWarning("No pool assigned to the object, destroying");
+            Destroy(gameObject);
+        }
+    }
+
+    public bool HasLineOfSightTo(Vector2 targetPosition)
+    {
+        Vector2 attackPosition = attackOrigin.position;
+        Vector2 directionToPlayer = (targetPosition - attackPosition).normalized;
+        var distance = Vector2.Distance(attackPosition, targetPosition);
+
+        RaycastHit2D hit = Physics2D.Raycast(attackPosition, directionToPlayer, distance, obstacleMask);
+        return hit.collider == null;
     }
 }

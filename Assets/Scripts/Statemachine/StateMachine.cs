@@ -1,55 +1,65 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class StateMachine<T>
+public class StateMachine
 {
-    private Dictionary<T, IState> availablePlayerStates = new Dictionary<T, IState>();
-    private StateData<T> data;
-    private IState currentState;
+    public event Action<IState> OnStateChanged = delegate {  };
+    
+    private List<StateTransition> stateTransitions = new List<StateTransition>();
+    private List<StateTransition> anyStateTransition = new List<StateTransition>();
 
-    public StateMachine(StateData<T> stateData)
-    {
-        data = stateData;
-        data.OnStateEntered += DataOnStateEntered;
-        data.OnStateExit += DataOnStateExit;
-    }
+    private IState currentState;
+    public IState CurrentState => currentState;
+
     public void Tick()
     {
-        if(currentState == null)
+        StateTransition transition = CheckForTransition();
+        if (transition != null)
         {
-            currentState = availablePlayerStates[data.CurrentState];
-            currentState.StateEnter();
+            SetState(transition.To);
         }
+        
         currentState.ListenToState();
     }
 
-
-    public void RegisterState(T key, IState state)
+    private StateTransition CheckForTransition()
     {
-        availablePlayerStates.Add(key, state);
-    }
-
-    public IState GetState(T key)
-    {
-        return availablePlayerStates.ContainsKey(key) ? currentState : null;
-    }
-
-    private void DataOnStateEntered(T key)
-    {
-        if (!ValidateState(key)) return;
-        currentState = availablePlayerStates[key];
-        currentState.StateEnter();
-    }
-
-    private void DataOnStateExit(T key)
-    {
-        if (currentState != null && ValidateState(key))
-            currentState.StateExit();
-    }
+        foreach (var transition in anyStateTransition)
+        {
+            if (transition.Condition())
+                return transition;
+        }
         
-    private bool ValidateState(T key)
-    {
-        bool condition = (availablePlayerStates.ContainsKey(key) ||
-                          currentState == availablePlayerStates[key]);
-        return condition;
+        foreach (var transition in stateTransitions)
+        {
+            if (transition.From == currentState && transition.Condition())
+                return transition;
+        }
+
+        return null;
     }
+
+    public void CreateTransition(IState from, IState to, Func<bool> condition)
+    {
+
+        var transition = new StateTransition(from, to, condition);
+        stateTransitions.Add(transition);
+    }
+    public void CreateAnyTransition(IState to, Func<bool> condition)
+    {
+        var transition = new StateTransition(null, to, condition);
+        anyStateTransition.Add(transition);
+    }
+    public void SetState(IState state)
+    {
+        if(currentState == state) return;
+        
+        currentState?.StateExit();
+        currentState = state;
+        currentState.StateEnter();
+
+        OnStateChanged(currentState);
+    }
+    
 }

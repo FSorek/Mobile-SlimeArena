@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:704a70d1248b7efe34b8299abd2c715fd112ef6ab5eec2616cec1d43c3b1d855
-size 469
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 267e2da9b79ece14394a246e655f415c, type: 3}
+  m_Name: Player Attack Data
+  m_EditorClassIdentifier: 
+  damage: 1
+  shootingRate: 0.2
+  minAttackRange: 2
+  maxAttackRange: 2
+  castingTime: 0
