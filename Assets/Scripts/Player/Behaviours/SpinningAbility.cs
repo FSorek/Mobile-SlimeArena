@@ -2,16 +2,21 @@
 
 public class SpinningAbility : IAbility
 {
+    private readonly Transform owner;
     private readonly BoxCollider2D[] abilityWalls = new BoxCollider2D[4];
     private readonly Camera mainCamera;
+    private readonly Attack attack;
+    private Transform wallParent;
     public float TickTime { get; }
     public float Cost { get; }
 
-    public SpinningAbility(float tickTime, float cost)
+    public SpinningAbility(Transform owner, float tickTime, float cost, int damage, Vector2 hitSize)
     {
+        this.owner = owner;
         TickTime = tickTime;
         Cost = cost;
         mainCamera = Camera.main;
+        attack = new MeleeSlash(damage, hitSize);
         
         InitializeAbilityWalls();
     }
@@ -22,7 +27,7 @@ public class SpinningAbility : IAbility
 
     public void Tick()
     {
-        
+        attack.Create(owner.transform.position, Vector2.zero);
     }
 
     public void FinishedCasting()
@@ -32,6 +37,9 @@ public class SpinningAbility : IAbility
 
     private void SetWallsActive(bool active)
     {
+        wallParent.SetParent( active ? null : owner, true);
+        if (!active) wallParent.position = owner.position;
+        
         foreach (var wall in abilityWalls)
         {
             wall.gameObject.SetActive(active);
@@ -42,9 +50,13 @@ public class SpinningAbility : IAbility
     {
         var verticalOffset = mainCamera.orthographicSize;
         var horizontalOffset = mainCamera.orthographicSize * mainCamera.aspect;
+        wallParent = new GameObject("WallParent").transform;
+        wallParent.position = owner.transform.position;
+        wallParent.SetParent(owner);
         for (int i = 0; i < 4; i++)
         {
             var wall = new GameObject("Wall");
+            wall.transform.SetParent(wallParent);
             abilityWalls[i] = wall.AddComponent<BoxCollider2D>();
             if(i % 2 == 0)
                 abilityWalls[i].size = new Vector2(1, 2 * verticalOffset);

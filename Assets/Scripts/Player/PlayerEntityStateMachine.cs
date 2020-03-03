@@ -18,7 +18,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         player = GetComponent<Player>();
         
         var meleeAttack = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange));
-        var spinningAbility = new SpinningAbility(.2f, 2f);
+        var spinningAbility = new SpinningAbility(player.transform, .2f, 1, 1, new Vector2(2,2));
         
         var idle = new EntityIdle();
         var attack = new EntityAttack(player, player.transform, meleeAttack, attackData);
