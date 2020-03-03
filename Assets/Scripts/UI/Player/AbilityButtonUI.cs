@@ -8,11 +8,11 @@ using UnityEngine.UI;
 public class AbilityButtonUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     private Button button;
-    private PlayerMobileInput mobileInput;
+    private MobileInput mobileInput;
 
     private void Awake()
     {
-        mobileInput = FindObjectOfType<Player>().PlayerInput as PlayerMobileInput;
+        mobileInput = FindObjectOfType<Player>().PlayerInput as MobileInput;
     }
 
     public void OnPointerDown(PointerEventData eventData)

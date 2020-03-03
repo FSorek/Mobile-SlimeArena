@@ -1,11 +1,11 @@
-﻿public class NPCSequence : IState
+﻿public class EntitySequence : IState
 {
-    private readonly NPCSequenceData sequenceData;
+    private readonly SequenceData sequenceData;
     private int sequenceCounter;
     
     public bool CanContinueSequence { get; private set; }
 
-    public NPCSequence(NPCSequenceData sequenceData)
+    public EntitySequence(SequenceData sequenceData)
     {
         this.sequenceData = sequenceData;
         CanContinueSequence = true;

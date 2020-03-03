@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthBarManager : MonoBehaviour
+public class HealthBarManagerUI : MonoBehaviour
 {
     private readonly Dictionary<EnemyNPC, HealthbarUI> healthBars = new Dictionary<EnemyNPC, HealthbarUI>();
     [SerializeField] private ObjectPool HealthbarPool;

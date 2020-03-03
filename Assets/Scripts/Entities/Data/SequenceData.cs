@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NPC Sequence Data")]
-public class NPCSequenceData : ScriptableObject
+[CreateAssetMenu(fileName = "Sequence Data")]
+public class SequenceData : ScriptableObject
 {
     [SerializeField] private int repeatAmount;
 

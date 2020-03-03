@@ -23,7 +23,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         
         var idle = new EntityIdle();
         var attack = new EntityAttack(player, player.transform, playerAttack, attackData);
-        var ability = new CastingAbility(spinningAbility, player.AbilityPool);
+        var ability = new EntityCastingAbility(spinningAbility, player.AbilityPool);
         var dead = new EntityDead();
 
         stateMachine.OnStateChanged += (state) => OnEntityStateChanged(state);

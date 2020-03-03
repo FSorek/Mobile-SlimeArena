@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour
 
     private void OnPlayerStateChanged(IState state)
     {
-        if (state is CastingAbility)
+        if (state is EntityCastingAbility)
             camera.Follow = null;
         else if (camera.Follow == null)
             camera.Follow = player.transform;       

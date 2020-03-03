@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CastingAbility : IState
+public class EntityCastingAbility : IState
 {
     private readonly IAbility ability;
     private readonly IAbilityPool pool;
@@ -9,7 +9,7 @@ public class CastingAbility : IState
     public bool CanCast => pool.CurrentPoolAmount - ability.Cost >= 0;
 
     //public double CurrentPoolPercentage => currentPool / abilityData.MaxPoolAmount;
-    public CastingAbility(IAbility ability, IAbilityPool pool)
+    public EntityCastingAbility(IAbility ability, IAbilityPool pool)
     {
         this.ability = ability;
         this.pool = pool;

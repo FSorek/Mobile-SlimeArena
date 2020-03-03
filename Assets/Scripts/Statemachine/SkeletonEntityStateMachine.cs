@@ -6,7 +6,7 @@ public class SkeletonEntityStateMachine : MonoBehaviour, IEntityStateMachine
     public event Action<IState> OnEntityStateChanged = delegate {  };
     
     [SerializeField] private AttackData attackData;
-    [SerializeField] private NPCSequenceData sequenceData;
+    [SerializeField] private SequenceData sequenceData;
 
     private StateMachine stateMachine = new StateMachine();
 
@@ -24,7 +24,7 @@ public class SkeletonEntityStateMachine : MonoBehaviour, IEntityStateMachine
         var goToPlayer = new NPCGoToPlayer(player, npcMover);
         var attack = new EntityAttack(enemyNPC, enemyNPC.AttackOrigin, projectile, attackData);
         var dodge = new NPCDodge(npcDodger);
-        var attackSequenceState = new NPCSequence(sequenceData);
+        var attackSequenceState = new EntitySequence(sequenceData);
         var dead = new EntityDead();
         
         stateMachine.OnStateChanged += (state) => OnEntityStateChanged(state);

@@ -19,7 +19,7 @@ public class PlayerAnimator : EntityAnimator<PlayerEntityStateMachine>
     {
         if (state is EntityAttack)
             animator.SetTrigger(Random.value <= .5f ? Attack : UpperAttack);
-        if(state is CastingAbility)
+        if(state is EntityCastingAbility)
             animator.SetTrigger(CastAbility);
         currentState = state;
     }

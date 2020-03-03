@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntitySound : EntitySound<IEntityStateMachine>
+public class EntityStateBasedSound : EntitySound<IEntityStateMachine>
 {
-    [SerializeField] private AudioData audioData;
+    [SerializeField] private StateAudioData stateAudioData;
     protected override void Subscribe()
     {
         owner.OnEntityStateChanged += EntityStateChanged;
@@ -13,7 +13,7 @@ public class EntitySound : EntitySound<IEntityStateMachine>
 
     private void EntityStateChanged(IState state)
     {
-        if(state is EntityAttack && audioData.AttackSound != null)
-            audioSource.PlayOneShot(audioData.AttackSound);
+        if(state is EntityAttack && stateAudioData.AttackSound != null)
+            audioSource.PlayOneShot(stateAudioData.AttackSound);
     }
 }
