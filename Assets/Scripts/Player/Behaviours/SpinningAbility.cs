@@ -19,6 +19,7 @@ public class SpinningAbility : IAbility
         attack = new MeleeSlash(damage, hitSize);
         
         InitializeAbilityWalls();
+        SetWallsActive(false);
     }
     public void StartedCasting()
     {
@@ -56,6 +57,7 @@ public class SpinningAbility : IAbility
         for (int i = 0; i < 4; i++)
         {
             var wall = new GameObject("Wall");
+            wall.transform.position = wallParent.position;
             wall.transform.SetParent(wallParent);
             abilityWalls[i] = wall.AddComponent<BoxCollider2D>();
             if(i % 2 == 0)
