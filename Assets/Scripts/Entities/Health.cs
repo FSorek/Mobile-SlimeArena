@@ -32,7 +32,7 @@ public class Health
             currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         if(Time.time - lastTimeTookDamage < invincibilityDuration)
             return;

@@ -20,6 +20,12 @@ public class MeleeSlash : Attack
         for (int i = 0; i < resultAmount; i++)
         {
             HitTarget(targetsHit[i].GetComponent<ITakeDamage>(), damage);
+            ReflectTarget(targetsHit[i].GetComponent<IReflectable>());
         }
+    }
+
+    private void ReflectTarget(IReflectable reflected)
+    {
+        reflected?.Reflect();
     }
 }

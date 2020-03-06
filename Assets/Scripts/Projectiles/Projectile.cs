@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Projectile : MonoBehaviour, IGameObjectPooled
+public class Projectile : MonoBehaviour, IReflectable, IGameObjectPooled
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float lifetime = 2f;
@@ -52,4 +52,9 @@ public class Projectile : MonoBehaviour, IGameObjectPooled
     }
 
     public ObjectPool Pool { get; set; }
+    public void Reflect()
+    {
+        shootDirection *= -1;
+        gameObject.layer = playerLayer;
+    }
 }
