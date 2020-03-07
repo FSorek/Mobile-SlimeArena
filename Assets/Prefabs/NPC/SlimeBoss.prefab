@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 3975500632400647970}
   - component: {fileID: 4586117891349221965}
   - component: {fileID: -291193811236633134}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: SlimeBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 616704182256618819}
   - component: {fileID: 616704182256618817}
   - component: {fileID: 616704182256618816}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 776126451994285062}
   - component: {fileID: 5161842983284265536}
   - component: {fileID: 871158887252401923}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: DeathParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5237,7 +5237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2564557995921238875}
   - component: {fileID: 1981497766635456339}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5316,7 +5316,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4178581904051681927}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: AttackOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5346,7 +5346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6895063257119858429}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
