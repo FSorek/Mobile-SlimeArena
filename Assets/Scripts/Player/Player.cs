@@ -6,8 +6,6 @@ public class Player : MonoBehaviour, ITakeDamage, ICanAttack
 {
     public event Action OnSpawn = delegate { };
     [SerializeField] private int maxHealth = 1;
-    [SerializeField] private float moveSpeed = 5f;
-
     public IPlayerInput PlayerInput { get; private set; }
     public Health Health { get; private set; }
     public IAbilityPool AbilityPool { get; private set; }

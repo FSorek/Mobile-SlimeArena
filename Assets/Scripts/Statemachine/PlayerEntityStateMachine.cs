@@ -6,6 +6,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
 {
     public event Action<IState> OnEntityStateChanged = delegate { };
     [SerializeField] private AttackData attackData;
+    [SerializeField] private float moveSpeed = 5f;
 
     private StateMachine stateMachine = new StateMachine();
     private StateMachine movementStateMachine = new StateMachine();
@@ -55,7 +56,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
 
         stateMachine.SetState(idle);
         
-        var inputMovement = new InputMovement(player, 5f);
+        var inputMovement = new InputMovement(player, moveSpeed);
         movementStateMachine.SetState(inputMovement);
     }
 
