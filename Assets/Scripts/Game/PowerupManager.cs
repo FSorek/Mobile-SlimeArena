@@ -3,6 +3,7 @@
 public class PowerupManager : MonoBehaviour
 {
     [SerializeField] [Range(0f, 1f)] private float healthUpSpawnChance;
+    [SerializeField] private ObjectPool powerUpEffectPool;
     private IPowerUp powerUp;
     private Player player;
     private bool canSpawnPowerUp;
@@ -27,8 +28,9 @@ public class PowerupManager : MonoBehaviour
            || !canSpawnPowerUp 
            || Random.value > healthUpSpawnChance)
             return;
-        
-        holder.AddPowerUp(powerUp);
+
+        var particleEffect = powerUpEffectPool.Get().GetComponent<ParticleSystem>();
+        holder.AddPowerUp(powerUp, particleEffect);
 
         if(player.Health.CurrentHealth + 1 >= player.Health.MaxHealth)
             canSpawnPowerUp = false;

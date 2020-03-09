@@ -13,4 +13,5 @@ public class HealthUp : IPowerUp
     {
         entity.Health.Restore(Amount);
     }
+
 }

@@ -5,6 +5,7 @@ public class PowerUpHolder : MonoBehaviour, IPowerUpHolder
 {
     private ITakeDamage entity;
     private IPowerUp heldPowerUp;
+    private ParticleSystem currentParticleEffect;
 
     private void Awake()
     {
@@ -20,13 +21,20 @@ public class PowerUpHolder : MonoBehaviour, IPowerUpHolder
         if (absorber != null)
         {
             absorber.Absorb(heldPowerUp);
+            if(currentParticleEffect.GetComponent<PooledGameObject>() != null)
+                currentParticleEffect.gameObject.ReturnToPool();
+            
             heldPowerUp = null;
         }
     }
 
-    public void AddPowerUp(IPowerUp powerUp)
+    public void AddPowerUp(IPowerUp powerUp, ParticleSystem particleEffect)
     {
         heldPowerUp = powerUp;
+        currentParticleEffect = particleEffect;
+        particleEffect.transform.position = transform.position;
+        particleEffect.transform.SetParent(transform);
+        particleEffect.gameObject.SetActive(true);
         
         if(entity != null)
             heldPowerUp.PickUpPower(entity);
