@@ -8,7 +8,7 @@ public class HealthBarManagerUI : MonoBehaviour
 
     private void Awake()
     {
-        EnemyNPC.OnSpawned += AddHealthBar;
+        NpcSpawnerSystem.Instance.OnSpawned += AddHealthBar;
         EnemyNPC.OnDespawned += RemoveHealthBar;
     }
 

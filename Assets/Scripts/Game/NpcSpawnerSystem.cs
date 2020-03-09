@@ -5,12 +5,12 @@ using UnityEngine;
 public class NpcSpawnerSystem : MonoBehaviour
 {
     public static NpcSpawnerSystem Instance { get; private set; }
-    
-    public event Action<GameObject> OnSpawned = delegate {  };
-    
+    public event Action<EnemyNPC> OnSpawned = delegate {  };
+
     [SerializeField] private List<ObjectPool> spawnerPools;
 
     private Dictionary<Type, Spawner> spawners = new Dictionary<Type, Spawner>();
+    private List<EnemyNPC> enemiesAlive = new List<EnemyNPC>();
 
     private void Awake()
     {
@@ -43,7 +43,8 @@ public class NpcSpawnerSystem : MonoBehaviour
         var npcType = npc.GetType();
         if (spawners.ContainsKey(npcType))
         {
-            spawners[npcType].SpawnAt(position);
+            var spawnedNpc = spawners[npcType].SpawnAt(position).GetComponent<EnemyNPC>();
+            Spawn(spawnedNpc);
         }
     }
 
@@ -53,7 +54,31 @@ public class NpcSpawnerSystem : MonoBehaviour
     {
         var npcType = npc.GetType();
         if(spawners.ContainsKey(npcType))
-            spawners[npcType].OrderSpawn();
+        {
+            spawners[npcType].OrderSpawn(Spawn);
+        }
     }
 
+    private void Spawn(EnemyNPC npc)
+    {
+        OnSpawned(npc);
+        enemiesAlive.Add(npc);
+    }
+
+    public EnemyNPC[] GetEnemiesAlive()
+    {
+        return enemiesAlive.ToArray();
+    }
+
+    private void Update()
+    {
+        for (int i = 0; i < enemiesAlive.Count; i++)
+        {
+            var npc = enemiesAlive[i];
+            if (!npc.isActiveAndEnabled)
+            {
+                enemiesAlive.Remove(npc);
+            }
+        }
+    }
 }

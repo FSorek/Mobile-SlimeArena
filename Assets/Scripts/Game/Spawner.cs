@@ -18,24 +18,25 @@ public class Spawner
         unstuckMask = LayerMask.GetMask("World");
     }
 
-    public void OrderSpawn()
+    public void OrderSpawn(Action<EnemyNPC> onSuccessCallback = null)
     {
         if(IsSpawning)
             return;
         
         IsSpawning = true;
         var prefabInstance = prefabPool.Get();
-        prefabPool.StartCoroutine(TrySpawn(prefabInstance));
+        prefabPool.StartCoroutine(TrySpawn(prefabInstance, onSuccessCallback));
     }
 
-    public void SpawnAt(Vector2 position)
+    public GameObject SpawnAt(Vector2 position)
     {
         var prefabInstance = prefabPool.Get();
         prefabInstance.transform.position = position;
         prefabInstance.gameObject.SetActive(true);
+        return prefabInstance;
     }
 
-    private IEnumerator TrySpawn(GameObject prefabInstance)
+    private IEnumerator TrySpawn(GameObject prefabInstance, Action<EnemyNPC> onSuccessCallback)
     {
         var point = RandomPointOutsideCamera();
         var worldPosition = playerCamera.ViewportToWorldPoint(point);
@@ -48,6 +49,7 @@ public class Spawner
 
         prefabInstance.transform.position = new Vector3(worldPosition.x, worldPosition.y, 0);
         prefabInstance.gameObject.SetActive(true);
+        onSuccessCallback?.Invoke(prefabInstance.GetComponent<EnemyNPC>());
         LastSpawnTime = Time.time;
         IsSpawning = false;
     }

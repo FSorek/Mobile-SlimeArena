@@ -2,10 +2,11 @@
 
 public class GameBossFight : IState
 {
+    private readonly NpcSpawnerSystem spawnerSystem;
     public bool IsBossKilled { get; private set; }
-    public GameBossFight()
+    public GameBossFight(NpcSpawnerSystem spawnerSystem)
     {
-
+        this.spawnerSystem = spawnerSystem;
     }
     public void StateEnter()
     {
@@ -14,7 +15,7 @@ public class GameBossFight : IState
 
     public void ListenToState()
     {
-        if (EnemyNPC.Alive.Count <= 0 && !IsBossKilled)
+        if (spawnerSystem.GetEnemiesAlive().Length <= 0 && !IsBossKilled)
             IsBossKilled = true;
     }
 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPooled
 {
-    public static readonly List<EnemyNPC> Alive = new List<EnemyNPC>();
-    public static event Action<EnemyNPC> OnSpawned = delegate {  };
     public static event Action<EnemyNPC> OnDespawned = delegate {  };
     public static event Action<EnemyNPC> OnDeath = delegate {  }; 
     [SerializeField] private int maxHealth;
@@ -39,16 +37,13 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPoole
 
     private void OnDisable()
     {
-        Alive.Remove(this);
         OnDespawned(this);
     }
 
     private void OnEnable()
     {
         Health?.Reset();
-        Alive.Add(this);
         activeCollider.enabled = true;
-        OnSpawned(this);
     }
 
     public void ReturnToPool()

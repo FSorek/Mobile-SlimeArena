@@ -37,7 +37,7 @@ public class GameStateFlowData : ScriptableObject
         get
         {
             if(bossStage == null)
-                bossStage = new GameBossFight();
+                bossStage = new GameBossFight(NpcSpawnerSystem.Instance);
             return bossStage;
         }
     }

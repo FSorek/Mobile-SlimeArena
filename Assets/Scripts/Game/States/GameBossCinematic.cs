@@ -19,9 +19,10 @@ public class GameBossCinematic : IState
     
     public void StateEnter()
     {
-        for (int i = 0; i < EnemyNPC.Alive.Count; i++)
+        var currentAliveNpcs = spawnerSystem.GetEnemiesAlive();
+        for (int i = 0; i < currentAliveNpcs.Length; i++)
         {
-            var enemy = EnemyNPC.Alive[i];
+            var enemy = currentAliveNpcs[i];
             enemy.ReturnToPool();
         }
 
