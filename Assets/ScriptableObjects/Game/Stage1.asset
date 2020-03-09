@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82c24123d8774b15a11ba4d80ae3fbd9, type: 3}
+  m_Name: Stage1
+  m_EditorClassIdentifier: 
+  spawningData:
+  - spawnFrequency: 4
+    spawnedNpc: {fileID: -3424810506799487300, guid: 814fc995ad34725478a1589d165ba691,
+      type: 3}
+  bossPrefab: {fileID: 7445418022248864628, guid: 69c767639d4e7a944ace81a393ccec04,
+    type: 3}
+  bossSpawnPosition: {x: 7, y: -7}

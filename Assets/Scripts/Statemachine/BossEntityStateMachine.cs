@@ -69,11 +69,14 @@ public class BossEntityStateMachine : MonoBehaviour, IEntityStateMachine
             idle,
             () => firstStageAttack.HasCompletedAttack);
         
-        
-        
         stateMachine.CreateAnyTransition(
             dead,
             () => enemyNPC.Health.IsDead);
+        
+        stateMachine.CreateTransition(
+            dead,
+            idle,
+            () => !enemyNPC.Health.IsDead);
         
         stateMachine.SetState(idle);
     }

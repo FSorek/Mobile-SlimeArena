@@ -55,6 +55,11 @@ public class SlimeEntityStateMachine : MonoBehaviour, IEntityStateMachine
         stateMachine.CreateAnyTransition(
             dead,
             () => enemyNPC.Health.IsDead);
+        
+        stateMachine.CreateTransition(
+            dead,
+            idle,
+            () => !enemyNPC.Health.IsDead);
 
         stateMachine.SetState(idle);
     }

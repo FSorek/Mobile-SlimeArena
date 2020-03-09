@@ -9,6 +9,7 @@ public class GameBossFight : IState
     }
     public void StateEnter()
     {
+        IsBossKilled = false;
     }
 
     public void ListenToState()

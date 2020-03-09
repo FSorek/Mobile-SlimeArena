@@ -17,8 +17,8 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPoole
     private Player target;
 
     public Transform AttackOrigin => attackOrigin;
-    public Health Health { get; private set; }
     public Vector2 AttackDirection => (target.transform.position - transform.position).normalized;
+    public Health Health { get; private set; }
     public ObjectPool Pool { get; set; }
 
     private void Awake()
@@ -51,7 +51,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPoole
         OnSpawned(this);
     }
 
-    private void ReturnToPool()
+    public void ReturnToPool()
     {
         if(Pool != null)
             gameObject.ReturnToPool();

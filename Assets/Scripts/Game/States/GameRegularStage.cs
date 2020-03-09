@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GameRegularStage : IState
 {
-    private readonly NpcSpawnerData[] npcSpawnerData;
+    private readonly RegularStageSpawningData[] spawningData;
     private NpcSpawnerSystem npcSpawnerSystem;
 
-    public GameRegularStage(NpcSpawnerData[] npcSpawnerData, NpcSpawnerSystem spawnerSystem)
+    public GameRegularStage(RegularStageSpawningData[] spawningData, NpcSpawnerSystem spawnerSystem)
     {
-        this.npcSpawnerData = npcSpawnerData;
+        this.spawningData = spawningData;
         npcSpawnerSystem = spawnerSystem;
     }
     public void StateEnter()
@@ -19,9 +19,9 @@ public class GameRegularStage : IState
 
     public void ListenToState()
     {
-        foreach (var spawnerData in npcSpawnerData)
+        foreach (var spawnerData in spawningData)
         {
-            var npcType = spawnerData.Npc.GetComponent<IEntityStateMachine>();
+            var npcType = spawnerData.NpcStateMachineType;
             var lastSpawnTime = npcSpawnerSystem.GetLastSpawnTime(npcType);
             if(Time.time - lastSpawnTime >= spawnerData.SpawnFrequency)
                 npcSpawnerSystem.RequestSpawnOutsideView(npcType);

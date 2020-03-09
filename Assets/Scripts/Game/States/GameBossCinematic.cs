@@ -22,9 +22,10 @@ public class GameBossCinematic : IState
         for (int i = 0; i < EnemyNPC.Alive.Count; i++)
         {
             var enemy = EnemyNPC.Alive[i];
-            enemy.Health.TakeDamage(enemy.Health.CurrentHealth);
+            enemy.ReturnToPool();
         }
 
+        IsCinematicFinished = false;
         director.Play();
         spawnerSystem.SpawnAt(bossSpawnPosition, npcPrefab.GetComponent<IEntityStateMachine>());
     }
