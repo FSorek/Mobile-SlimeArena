@@ -20,7 +20,7 @@ public class Player : MonoBehaviour, ITakeDamage, ICanAttack
         AbilityPool = new AbilityPool(20);
     }
 
-    private void Death()
+    private void Death(GameObject source)
     {
         gameObject.SetActive(false);
     }

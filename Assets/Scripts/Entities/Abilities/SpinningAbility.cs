@@ -16,7 +16,7 @@ public class SpinningAbility : IAbility
         TickTime = tickTime;
         Cost = cost;
         mainCamera = Camera.main;
-        attack = new MeleeSlash(damage, hitSize);
+        attack = new MeleeSlash(damage, hitSize, owner.gameObject);
         
         InitializeAbilityWalls();
         SetWallsActive(false);

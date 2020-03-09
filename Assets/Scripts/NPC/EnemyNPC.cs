@@ -28,7 +28,7 @@ public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPoole
         target = FindObjectOfType<Player>();
     }
 
-    private void Death()
+    private void Death(GameObject source)
     {
         activeCollider.enabled = false;
         OnDeath(this);

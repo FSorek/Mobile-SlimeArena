@@ -3,6 +3,12 @@ using UnityEngine;
 
 public abstract class Attack
 {
+    public GameObject Source { get; }
+
+    public Attack(GameObject source)
+    {
+        Source = source;
+    }
     public event Action<ITakeDamage> OnTargetHit = delegate {  }; 
     public abstract void Create(Vector2 creationPosition, Vector2 direction);
 
@@ -10,7 +16,7 @@ public abstract class Attack
     {
         if(target == null)
             return;
-        target.Health.TakeDamage(damage);
+        target.Health.TakeDamage(Source, damage);
         OnTargetHit(target);
     }
 }

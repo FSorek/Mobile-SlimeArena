@@ -44,8 +44,3 @@ public class EntityAttack : IState
         return Time.time - lastAttackTime >= attackData.ShootingRate;
     }
 }
-
-public interface ICanAttack
-{
-    Vector2 AttackDirection { get; }
-}

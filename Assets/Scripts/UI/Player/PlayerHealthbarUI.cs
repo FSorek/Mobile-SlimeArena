@@ -20,6 +20,12 @@ public class PlayerHealthbarUI : MonoBehaviour
     private void Start()
     {
         player.Health.OnTakeDamage += PlayerOnTakeDamage;
+        player.Health.OnRestoreHealth += PlayerOnRestoreHealth;
+    }
+
+    private void PlayerOnRestoreHealth(int amount)
+    {
+        healthImages[player.Health.CurrentHealth - 1].sprite = activeHealth;
     }
 
     private void PlayerOnTakeDamage(int damage)

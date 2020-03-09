@@ -42,7 +42,7 @@ public class GameStateFlowData : ScriptableObject
         }
     }
 
-    private void Awake()
+    private void OnEnable()
     {
         playableDirector = FindObjectOfType<PlayableDirector>();
     }

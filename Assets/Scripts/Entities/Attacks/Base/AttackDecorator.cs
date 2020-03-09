@@ -4,7 +4,7 @@ public abstract class AttackDecorator : Attack
 {
     protected Attack attack;
 
-    public AttackDecorator(Attack attack)
+    public AttackDecorator(Attack attack) : base(attack.Source)
     {
         this.attack = attack;
     }

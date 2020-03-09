@@ -20,7 +20,7 @@ public class BossEntityStateMachine : MonoBehaviour, IEntityStateMachine
         var npcMover = GetComponent<NPCMover>();
         var enemyNPC = GetComponent<EnemyNPC>();
         
-        var projectileShot = new ProjectileShot(attackData.Damage);
+        var projectileShot = new ProjectileShot(attackData.Damage, gameObject);
         var circleShot = new OffsettingShot(5, new CircularShot(12, projectileShot));
         
         var idle = new EntityIdle();

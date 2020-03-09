@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>();
-        player.Health.OnDeath += () => SetGamePaused(true);
+        player.Health.OnDeath += (source) => SetGamePaused(true);
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
     }
 
