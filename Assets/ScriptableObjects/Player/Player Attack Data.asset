@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   shootingRate: 0.2
-  minAttackRange: 2
-  maxAttackRange: 2
-  castingTime: 0
+  minAttackRange: 3
+  maxAttackRange: 3
+  castingTime: 0.1

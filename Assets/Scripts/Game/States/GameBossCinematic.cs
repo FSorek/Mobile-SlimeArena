@@ -4,15 +4,17 @@ using UnityEngine.Playables;
 public class GameBossCinematic : IState
 {
     private readonly PlayableDirector director;
+    private readonly EnemyNPC npcPrefab;
     private readonly Vector2 bossSpawnPosition;
-    private Spawner spawner;
+    private readonly NpcSpawnerSystem spawnerSystem;
     public bool IsCinematicFinished { get; private set; }
 
-    public GameBossCinematic(PlayableDirector director, ObjectPool bossPool, Vector2 bossSpawnPosition)
+    public GameBossCinematic(PlayableDirector director, EnemyNPC npcPrefab, Vector2 bossSpawnPosition, NpcSpawnerSystem spawnerSystem)
     {
         this.director = director;
+        this.npcPrefab = npcPrefab;
         this.bossSpawnPosition = bossSpawnPosition;
-        spawner = new Spawner(bossPool);
+        this.spawnerSystem = spawnerSystem;
     }
     
     public void StateEnter()
@@ -24,7 +26,7 @@ public class GameBossCinematic : IState
         }
 
         director.Play();
-        spawner.SpawnAt(bossSpawnPosition);
+        spawnerSystem.SpawnAt(bossSpawnPosition, npcPrefab.GetComponent<IEntityStateMachine>());
     }
 
     public void ListenToState()

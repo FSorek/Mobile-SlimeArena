@@ -11,6 +11,10 @@ public class PowerupManager : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>();
+    }
+
+    private void Start()
+    {
         player.Health.OnTakeDamage += PlayerOnTakeDamage;
     }
 

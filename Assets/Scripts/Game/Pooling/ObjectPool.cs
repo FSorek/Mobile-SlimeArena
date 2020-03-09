@@ -25,6 +25,11 @@ public class ObjectPool : MonoBehaviour
         return objects.Dequeue();
     }
 
+    public GameObject ReadAssignedPrefab()
+    {
+        return prefab;
+    }
+
     private void AddObjects(int v)
     {
         for (int i = 0; i < v; i++)

@@ -1,28 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameRegularStage : IState
 {
-    private readonly List<(float, Spawner)> timerSpawners;
-    private float lastSpawnTime;
-    public GameRegularStage(List<(float, Spawner)> timerSpawners)
+    private readonly NpcSpawnerData[] npcSpawnerData;
+    private NpcSpawnerSystem npcSpawnerSystem;
+
+    public GameRegularStage(NpcSpawnerData[] npcSpawnerData, NpcSpawnerSystem spawnerSystem)
     {
-        this.timerSpawners = timerSpawners;
+        this.npcSpawnerData = npcSpawnerData;
+        npcSpawnerSystem = spawnerSystem;
     }
     public void StateEnter()
     {
+        
     }
 
     public void ListenToState()
     {
-        foreach (var timerSpawner in timerSpawners)
+        foreach (var spawnerData in npcSpawnerData)
         {
-            if(timerSpawner.Item2.IsSpawning 
-               || Time.time - timerSpawner.Item2.LastSpawnTime < timerSpawner.Item1)
-                return;
-
-            timerSpawner.Item2.OrderSpawn();
-            lastSpawnTime = Time.time;
+            var npcType = spawnerData.Npc.GetComponent<IEntityStateMachine>();
+            var lastSpawnTime = npcSpawnerSystem.GetLastSpawnTime(npcType);
+            if(Time.time - lastSpawnTime >= spawnerData.SpawnFrequency)
+                npcSpawnerSystem.RequestSpawnOutsideView(npcType);
         }
     }
 

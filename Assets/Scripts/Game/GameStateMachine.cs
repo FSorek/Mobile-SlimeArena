@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
 public class GameStateMachine : MonoBehaviour
 {
-    [SerializeField] private ObjectPool slimePool;
-    [SerializeField] private ObjectPool skeletonPool;
-    
-    [SerializeField] private ObjectPool bossPool;
     [SerializeField] private Transform bossSpawnPosition;
+    [SerializeField] private EnemyNPC bossPrefab;
+    [SerializeField] private NpcSpawnerData[] stageOneSpawners; // move to SO
 
     private readonly StateMachine stateMachine = new StateMachine();
 
@@ -18,21 +15,12 @@ public class GameStateMachine : MonoBehaviour
     private void Awake()
     {
         var playableDirector = FindObjectOfType<PlayableDirector>();
+        var currentSpawnerSystem = NpcSpawnerSystem.Instance;
         
-        var slimeSpawner = new Spawner(slimePool);
-        var skeletonSpawner = new Spawner(skeletonPool);
-        
-        var stageOneSpawners = new List<(float, Spawner)>();
-        stageOneSpawners.Add((5f, slimeSpawner));
-        
-        var stageTwoSpawners = new List<(float, Spawner)>();
-        stageTwoSpawners.Add((5f, slimeSpawner));
-        stageTwoSpawners.Add((8f, skeletonSpawner));
-        
-        var stageOne = new GameRegularStage(stageOneSpawners);
-        var bossStartCinematic = new GameBossCinematic(playableDirector, bossPool, bossSpawnPosition.position);
+        var stageOne = new GameRegularStage(stageOneSpawners, currentSpawnerSystem);
+        var bossStartCinematic = new GameBossCinematic(playableDirector, bossPrefab, bossSpawnPosition.position, currentSpawnerSystem);
         var bossFight = new GameBossFight();
-        var stageTwo = new GameRegularStage(stageTwoSpawners);
+        var stageTwo = new GameRegularStage(stageOneSpawners, currentSpawnerSystem);
         
         stateMachine.OnStateChanged += StateMachineOnStateChanged;
 
