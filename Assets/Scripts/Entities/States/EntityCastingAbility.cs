@@ -7,8 +7,6 @@ public class EntityCastingAbility : IState
     private float lastTickTime;
 
     public bool CanCast => pool.CurrentPoolAmount - ability.Cost >= 0;
-
-    //public double CurrentPoolPercentage => currentPool / abilityData.MaxPoolAmount;
     public EntityCastingAbility(IAbility ability, IAbilityPool pool)
     {
         this.ability = ability;

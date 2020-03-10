@@ -21,7 +21,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         var meleeSlash = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange), gameObject);
         var playerAttack = new PoolRestoring(2, player.AbilityPool, meleeSlash);
         
-        var spinningAbility = new SpinningAbility(player.transform, .2f, 1, 1, new Vector2(2,2));
+        var spinningAbility = new SpinningAbility(player.transform, .1f, 1, 1, new Vector2(3,3));
         
         var idle = new EntityIdle();
         var attack = new EntityAttack(player, player.transform, playerAttack, attackData);
@@ -59,6 +59,17 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         
         var inputMovement = new InputMovement(player, moveSpeed);
         movementStateMachine.SetState(inputMovement);
+    }
+
+    private void Start()
+    {
+        player.Health.OnTakeDamage += PlayerOnTakeDamage;
+    }
+
+    private void PlayerOnTakeDamage(int amount) // a tiny hack to make player invincible during ability casting
+    {
+        if(stateMachine.CurrentState is EntityCastingAbility)
+            player.Health.Restore(amount);
     }
 
     private void Update()

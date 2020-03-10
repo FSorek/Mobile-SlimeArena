@@ -8,10 +8,10 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] private GameObject prefab;
     [SerializeField] private int prespawnAmount = 0;
     private Queue<GameObject> objects = new Queue<GameObject>();
-
-
+    
     private void Start()
     {
+        StopAllCoroutines();
         AddObjects(prespawnAmount);
     }
 

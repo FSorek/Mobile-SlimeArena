@@ -14,8 +14,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>();
-        player.Health.OnDeath += (source) => SetGamePaused(true);
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        player.Health.OnDeath += (source) => SetGamePaused(true);
     }
 
     private void Update()
@@ -27,7 +31,13 @@ public class GameManager : MonoBehaviour
         if(!player.Health.IsDead)
             SetGamePaused(false);
         else
-            operation = SceneManager.LoadSceneAsync(0);
+            RestartGame();
+    }
+
+    public AsyncOperation RestartGame()
+    {
+        operation = SceneManager.LoadSceneAsync(0);
+        return operation;
     }
 
     private void SceneManagerOnSceneLoaded(Scene scene, LoadSceneMode loadMode)

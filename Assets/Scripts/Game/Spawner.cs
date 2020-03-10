@@ -22,7 +22,7 @@ public class Spawner
     {
         if(IsSpawning)
             return;
-        
+
         IsSpawning = true;
         var prefabInstance = prefabPool.Get();
         prefabPool.StartCoroutine(TrySpawn(prefabInstance, onSuccessCallback));

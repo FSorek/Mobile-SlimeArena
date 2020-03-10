@@ -12,13 +12,9 @@ public class NpcSpawnerSystem : MonoBehaviour
     private Dictionary<Type, Spawner> spawners = new Dictionary<Type, Spawner>();
     private List<EnemyNPC> enemiesAlive = new List<EnemyNPC>();
 
-    private void Awake()
+    private void Start()
     {
-        if (Instance != null)
-            Destroy(this);
-        else
-            Instance = this;
-        
+        spawners.Clear();
         foreach (var objectPool in spawnerPools)
         {
             var entityStateMachine = objectPool.ReadAssignedPrefab().GetComponent<IEntityStateMachine>();
@@ -28,6 +24,14 @@ public class NpcSpawnerSystem : MonoBehaviour
             var spawner = new Spawner(objectPool);
             spawners.Add(entityStateMachine.GetType(), spawner);
         }
+    }
+
+    private void Awake()
+    {
+        if (Instance != null)
+            Destroy(this);
+        else
+            Instance = this;
     }
 
     public float GetLastSpawnTime(IEntityStateMachine npc)
