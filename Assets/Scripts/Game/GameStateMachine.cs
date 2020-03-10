@@ -59,3 +59,21 @@ public class GameStateMachine : MonoBehaviour
         stateMachine.Tick();
     }
 }
+
+public class GameMenuState : IState
+{
+    public void StateEnter()
+    {
+        
+    }
+
+    public void ListenToState()
+    {
+        
+    }
+
+    public void StateExit()
+    {
+        
+    }
+}
