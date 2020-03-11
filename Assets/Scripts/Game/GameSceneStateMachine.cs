@@ -6,6 +6,7 @@ public class GameSceneStateMachine : MonoBehaviour
 {
     [SerializeField] private int bossStagePointsFrequency = 5;
     [SerializeField] private GameSceneStateFlowData[] gameStateFlowData;
+    private GameStateMachine gameStateMachine;
 
     private readonly StateMachine stateMachine = new StateMachine();
 
@@ -13,6 +14,7 @@ public class GameSceneStateMachine : MonoBehaviour
 
     private void Awake()
     {
+        gameStateMachine = FindObjectOfType<GameStateMachine>();
         stateMachine.OnStateChanged += StateMachineOnStateChanged;
 
         CreateStageTransitionFlow(bossStagePointsFrequency);
@@ -56,6 +58,7 @@ public class GameSceneStateMachine : MonoBehaviour
 
     private void Update()
     {
-        stateMachine.Tick();
+        if(gameStateMachine.CurrentState is Playing)
+            stateMachine.Tick();
     }
 }

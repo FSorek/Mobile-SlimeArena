@@ -32,7 +32,7 @@ public class GameStateMachine : MonoBehaviour
             loading,
             prePlay,
             loading.IsLoadingFinished);
-        
+
         stateMachine.SetState(loading);
     }
 }
@@ -77,19 +77,22 @@ public class LoadingLevel : IState
 
 public class Paused : IState
 {
+    public static bool IsPaused { get; private set; }
     public void StateEnter()
     {
-        throw new NotImplementedException();
+        Time.timeScale = 0f;
+        IsPaused = true;
     }
 
     public void ListenToState()
     {
-        throw new NotImplementedException();
+        
     }
 
     public void StateExit()
     {
-        throw new NotImplementedException();
+        Time.timeScale = 1f;
+        IsPaused = false;
     }
 }
 
