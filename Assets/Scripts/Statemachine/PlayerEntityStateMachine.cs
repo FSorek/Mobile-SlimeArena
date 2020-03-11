@@ -79,7 +79,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
 
     private void FixedUpdate()
     {
-        if(IsMoving && !(GameStateMachine.CurrentGameState is GameBossCinematic))
+        if(IsMoving && !(GameSceneStateMachine.CurrentGameState is GameBossCinematic))
             movementStateMachine.Tick();
     }
 }

@@ -6,22 +6,20 @@ using UnityEngine;
 public class StartscreenUI : MonoBehaviour
 {
     [SerializeField] private GameObject startscreen;
-    private GameManager gameManager;
-    private Player player;
+    private GameStateMachine gameStateMachine;
+
     private void Awake()
     {
-        gameManager = FindObjectOfType<GameManager>();
-        player = FindObjectOfType<Player>();
-        gameManager.OnPauseStateChanged += GameManagerOnPauseStateChanged;
+        gameStateMachine = FindObjectOfType<GameStateMachine>();
+        
+        if(gameStateMachine.CurrentState is PrePlay)
+            startscreen.SetActive(true);
+        gameStateMachine.OnGameStateChanged += GameStateChanged;
     }
-    private void Start()
+
+    private void GameStateChanged(IState state)
     {
-        startscreen.SetActive(true);
+        if(!(state is PrePlay) && startscreen.activeSelf)
+            startscreen.SetActive(false);
     }
-    private void GameManagerOnPauseStateChanged(bool paused)
-    {
-        if(!player.Health.IsDead && startscreen != null)
-            startscreen.SetActive(paused);
-    }
-  
 }

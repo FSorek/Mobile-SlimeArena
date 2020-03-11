@@ -15,7 +15,7 @@ public class Player : MonoBehaviour, ITakeDamage, ICanAttack
     private void Awake()
     {
         Health = new Health(maxHealth, .5f);
-        PlayerInput = new MobileInput();
+        PlayerInput = new GamepadOrKeyboardInput();
         Health.OnDeath += Death;
         AbilityPool = new AbilityPool(40);
     }
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour, ITakeDamage, ICanAttack
 
     private void Update()
     {
-        if(GameStateMachine.CurrentGameState is GameBossCinematic)
+        if(GameSceneStateMachine.CurrentGameState is GameBossCinematic)
             return;
         PlayerInput.Tick();
     }

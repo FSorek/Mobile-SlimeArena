@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class PlayerGamepadOrKeyboardInput : IPlayerInput
+public class GamepadOrKeyboardInput : IPlayerInput
 {
     public bool MenuAcceptAction => Input.GetButtonDown("Fire1");
     public bool PrimaryActionDown => Input.GetButtonDown("Fire1");

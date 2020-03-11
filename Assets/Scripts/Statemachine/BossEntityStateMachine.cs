@@ -83,7 +83,7 @@ public class BossEntityStateMachine : MonoBehaviour, IEntityStateMachine
 
     private void Update()
     {
-        if(GameStateMachine.CurrentGameState is GameBossFight)
+        if(GameSceneStateMachine.CurrentGameState is GameBossFight)
             stateMachine.Tick();
     }
 }
