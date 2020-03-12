@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 public class GameStateMachine : MonoBehaviour
@@ -34,8 +33,28 @@ public class GameStateMachine : MonoBehaviour
             loading,
             prePlay,
             loading.IsLoadingFinished);
+        
+        stateMachine.CreateTransition(
+            prePlay,
+            playing,
+            () => PlayerInputManager.CurrentInput.MenuAcceptAction);
+        
+        stateMachine.CreateTransition(
+            playing,
+            paused,
+            PauseButton.Pressed);
+        
+        stateMachine.CreateTransition(
+            paused,
+            playing,
+            PauseButton.Pressed);
 
         stateMachine.SetState(loading);
+    }
+
+    private void Update()
+    {
+        stateMachine.Tick();
     }
 }
 
@@ -56,83 +75,3 @@ public class Menu : IState
         throw new NotImplementedException();
     }
 }
-
-public class LoadingLevel : IState
-{
-    private AsyncOperation operation;
-    public bool IsLoadingFinished() => operation.isDone;
-    public void StateEnter()
-    {
-        operation = SceneManager.LoadSceneAsync("GameScene");
-    }
-
-    public void ListenToState()
-    {
-        
-    }
-
-    public void StateExit()
-    {
-        
-    }
-}
-
-public class Paused : IState
-{
-    public static bool IsPaused { get; private set; }
-    public void StateEnter()
-    {
-        Time.timeScale = 0f;
-        IsPaused = true;
-    }
-
-    public void ListenToState()
-    {
-        
-    }
-
-    public void StateExit()
-    {
-        Time.timeScale = 1f;
-        IsPaused = false;
-    }
-}
-
-public class Playing : IState
-{
-    public void StateEnter()
-    {
-        
-    }
-
-    public void ListenToState()
-    {
-        
-    }
-
-    public void StateExit()
-    {
-        
-    }
-}
-
-public class PrePlay : IState
-{
-    private Player player;
-    public bool CanContinue() => PlayerInputManager.CurrentInput.PrimaryActionDown;
-    public void StateEnter()
-    {
-        
-    }
-
-    public void ListenToState()
-    {
-        
-    }
-
-    public void StateExit()
-    {
-        
-    }
-}
-

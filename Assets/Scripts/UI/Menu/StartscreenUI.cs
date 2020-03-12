@@ -19,7 +19,7 @@ public class StartscreenUI : MonoBehaviour
 
     private void GameStateChanged(IState state)
     {
-        if(!(state is PrePlay) && startscreen.activeSelf)
+        if(state is Playing && startscreen.activeSelf)
             startscreen.SetActive(false);
     }
 }
