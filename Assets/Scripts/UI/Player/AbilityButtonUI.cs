@@ -12,7 +12,7 @@ public class AbilityButtonUI : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     private void Awake()
     {
-        mobileInput = FindObjectOfType<Player>().PlayerInput as MobileInput;
+        mobileInput = PlayerInputManager.CurrentInput as MobileInput;
     }
 
     public void OnPointerDown(PointerEventData eventData)

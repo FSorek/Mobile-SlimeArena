@@ -9,7 +9,7 @@ public class AttackButtonUI : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>();
-        mobileInput = player.PlayerInput as MobileInput;
+        mobileInput = PlayerInputManager.CurrentInput as MobileInput;
     }
 
     public void Attack()

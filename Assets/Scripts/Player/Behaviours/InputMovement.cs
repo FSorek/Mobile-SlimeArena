@@ -2,12 +2,10 @@
 
 internal class InputMovement : IState
 {
-    private readonly Player player;
     private readonly float moveSpeed;
     private readonly Rigidbody2D playerRbody;
     public InputMovement(Player player, float moveSpeed)
     {
-        this.player = player;
         this.moveSpeed = moveSpeed;
         playerRbody = player.GetComponent<Rigidbody2D>();
     }
@@ -19,7 +17,7 @@ internal class InputMovement : IState
 
     public void ListenToState()
     {
-        playerRbody.MovePosition(playerRbody.position + Time.fixedDeltaTime * moveSpeed * player.PlayerInput.MoveVector.normalized);
+        playerRbody.MovePosition(playerRbody.position + Time.fixedDeltaTime * moveSpeed * PlayerInputManager.CurrentInput.MoveVector.normalized);
     }
 
     public void StateExit()

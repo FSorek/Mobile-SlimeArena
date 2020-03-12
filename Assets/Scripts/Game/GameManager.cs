@@ -24,8 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(!player.PlayerInput.MenuAcceptAction ||
-            !gamePaused ||
+        if(!gamePaused ||
            (operation != null && !operation.isDone))
             return;
         if(!player.Health.IsDead)

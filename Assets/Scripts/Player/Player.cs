@@ -6,16 +6,14 @@ public class Player : MonoBehaviour, ITakeDamage, ICanAttack
 {
     public event Action OnSpawn = delegate { };
     [SerializeField] private int maxHealth = 1;
-    public IPlayerInput PlayerInput { get; private set; }
     public Health Health { get; private set; }
     public IAbilityPool AbilityPool { get; private set; }
 
-    public Vector2 AttackDirection => PlayerInput.AttackDirection;
+    public Vector2 AttackDirection => PlayerInputManager.CurrentInput.AttackDirection;
 
     private void Awake()
     {
         Health = new Health(maxHealth, .5f);
-        PlayerInput = new GamepadOrKeyboardInput();
         Health.OnDeath += Death;
         AbilityPool = new AbilityPool(40);
     }
@@ -35,6 +33,5 @@ public class Player : MonoBehaviour, ITakeDamage, ICanAttack
     {
         if(GameSceneStateMachine.CurrentGameState is GameBossCinematic)
             return;
-        PlayerInput.Tick();
     }
 }

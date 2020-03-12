@@ -12,7 +12,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
     private StateMachine movementStateMachine = new StateMachine();
     private Player player;
 
-    public bool IsMoving => player.PlayerInput.MoveVector.magnitude > 0f;
+    public bool IsMoving => PlayerInputManager.CurrentInput.MoveVector.magnitude > 0f;
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         stateMachine.CreateTransition(
             idle,
             attack,
-            () => player.PlayerInput.PrimaryActionDown
+            () => PlayerInputManager.CurrentInput.PrimaryActionDown
                   && attack.CanAttack());
         
         stateMachine.CreateTransition(
@@ -44,12 +44,12 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         stateMachine.CreateTransition(
             idle,
             ability,
-            () => player.PlayerInput.SecondaryActionDown && ability.CanCast);
+            () => PlayerInputManager.CurrentInput.SecondaryActionDown && ability.CanCast);
         
         stateMachine.CreateTransition(
             ability,
             idle,
-            () => player.PlayerInput.SecondaryActionUp || !ability.CanCast);
+            () => PlayerInputManager.CurrentInput.SecondaryActionUp || !ability.CanCast);
         
         stateMachine.CreateAnyTransition(
             dead,

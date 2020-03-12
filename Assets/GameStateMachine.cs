@@ -20,6 +20,8 @@ public class GameStateMachine : MonoBehaviour
             return;
         }
         initialized = true;
+        DontDestroyOnLoad(gameObject);
+        
         stateMachine.OnStateChanged += (state) => OnGameStateChanged(state);
         
         var menu = new Menu();
@@ -105,22 +107,22 @@ public class Playing : IState
 
     public void ListenToState()
     {
-        throw new NotImplementedException();
+        
     }
 
     public void StateExit()
     {
-        throw new NotImplementedException();
+        
     }
 }
 
 public class PrePlay : IState
 {
     private Player player;
-    public bool CanContinue() => player.PlayerInput.PrimaryActionDown;
+    public bool CanContinue() => PlayerInputManager.CurrentInput.PrimaryActionDown;
     public void StateEnter()
     {
-        player = Object.FindObjectOfType<Player>();
+        
     }
 
     public void ListenToState()
