@@ -27,7 +27,7 @@ public class GameSceneStateFlowData : ScriptableObject
         get
         {
             if(bossCinematic == null)
-                bossCinematic = new GameBossCinematic(playableDirector, bossPrefab, bossSpawnPosition, NpcSpawnerSystem.Instance);
+                bossCinematic = new GameBossCinematic(FindObjectOfType<PlayableDirector>(), bossPrefab, bossSpawnPosition, NpcSpawnerSystem.Instance);
             return bossCinematic;
         }
     }
@@ -40,10 +40,5 @@ public class GameSceneStateFlowData : ScriptableObject
                 bossStage = new GameBossFight(NpcSpawnerSystem.Instance);
             return bossStage;
         }
-    }
-
-    private void OnEnable()
-    {
-        playableDirector = FindObjectOfType<PlayableDirector>();
     }
 }
