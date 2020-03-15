@@ -7,6 +7,7 @@ public class Paused : IState
     {
         Time.timeScale = 0f;
         IsPaused = true;
+        PauseButton.Pressed = false;
     }
 
     public void ListenToState()
@@ -18,5 +19,6 @@ public class Paused : IState
     {
         Time.timeScale = 1f;
         IsPaused = false;
+        PauseButton.Pressed = false;
     }
 }

@@ -30,6 +30,11 @@ public class GameStateMachine : MonoBehaviour
         var playing = new Playing();
         
         stateMachine.CreateTransition(
+            menu,
+            loading,
+            () => PlayButtonUI.Pressed);
+        
+        stateMachine.CreateTransition(
             loading,
             prePlay,
             loading.IsLoadingFinished);
@@ -42,36 +47,18 @@ public class GameStateMachine : MonoBehaviour
         stateMachine.CreateTransition(
             playing,
             paused,
-            PauseButton.Pressed);
+            () => PauseButton.Pressed);
         
         stateMachine.CreateTransition(
             paused,
             playing,
-            PauseButton.Pressed);
+            () => PauseButton.Pressed);
 
-        stateMachine.SetState(loading);
+        stateMachine.SetState(menu);
     }
 
     private void Update()
     {
         stateMachine.Tick();
-    }
-}
-
-public class Menu : IState
-{
-    public void StateEnter()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ListenToState()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void StateExit()
-    {
-        throw new NotImplementedException();
     }
 }

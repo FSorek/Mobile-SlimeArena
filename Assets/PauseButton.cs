@@ -3,11 +3,10 @@ using UnityEngine.UI;
 
 public class PauseButton : MonoBehaviour
 {
-    public static bool Pressed() => pressedAt == Time.unscaledTime;
-    private static float pressedAt;
+    public static bool Pressed { get; set; }
 
     private void Awake()
     {
-        GetComponent<Button>().onClick.AddListener(() => pressedAt = Time.unscaledTime);
+        GetComponent<Button>().onClick.AddListener(() => Pressed = true);
     }
 }
