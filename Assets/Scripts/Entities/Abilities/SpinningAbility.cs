@@ -16,7 +16,8 @@ public class SpinningAbility : IAbility
         TickTime = tickTime;
         Cost = cost;
         mainCamera = Camera.main;
-        attack = new MeleeSlash(damage, hitSize, owner.gameObject);
+        var attackComponent = owner.GetComponent<ICanAttack>();
+        attack = new MeleeSlash(damage, hitSize, attackComponent);
         
         InitializeAbilityWalls();
         SetWallsActive(false);

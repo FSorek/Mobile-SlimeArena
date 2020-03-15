@@ -4865,18 +4865,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackData: {fileID: 11400000, guid: e51534273c1acb8469072a92d2ced4b6, type: 2}
   sequenceData: {fileID: 11400000, guid: 50e30b5dfe197fd49aab8411847e987f, type: 2}
---- !u!114 &7657182672827109676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3172701069831543725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9575c64790e349399e544d05ee76355d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1414863917430862321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4897,6 +4885,11 @@ PrefabInstance:
     - target: {fileID: -710077083984895240, guid: 814fc995ad34725478a1589d165ba691,
         type: 3}
       propertyPath: dodgeDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565675325533988985, guid: 814fc995ad34725478a1589d165ba691,
+        type: 3}
+      propertyPath: maxHealth
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3194285217910553243, guid: 814fc995ad34725478a1589d165ba691,

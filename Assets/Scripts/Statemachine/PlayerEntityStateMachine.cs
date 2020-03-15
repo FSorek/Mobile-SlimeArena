@@ -17,8 +17,9 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
     private void Awake()
     {
         player = GetComponent<Player>();
+        var playerHealth = player.GetComponent<ITakeDamage>();
         
-        var meleeSlash = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange), gameObject);
+        var meleeSlash = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange), player);
         var playerAttack = new PoolRestoring(2, player.AbilityPool, meleeSlash);
         
         var spinningAbility = new SpinningAbility(player.transform, .1f, 1, 1, new Vector2(3,3));
@@ -53,23 +54,12 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         
         stateMachine.CreateAnyTransition(
             dead,
-            () => player.Health.IsDead);
+            () => playerHealth.CurrentHealth <= 0);
 
         stateMachine.SetState(idle);
         
         var inputMovement = new InputMovement(player, moveSpeed);
         movementStateMachine.SetState(inputMovement);
-    }
-
-    private void Start()
-    {
-        player.Health.OnTakeDamage += PlayerOnTakeDamage;
-    }
-
-    private void PlayerOnTakeDamage(int amount) // a tiny hack to make player invincible during ability casting
-    {
-        if(stateMachine.CurrentState is EntityCastingAbility)
-            player.Health.Restore(amount);
     }
 
     private void Update()

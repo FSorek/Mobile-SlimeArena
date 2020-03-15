@@ -6,13 +6,9 @@ using UnityEngine.UI;
 
 public class RestartButtonUI : MonoBehaviour
 {
+    public static bool Pressed { get; set; }
     private void Awake()
     {
-        GetComponent<Button>().onClick.AddListener(RestartGame);
-    }
-
-    private void RestartGame()
-    {
-        FindObjectOfType<GameManager>().RestartGame();
+        GetComponent<Button>().onClick.AddListener(() => Pressed = true);
     }
 }

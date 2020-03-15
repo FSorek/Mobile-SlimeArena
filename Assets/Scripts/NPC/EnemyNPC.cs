@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyNPC : MonoBehaviour, ITakeDamage, ICanAttack, IGameObjectPooled
+public class EnemyNPC : MonoBehaviour, ICanAttack, IGameObjectPooled
 {
     public static event Action<EnemyNPC> OnDespawned = delegate {  };
     public static event Action<EnemyNPC> OnDeath = delegate {  }; 

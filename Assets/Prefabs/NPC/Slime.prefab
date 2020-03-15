@@ -4959,7 +4959,7 @@ GameObject:
   - component: {fileID: 3641642961365679448}
   - component: {fileID: -710077083984895240}
   - component: {fileID: -3906919019233068905}
-  - component: {fileID: -4045428157774720209}
+  - component: {fileID: 1565675325533988985}
   m_Layer: 10
   m_Name: Slime
   m_TagString: Untagged
@@ -5242,7 +5242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: -6966778178813738180}
   stateAudioData: {fileID: 11400000, guid: 7cc144cbd86a0514bbf0d6accbe9384d, type: 2}
---- !u!114 &-4045428157774720209
+--- !u!114 &1565675325533988985
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5251,9 +5251,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4586117891924191836}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9575c64790e349399e544d05ee76355d, type: 3}
+  m_Script: {fileID: 11500000, guid: bb7a1d2112664ac681c970d1db9a47f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 1
+  invincibilityDuration: 0.2
 --- !u!1 &5502070612760164963
 GameObject:
   m_ObjectHideFlags: 0

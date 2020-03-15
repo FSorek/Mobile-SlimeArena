@@ -3,9 +3,9 @@ using UnityEngine;
 
 public abstract class Attack
 {
-    public GameObject Source { get; }
+    public ICanAttack Source { get; }
 
-    public Attack(GameObject source)
+    public Attack(ICanAttack source)
     {
         Source = source;
     }
@@ -16,7 +16,7 @@ public abstract class Attack
     {
         if(target == null)
             return;
-        target.Health.TakeDamage(Source, damage);
+        target.TakeDamage(Source, damage);
         OnTargetHit(target);
     }
 }

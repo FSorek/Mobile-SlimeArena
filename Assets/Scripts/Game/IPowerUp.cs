@@ -2,6 +2,7 @@
 
 public interface IPowerUp
 {
-    void PickUpPower(ITakeDamage entity);
-    void Absorb(ITakeDamage entity);
+    void PickUpPower(GameObject entity);
+    void Absorb(GameObject entity);
+    ParticleSystem ParticleSystem { get; set; }
 }

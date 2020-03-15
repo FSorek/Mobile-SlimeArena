@@ -1,6 +1,10 @@
 ﻿using System;
+using UnityEngine;
 
 public interface ITakeDamage
 {
-    Health Health { get; }
+    event Action<int> OnTakeDamage;
+    int CurrentHealth { get; }
+    int MaxHealth { get; }
+    void TakeDamage(ICanAttack source, int damage);
 }

@@ -9,28 +9,29 @@ public class PlayerHealthbarUI : MonoBehaviour
     [SerializeField] private Sprite activeHealth;
     [SerializeField] private Sprite inactiveHealth;
     private Image[] healthImages;
-    private Player player;
+    private ITakeDamage playerHealth;
 
     private void Awake()
     {
         healthImages = GetComponentsInChildren<Image>();
-        player = FindObjectOfType<Player>();
+        playerHealth = FindObjectOfType<Player>().GetComponent<ITakeDamage>();
     }
 
     private void Start()
     {
-        player.Health.OnTakeDamage += PlayerOnTakeDamage;
-        player.Health.OnRestoreHealth += PlayerOnRestoreHealth;
+        playerHealth.OnTakeDamage += PlayerOnTakeDamage;
+        if(playerHealth is ICanRestore restorableHealth)
+            restorableHealth.OnRestore += PlayerOnRestoreHealth;
     }
 
     private void PlayerOnRestoreHealth(int amount)
     {
-        healthImages[player.Health.CurrentHealth - 1].sprite = activeHealth;
+        healthImages[playerHealth.CurrentHealth - 1].sprite = activeHealth;
     }
 
     private void PlayerOnTakeDamage(int damage)
     {
-        if(player.Health.CurrentHealth <= healthImages.Length - 1)
-            healthImages[player.Health.CurrentHealth].sprite = inactiveHealth;
+        if(playerHealth.CurrentHealth <= healthImages.Length - 1)
+            healthImages[playerHealth.CurrentHealth].sprite = inactiveHealth;
     }
 }

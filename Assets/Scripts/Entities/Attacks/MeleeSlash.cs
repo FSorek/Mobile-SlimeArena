@@ -7,7 +7,7 @@ public class MeleeSlash : Attack
     private readonly LayerMask enemyLayer;
     private Collider2D[] targetsHit = new Collider2D[10];
 
-    public MeleeSlash(int damage, Vector2 size, GameObject source) : base(source)
+    public MeleeSlash(int damage, Vector2 size, ICanAttack source) : base(source)
     {
         this.damage = damage;
         this.size = size;

@@ -4,14 +4,17 @@ public class HealthUp : IPowerUp
 {
     private const int Amount = 1;
 
-    public void PickUpPower(ITakeDamage entity)
+    public void PickUpPower(GameObject entity)
     {
-        entity.Health.IncreaseMaxHealth(Amount);
+        var restorableEntity = entity.GetComponent<ICanRestore>();
+        restorableEntity?.Restore(Amount);
     }
 
-    public void Absorb(ITakeDamage entity)
+    public void Absorb(GameObject entity)
     {
-        entity.Health.Restore(Amount);
+        var restorableEntity = entity.GetComponent<ICanRestore>();
+        restorableEntity?.Restore(Amount);
     }
 
+    public ParticleSystem ParticleSystem { get; set; }
 }

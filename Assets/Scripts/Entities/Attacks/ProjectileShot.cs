@@ -4,7 +4,7 @@ public class ProjectileShot : Attack
 {
     private readonly int damage;
 
-    public ProjectileShot(int damage, GameObject source) : base(source)
+    public ProjectileShot(int damage, ICanAttack source) : base(source)
     {
         this.damage = damage;
     }

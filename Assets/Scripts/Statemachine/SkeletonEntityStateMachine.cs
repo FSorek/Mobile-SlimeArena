@@ -18,7 +18,7 @@ public class SkeletonEntityStateMachine : MonoBehaviour, IEntityStateMachine
         var enemyNPC = GetComponent<EnemyNPC>();
         var player = FindObjectOfType<Player>();
 
-        var projectile = new ProjectileShot(attackData.Damage, gameObject);
+        var projectile = new ProjectileShot(attackData.Damage, enemyNPC);
         
         var idle = new EntityIdle();
         var goToPlayer = new NPCGoToPlayer(player, npcMover);

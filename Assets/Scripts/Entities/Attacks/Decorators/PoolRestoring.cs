@@ -13,7 +13,7 @@ public class PoolRestoring : AttackDecorator
 
     private void AttackOnTargetHit(ITakeDamage target)
     {
-        if(target.Health.IsDead)
+        if(target.CurrentHealth <= 0)
             pool.Restore(amount);
     }
 }
