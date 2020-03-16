@@ -58,7 +58,12 @@ public class GameStateMachine : MonoBehaviour
         stateMachine.CreateTransition(
             playing,
             gameOver,
-            () => playing.IsGameFinished);
+            () => playing.IsGameOver);
+        
+        stateMachine.CreateTransition(
+            gameOver,
+            loading,
+            () => RestartButtonUI.Pressed);
 
         stateMachine.SetState(menu);
     }
@@ -66,23 +71,5 @@ public class GameStateMachine : MonoBehaviour
     private void Update()
     {
         stateMachine.Tick();
-    }
-}
-
-public class GameOver : IState
-{
-    public void StateEnter()
-    {
-        
-    }
-
-    public void ListenToState()
-    {
-        
-    }
-
-    public void StateExit()
-    {
-        
     }
 }

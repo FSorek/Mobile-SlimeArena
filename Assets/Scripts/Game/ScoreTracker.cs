@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 public static class ScoreTracker
@@ -9,11 +10,13 @@ public static class ScoreTracker
     static ScoreTracker()
     {
         EnemyNPC.OnDeath += AddScore;
+        Score = 0;
     }
 
     private static void AddScore(EnemyNPC npc)
     {
         Score++;
+        Debug.Log(Score);
         OnScoreIncreased(Score);
     }
 }

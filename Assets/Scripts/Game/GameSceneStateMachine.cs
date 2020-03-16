@@ -25,9 +25,9 @@ public class GameSceneStateMachine : MonoBehaviour
         for (int i = 0; i < gameStateFlowData.Length; i++)
         {
             int stageNumber = i + 1;
-            GameRegularStage gameStage = gameStateFlowData[i].GameStage;
-            GameBossCinematic bossCinematic = gameStateFlowData[i].BossCinematic;
-            GameBossFight bossStage = gameStateFlowData[i].BossStage;
+            GameRegularStage gameStage = gameStateFlowData[i].GetGameStage();
+            GameBossCinematic bossCinematic = gameStateFlowData[i].GetBossCinematic();
+            GameBossFight bossStage = gameStateFlowData[i].GetBossStage();
 
             stateMachine.CreateTransition(
                 gameStage,
@@ -41,14 +41,14 @@ public class GameSceneStateMachine : MonoBehaviour
 
             if (stageNumber < gameStateFlowData.Length)
             {
-                var nextStage = gameStateFlowData[stageNumber].GameStage;
+                var nextStage = gameStateFlowData[stageNumber].GetGameStage();
                 stateMachine.CreateTransition(
                     bossStage,
                     nextStage,
                     () => bossStage.IsBossKilled);
             }
         }
-        stateMachine.SetState(gameStateFlowData[0].GameStage);
+        stateMachine.SetState(gameStateFlowData[0].GetGameStage());
     }
 
     private void StateMachineOnStateChanged(IState state)

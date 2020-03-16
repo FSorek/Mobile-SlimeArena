@@ -12,7 +12,7 @@ public class NpcSpawnerSystem : MonoBehaviour
     private Dictionary<Type, Spawner> spawners = new Dictionary<Type, Spawner>();
     private List<EnemyNPC> enemiesAlive = new List<EnemyNPC>();
 
-    private void Start()
+    private void OnEnable()
     {
         spawners.Clear();
         foreach (var objectPool in spawnerPools)
@@ -28,9 +28,9 @@ public class NpcSpawnerSystem : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
             Destroy(this);
-        else
+        else if (Instance == null)
             Instance = this;
     }
 

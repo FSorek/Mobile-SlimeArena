@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Playables;
 
 [CreateAssetMenu(fileName = "Game Flow Data")]
@@ -7,38 +8,29 @@ public class GameSceneStateFlowData : ScriptableObject
     [SerializeField] private RegularStageSpawningData[] spawningData;
     [SerializeField] private EnemyNPC bossPrefab;
     [SerializeField] private Vector2 bossSpawnPosition;
+
     private GameRegularStage gameStage;
     private GameBossCinematic bossCinematic;
-    private GameBossFight bossStage;
-    private PlayableDirector playableDirector;
+    private GameBossFight bossFight;
 
-    public GameRegularStage GameStage
+    public GameRegularStage GetGameStage()
     {
-        get
-        {
-            if(gameStage == null)
-                gameStage = new GameRegularStage(spawningData, NpcSpawnerSystem.Instance);
-            return gameStage;
-        }
+        if(gameStage == null)
+            gameStage = new GameRegularStage(spawningData, NpcSpawnerSystem.Instance);
+        return gameStage;
     }
-
-    public GameBossCinematic BossCinematic
+    
+    public GameBossCinematic GetBossCinematic()
     {
-        get
-        {
-            if(bossCinematic == null)
-                bossCinematic = new GameBossCinematic(FindObjectOfType<PlayableDirector>(), bossPrefab, bossSpawnPosition, NpcSpawnerSystem.Instance);
-            return bossCinematic;
-        }
+        if(bossCinematic == null)
+            bossCinematic = new GameBossCinematic(FindObjectOfType<PlayableDirector>(), bossPrefab, bossSpawnPosition, NpcSpawnerSystem.Instance);
+        return bossCinematic;
     }
-
-    public GameBossFight BossStage
+    
+    public GameBossFight GetBossStage()
     {
-        get
-        {
-            if(bossStage == null)
-                bossStage = new GameBossFight(NpcSpawnerSystem.Instance);
-            return bossStage;
-        }
+        if(bossFight == null)
+            bossFight = new GameBossFight(NpcSpawnerSystem.Instance);
+        return bossFight;
     }
 }
