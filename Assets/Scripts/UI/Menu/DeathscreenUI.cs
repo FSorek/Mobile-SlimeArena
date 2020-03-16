@@ -6,29 +6,17 @@ using UnityEngine;
 public class DeathscreenUI : MonoBehaviour
 {
     [SerializeField] private GameObject deathscreen;
-    private Player player;
-    private ITakeDamage playerHealth;
+    private GameStateMachine gameStateMachine;
+
     private void Awake()
     {
-        player = FindObjectOfType<Player>();
-        playerHealth = player.GetComponent<ITakeDamage>();
-    }
-    private void Start()
-    {
-        player.GetComponent<ITakeDamage>().OnTakeDamage += PlayerOnTakeDamage;
-        player.OnSpawn += () => DeathscreenSetActive(false);
-        DeathscreenSetActive(false);
+        gameStateMachine = FindObjectOfType<GameStateMachine>();
+        deathscreen.SetActive(false);
     }
 
-    private void PlayerOnTakeDamage(int amount)
+    private void Update()
     {
-        if(playerHealth.CurrentHealth <= 0)
-            DeathscreenSetActive(true);
-    }
-
-    private void DeathscreenSetActive(bool active)
-    {
-        if(deathscreen.activeSelf != active)
-            deathscreen.SetActive(active);
+        if(gameStateMachine.CurrentState is GameOver && !deathscreen.activeSelf)
+            deathscreen.SetActive(true);
     }
 }

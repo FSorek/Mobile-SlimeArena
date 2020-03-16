@@ -28,6 +28,7 @@ public class GameStateMachine : MonoBehaviour
         var paused = new Paused();
         var prePlay = new PrePlay();
         var playing = new Playing();
+        var gameOver = new GameOver();
         
         stateMachine.CreateTransition(
             menu,
@@ -53,6 +54,11 @@ public class GameStateMachine : MonoBehaviour
             paused,
             playing,
             () => PauseButton.Pressed);
+        
+        stateMachine.CreateTransition(
+            playing,
+            gameOver,
+            () => playing.IsGameFinished);
 
         stateMachine.SetState(menu);
     }
@@ -60,5 +66,23 @@ public class GameStateMachine : MonoBehaviour
     private void Update()
     {
         stateMachine.Tick();
+    }
+}
+
+public class GameOver : IState
+{
+    public void StateEnter()
+    {
+        
+    }
+
+    public void ListenToState()
+    {
+        
+    }
+
+    public void StateExit()
+    {
+        
     }
 }
