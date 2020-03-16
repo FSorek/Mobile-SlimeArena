@@ -19,6 +19,7 @@ public class BossEntityStateMachine : MonoBehaviour, IEntityStateMachine
         var player = FindObjectOfType<Player>();
         var npcMover = GetComponent<NPCMover>();
         var enemyNPC = GetComponent<EnemyNPC>();
+        var npcHealth = GetComponent<ITakeDamage>();
         
         var projectileShot = new ProjectileShot(attackData.Damage, enemyNPC);
         var circleShot = new OffsettingShot(5, new CircularShot(12, projectileShot));
@@ -47,7 +48,7 @@ public class BossEntityStateMachine : MonoBehaviour, IEntityStateMachine
             idle,
             firstStageAttack,
             () => firstStageAttack.CanAttack() 
-                  && enemyNPC.Health.CurrentHealth >= enemyNPC.Health.MaxHealth * secondStageHealthThreshold
+                  && npcHealth.CurrentHealth >= npcHealth.MaxHealth * secondStageHealthThreshold
                   && enemyNPC.HasLineOfSightTo(player.transform.position) 
                   && Vector2.Distance(transform.position, player.transform.position) <= attackData.MaxAttackRange);
         
@@ -55,7 +56,7 @@ public class BossEntityStateMachine : MonoBehaviour, IEntityStateMachine
             idle,
             secondStageAttack,
             () => firstStageAttack.CanAttack() 
-                  && enemyNPC.Health.CurrentHealth < enemyNPC.Health.MaxHealth * secondStageHealthThreshold
+                  && npcHealth.CurrentHealth < npcHealth.MaxHealth * secondStageHealthThreshold
                   && enemyNPC.HasLineOfSightTo(player.transform.position) 
                   && Vector2.Distance(transform.position, player.transform.position) <= attackData.MaxAttackRange);
         
@@ -71,12 +72,12 @@ public class BossEntityStateMachine : MonoBehaviour, IEntityStateMachine
         
         stateMachine.CreateAnyTransition(
             dead,
-            () => enemyNPC.Health.IsDead);
+            () => npcHealth.CurrentHealth <= 0);
         
         stateMachine.CreateTransition(
             dead,
             idle,
-            () => !enemyNPC.Health.IsDead);
+            () => npcHealth.CurrentHealth > 0);
         
         stateMachine.SetState(idle);
     }

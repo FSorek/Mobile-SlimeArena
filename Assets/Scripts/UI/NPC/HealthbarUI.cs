@@ -10,7 +10,7 @@ public class HealthbarUI : MonoBehaviour, IGameObjectPooled
     [SerializeField] private float updateSpeed = 0.5f;
     private Camera mainCamera;
     private Transform attachedTransform;
-    private Health attachedHealth;
+    private ITakeDamage attachedHealth;
 
     public ObjectPool Pool { get; set; }
 
@@ -22,10 +22,10 @@ public class HealthbarUI : MonoBehaviour, IGameObjectPooled
     internal void SetHealth(EnemyNPC npc)
     {
         if (attachedTransform != null)
-            npc.Health.OnTakeDamage -= HandleHealthChanged;
+            attachedHealth.OnTakeDamage -= HandleHealthChanged;
 
         attachedTransform = npc.transform;
-        attachedHealth = npc.Health;
+        attachedHealth = npc.GetComponent<ITakeDamage>();
         healthSlider.value = 1f;
         attachedHealth.OnTakeDamage += HandleHealthChanged;
     }

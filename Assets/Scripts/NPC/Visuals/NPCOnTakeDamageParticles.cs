@@ -1,7 +1,7 @@
-﻿public class NPCOnTakeDamageParticles : EventParticlePlayer<EnemyNPC>
+﻿public class NPCOnTakeDamageParticles : EventParticlePlayer<EnemyHealth>
 {
     protected override void Subscribe()
     {
-        ListenedComponent.Health.OnTakeDamage += (damage) => ListenedComponentEventFired();
+        ListenedComponent.OnTakeDamage += (damage) => ListenedComponentEventFired();
     }
 }

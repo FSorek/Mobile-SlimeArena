@@ -6,30 +6,31 @@ public class EnemyNPC : MonoBehaviour, ICanAttack, IGameObjectPooled
 {
     public static event Action<EnemyNPC> OnDespawned = delegate {  };
     public static event Action<EnemyNPC> OnDeath = delegate {  }; 
-    [SerializeField] private int maxHealth;
     [SerializeField] private float timeUntilBodyIsGone = 2f;
     [SerializeField] private Transform attackOrigin;
 
     private Collider2D activeCollider;
     private LayerMask obstacleMask;
     private Player target;
+    private ITakeDamage healthComponent;
 
     public Transform AttackOrigin => attackOrigin;
     public Vector2 AttackDirection => (target.transform.position - transform.position).normalized;
-    public Health Health { get; private set; }
     public ObjectPool Pool { get; set; }
 
     private void Awake()
     {
-        Health = new Health(maxHealth, .2f);
         activeCollider = GetComponent<Collider2D>();
-        Health.OnDeath += Death;
         obstacleMask = LayerMask.GetMask("World");
         target = FindObjectOfType<Player>();
+        healthComponent = GetComponent<ITakeDamage>();
+        healthComponent.OnTakeDamage += Death;
     }
 
-    private void Death(GameObject source)
+    private void Death(int amount)
     {
+        if(healthComponent.CurrentHealth > 0)
+            return;
         activeCollider.enabled = false;
         OnDeath(this);
         Invoke(nameof(ReturnToPool), timeUntilBodyIsGone);
@@ -42,7 +43,6 @@ public class EnemyNPC : MonoBehaviour, ICanAttack, IGameObjectPooled
 
     private void OnEnable()
     {
-        Health?.Reset();
         activeCollider.enabled = true;
     }
 

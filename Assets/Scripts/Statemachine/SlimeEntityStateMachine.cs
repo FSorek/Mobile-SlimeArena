@@ -14,6 +14,7 @@ public class SlimeEntityStateMachine : MonoBehaviour, IEntityStateMachine
         var npcMover = GetComponent<NPCMover>();
         var npcDodger = GetComponent<NPCDodger>();
         var enemyNPC = GetComponent<EnemyNPC>();
+        var npcHealth = GetComponent<ITakeDamage>();
         var player = FindObjectOfType<Player>();
         
         var projectile = new ProjectileShot(attackData.Damage, enemyNPC);
@@ -54,12 +55,12 @@ public class SlimeEntityStateMachine : MonoBehaviour, IEntityStateMachine
         
         stateMachine.CreateAnyTransition(
             dead,
-            () => enemyNPC.Health.IsDead);
+            () => npcHealth.CurrentHealth <= 0);
         
         stateMachine.CreateTransition(
             dead,
             idle,
-            () => !enemyNPC.Health.IsDead);
+            () => npcHealth.CurrentHealth > 0);
 
         stateMachine.SetState(idle);
     }

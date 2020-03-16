@@ -6,18 +6,20 @@ public class Player : MonoBehaviour, ICanAttack
 {
     public event Action OnSpawn = delegate { };
     private ITakeDamage healthComponent;
-    public IAbilityPool AbilityPool { get; private set; }
+    private readonly IAbilityPool abilityPool = new AbilityPool(40);
+
+    public IAbilityPool AbilityPool => abilityPool;
+
     public Vector2 AttackDirection => PlayerInputManager.CurrentInput.AttackDirection;
     public Transform AttackOrigin => transform;
 
     private void Awake()
     {
-        AbilityPool = new AbilityPool(40);
         healthComponent = GetComponent<ITakeDamage>();
-        healthComponent.OnTakeDamage += OnTakeDamage;
+        healthComponent.OnTakeDamage += TakeDamage;
     }
 
-    private void OnTakeDamage(int amount)
+    private void TakeDamage(int amount)
     {
         if(healthComponent.CurrentHealth <= 0)
             Death();

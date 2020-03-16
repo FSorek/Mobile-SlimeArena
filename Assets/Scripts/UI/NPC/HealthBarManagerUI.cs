@@ -21,7 +21,7 @@ public class HealthBarManagerUI : MonoBehaviour
 
     private void AddHealthBar(EnemyNPC npc)
     {
-        if(npc.Health.MaxHealth <= 1)
+        if(npc.GetComponent<ITakeDamage>().MaxHealth <= 1)
             return;
         if (!healthBars.ContainsKey(npc))
         {

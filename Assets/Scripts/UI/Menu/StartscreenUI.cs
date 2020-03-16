@@ -8,7 +8,13 @@ public class StartscreenUI : MonoBehaviour
     [SerializeField] private GameObject startscreen;
     private GameStateMachine gameStateMachine;
 
-    private void Awake()
+    private void GameStateChanged(IState state)
+    {
+        if(state is Playing && startscreen.activeSelf)
+            startscreen.SetActive(false);
+    }
+
+    private void OnEnable()
     {
         gameStateMachine = FindObjectOfType<GameStateMachine>();
         
@@ -17,9 +23,8 @@ public class StartscreenUI : MonoBehaviour
         gameStateMachine.OnGameStateChanged += GameStateChanged;
     }
 
-    private void GameStateChanged(IState state)
+    private void OnDisable()
     {
-        if(state is Playing && startscreen.activeSelf)
-            startscreen.SetActive(false);
+        gameStateMachine.OnGameStateChanged -= GameStateChanged;
     }
 }

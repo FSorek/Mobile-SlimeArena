@@ -1,7 +1,13 @@
-﻿public class NPCOnDeathParticles : EventParticlePlayer<EnemyNPC>
+﻿public class NPCOnDeathParticles : EventParticlePlayer<EnemyHealth>
 {
     protected override void Subscribe()
     {
-        ListenedComponent.Health.OnDeath += (source) => ListenedComponentEventFired();
+        ListenedComponent.OnTakeDamage += ListenedComponentOnTakeDamage;
+    }
+
+    private void ListenedComponentOnTakeDamage(int amount)
+    {
+        if(ListenedComponent.CurrentHealth <= 0)
+            ListenedComponentEventFired();
     }
 }

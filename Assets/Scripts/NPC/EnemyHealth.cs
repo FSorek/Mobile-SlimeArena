@@ -7,8 +7,15 @@ public class EnemyHealth : MonoBehaviour, ITakeDamage
     [SerializeField] private int maxHealth;
     [SerializeField] private float invincibilityDuration;
     private float lastTimeTookDamage;
+    private int maxHealthBonus;
     public int CurrentHealth { get; private set; }
-    public int MaxHealth => maxHealth;
+    public int MaxHealth => maxHealth + maxHealthBonus;
+
+    private void Awake()
+    {
+        CurrentHealth = MaxHealth;
+    }
+
     public void TakeDamage(ICanAttack source, int damage)
     {
         if(Time.time - lastTimeTookDamage < invincibilityDuration)

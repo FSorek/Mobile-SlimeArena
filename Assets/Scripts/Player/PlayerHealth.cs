@@ -11,12 +11,17 @@ public class PlayerHealth : MonoBehaviour, ITakeDamage, ICanRestore
     public int CurrentHealth { get; private set; }
     public int MaxHealth => maxHealth;
 
+    private void Awake()
+    {
+        CurrentHealth = maxHealth;
+    }
+
     public void Restore(int amount)
     {
         CurrentHealth += amount;
         OnRestore(amount);
-        if (CurrentHealth > MaxHealth)
-            CurrentHealth = MaxHealth;
+        if (CurrentHealth > maxHealth)
+            CurrentHealth = maxHealth;
     }
     public void TakeDamage(ICanAttack source, int damage)
     {
