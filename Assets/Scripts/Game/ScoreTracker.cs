@@ -16,7 +16,6 @@ public static class ScoreTracker
     private static void AddScore(EnemyNPC npc)
     {
         Score++;
-        Debug.Log(Score);
         OnScoreIncreased(Score);
     }
 }

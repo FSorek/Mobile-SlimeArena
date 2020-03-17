@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class GameSceneStateMachine : MonoBehaviour
 {
@@ -25,9 +26,12 @@ public class GameSceneStateMachine : MonoBehaviour
         for (int i = 0; i < gameStateFlowData.Length; i++)
         {
             int stageNumber = i + 1;
-            GameRegularStage gameStage = gameStateFlowData[i].GetGameStage();
-            GameBossCinematic bossCinematic = gameStateFlowData[i].GetBossCinematic();
-            GameBossFight bossStage = gameStateFlowData[i].GetBossStage();
+            GameRegularStage gameStage = new GameRegularStage(gameStateFlowData[i].SpawningData, NpcSpawnerSystem.Instance);
+            GameBossCinematic bossCinematic = new GameBossCinematic(FindObjectOfType<PlayableDirector>(), gameStateFlowData[i].BossPrefab, gameStateFlowData[i].BossSpawnPosition, NpcSpawnerSystem.Instance);
+            GameBossFight bossStage = new GameBossFight(NpcSpawnerSystem.Instance);
+            
+            if(i == 0)
+                stateMachine.SetState(gameStage);
 
             stateMachine.CreateTransition(
                 gameStage,
@@ -41,14 +45,13 @@ public class GameSceneStateMachine : MonoBehaviour
 
             if (stageNumber < gameStateFlowData.Length)
             {
-                var nextStage = gameStateFlowData[stageNumber].GetGameStage();
+                GameRegularStage nextStage = new GameRegularStage(gameStateFlowData[stageNumber].SpawningData, NpcSpawnerSystem.Instance);
                 stateMachine.CreateTransition(
                     bossStage,
                     nextStage,
                     () => bossStage.IsBossKilled);
             }
         }
-        stateMachine.SetState(gameStateFlowData[0].GetGameStage());
     }
 
     private void StateMachineOnStateChanged(IState state)
