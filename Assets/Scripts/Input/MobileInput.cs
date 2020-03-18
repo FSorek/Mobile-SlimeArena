@@ -22,7 +22,7 @@ public class MobileInput : IPlayerInput
     {
         if (movementJoystick != null)
         {
-            MoveVector = movementJoystick.Direction;
+            MoveVector = movementJoystick.Direction.normalized;
             if (MoveVector != Vector2.zero)
                 AttackDirection = MoveVector;
         }

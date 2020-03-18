@@ -2,7 +2,7 @@
 
 public interface IPowerUp
 {
-    void PickUpPower(GameObject entity);
-    void Absorb(GameObject entity);
-    ParticleSystem ParticleSystem { get; set; }
+    void Carry(GameObject carrier);
+    void Apply(GameObject absorber);
+    GameObject Effect { get; set; }
 }

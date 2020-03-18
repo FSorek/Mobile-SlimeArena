@@ -15,8 +15,8 @@ public class GamepadOrKeyboardInput : IPlayerInput
     {
         var horizontalInput = Input.GetAxis("Horizontal");
         var verticalInput = Input.GetAxis("Vertical");
-        MoveVector = new Vector2(horizontalInput, verticalInput);
-        if (MoveVector.magnitude >= .1f)
+        MoveVector = new Vector2(horizontalInput, verticalInput).normalized;
+
             AttackDirection = MoveVector;
     }
 }

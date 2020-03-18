@@ -20,7 +20,8 @@ public class PlayerEntityStateMachine : MonoBehaviour, IEntityStateMachine
         var playerHealth = player.GetComponent<ITakeDamage>();
         
         var meleeSlash = new MeleeSlash(attackData.Damage, new Vector2(attackData.MinAttackRange, attackData.MaxAttackRange), player);
-        var playerAttack = new PoolRestoring(2, player.AbilityPool, meleeSlash);
+        var powerAbsorber = new PowerAbsorber(meleeSlash);
+        var playerAttack = new PoolRestoring(2, player.AbilityPool, powerAbsorber);
         
         var spinningAbility = new SpinningAbility(player.transform, .1f, 1, 1, new Vector2(3,3));
         

@@ -17,7 +17,8 @@ public class SpinningAbility : IAbility
         Cost = cost;
         mainCamera = Camera.main;
         var attackComponent = owner.GetComponent<ICanAttack>();
-        attack = new MeleeSlash(damage, hitSize, attackComponent);
+        
+        attack = new PowerAbsorber(new MeleeSlash(damage, hitSize, attackComponent));
         
         InitializeAbilityWalls();
         SetWallsActive(false);

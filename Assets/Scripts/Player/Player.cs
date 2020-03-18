@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Player : MonoBehaviour, ICanAttack
+public class Player : MonoBehaviour, ICanAttack, ICanAbsorb
 {
     public event Action OnSpawn = delegate { };
     private ITakeDamage healthComponent;
@@ -33,5 +33,10 @@ public class Player : MonoBehaviour, ICanAttack
     private void OnEnable()
     {
         OnSpawn();
+    }
+
+    public void Absorb(IPowerUp powerUp)
+    {
+        powerUp.Apply(gameObject);
     }
 }
